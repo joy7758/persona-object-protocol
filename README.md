@@ -10,6 +10,8 @@ POP is a lightweight public draft for representing portable persona objects with
 
 POP is publicly archived on Zenodo and can be cited via DOI: [10.5281/zenodo.18898252](https://doi.org/10.5281/zenodo.18898252).
 
+For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
+
 ## What POP is
 
 POP defines a minimal object layer for packaging persona definitions in a portable and inspectable form. It focuses on persona object representation, plugin attachment entry points, separation from memory and permissions, and basic governance boundaries.
@@ -66,6 +68,7 @@ For external messaging and positioning copy, see [`docs/communication-kit.md`](d
 ├── LICENSE
 ├── README.md
 ├── docs
+│   ├── cite-pop.md
 │   ├── communication-kit.md
 │   └── short-outreach-kit.md
 ├── examples
