@@ -55,6 +55,8 @@ The object does not embed long-term memory, permission grants, or execution poli
 
 POP complements adjacent work on persona steering, persona consistency, agent tooling, and agent security. It does not replace those areas. Its role is narrower: to define a portable persona object layer that other systems can interpret, constrain, or extend.
 
+For external messaging and positioning copy, see [`docs/communication-kit.md`](docs/communication-kit.md).
+
 ## Repository structure
 
 ```text
@@ -63,6 +65,8 @@ POP complements adjacent work on persona steering, persona consistency, agent to
 ├── CITATION.cff
 ├── LICENSE
 ├── README.md
+├── docs
+│   └── communication-kit.md
 ├── examples
 │   ├── caregiver.persona.json
 │   ├── companion.persona.json
