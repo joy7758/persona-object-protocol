@@ -5,8 +5,9 @@ type: software
 authors:
   - family-names: Zhang
     given-names: Bin
-version: v0.1.0-draft
+version: v0.1.1-archive
 date-released: 2026-03-07
 license: Apache-2.0
 repository-code: https://github.com/joy7758/persona-object-protocol
+doi: 10.5281/zenodo.18898252
 abstract: A lightweight public draft protocol for portable persona objects in multimodal AI systems.

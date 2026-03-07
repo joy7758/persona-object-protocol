@@ -1,8 +1,14 @@
 # Persona Object Protocol (POP)
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18898252.svg)](https://doi.org/10.5281/zenodo.18898252)
+[![Release](https://img.shields.io/github/v/release/joy7758/persona-object-protocol)](https://github.com/joy7758/persona-object-protocol/releases)
+[![License](https://img.shields.io/github/license/joy7758/persona-object-protocol)](./LICENSE)
+
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
 POP is a lightweight public draft for representing portable persona objects with explicit boundaries. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
+
+POP is publicly archived on Zenodo and can be cited via DOI: [10.5281/zenodo.18898252](https://doi.org/10.5281/zenodo.18898252).
 
 ## What POP is
 
