@@ -1,6 +1,6 @@
 {
   "title": "Persona Object Protocol (POP)",
-  "description": "A lightweight draft protocol for portable persona objects in future multimodal AI systems.",
+  "description": "A lightweight public draft protocol for portable persona objects in multimodal AI systems.",
   "creators": [
     {
       "name": "Zhang, Bin"

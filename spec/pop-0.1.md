@@ -2,7 +2,7 @@
 
 ## Abstract
 
-Persona Object Protocol (POP) is a lightweight draft protocol for representing portable persona objects in future multimodal AI systems. POP defines a compact object format with a persona core, optional memory hooks, optional plugin attachment entry points, and a basic safety boundary. POP does not define persona generation algorithms, model training methods, or runtime orchestration.
+Persona Object Protocol (POP) is a lightweight draft protocol for representing portable persona objects in multimodal AI systems. POP defines a compact object format with a persona core, optional memory hooks, optional plugin attachment entry points, and a basic safety boundary. POP does not define persona generation algorithms, model training methods, or runtime orchestration.
 
 ## Design goals
 

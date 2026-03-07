@@ -1,23 +1,16 @@
 # Persona Object Protocol (POP)
 
-## A lightweight draft protocol for portable persona objects in future multimodal AI systems
+## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
-POP is a compact draft protocol for representing portable persona objects across future multimodal AI systems. It is intended as a protocol-carding repository: small enough to discuss, inspect, and adapt, without presenting itself as a product, a generation pipeline, or a full runtime stack.
+POP is a lightweight public draft for representing portable persona objects with explicit boundaries. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
 
 ## What POP is
 
-POP is a lightweight draft protocol for packaging a persona definition into a portable object with explicit boundaries. In conservative terms, it aims to provide a multimodal persona object layer, and potentially a persona sovereignty layer, for systems that need persona portability without collapsing persona, memory, permissions, and tooling into one artifact.
-
-POP focuses on:
-
-- persona object representation
-- plugin attachment entry points
-- separation from memory and permissions
-- basic governance boundaries
+POP defines a minimal object layer for packaging persona definitions in a portable and inspectable form. It focuses on persona object representation, plugin attachment entry points, separation from memory and permissions, and basic governance boundaries.
 
 ## What POP solves
 
-POP gives implementers a minimal shared structure for describing a persona object in a way that can move between systems. It helps keep persona definition separate from memory stores, capability grants, and application-specific orchestration logic.
+POP provides a minimal shared structure for describing persona objects across systems. Its purpose is to keep persona definitions distinct from memory stores, capability grants, and application-specific orchestration logic.
 
 ## Scope
 
@@ -27,7 +20,7 @@ POP v0.1 covers:
 - optional memory hook declarations
 - optional plugin manifest declarations
 - explicit safety and governance boundaries
-- simple version labeling for draft interoperability
+- simple draft version labeling
 
 ## Non-goals
 
