@@ -66,7 +66,8 @@ For external messaging and positioning copy, see [`docs/communication-kit.md`](d
 ├── LICENSE
 ├── README.md
 ├── docs
-│   └── communication-kit.md
+│   ├── communication-kit.md
+│   └── short-outreach-kit.md
 ├── examples
 │   ├── caregiver.persona.json
 │   ├── companion.persona.json

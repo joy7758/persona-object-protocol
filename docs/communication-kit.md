@@ -2,6 +2,8 @@
 
 This document standardizes external messaging for Persona Object Protocol (POP). It is positioning-first and non-normative. The protocol definition remains in [`spec/pop-0.1.md`](../spec/pop-0.1.md).
 
+For platform-specific short copy, see [`short-outreach-kit.md`](./short-outreach-kit.md).
+
 ## Core line
 
 English:
