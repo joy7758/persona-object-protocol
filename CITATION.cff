@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: If you use this repository, please cite it using the metadata below.
+title: Persona Object Protocol (POP)
+type: software
+authors:
+  - family-names: Zhang
+    given-names: Bin
+version: v0.1.0-draft
+date-released: 2026-03-07
+license: Apache-2.0
+repository-code: https://github.com/joy7758/persona-object-protocol
+abstract: A lightweight draft protocol for portable persona objects in future multimodal AI systems.
