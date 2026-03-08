@@ -22,6 +22,11 @@ LangChain execution contract surface. In this release line,
 entry point, while compatibility helpers remain available for backward
 compatibility.
 
+`v0.1.6` focuses on reducing first-adoption friction for that same
+LangChain contract surface. The main entry point remains
+`create_langchain_execution_bundle(...)`, while compatibility helpers
+continue to exist only as secondary backward-compatibility paths.
+
 ## LangChain Execution Helper Surface
 
 - `create_langchain_create_agent_kwargs(...)`
@@ -38,6 +43,9 @@ LangChain runtime objects.
 Compatibility helpers from the earlier execution line are retained for
 backward compatibility, but they are not the primary documentation
 surface for the current release line.
+
+The recommended first-adoption path is now documented separately in
+[`docs/quickstart/langchain-minimal-adoption.md`](quickstart/langchain-minimal-adoption.md).
 
 ## CrewAI Execution Helper Surface
 

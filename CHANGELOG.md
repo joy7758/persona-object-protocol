@@ -12,6 +12,22 @@ as governance practices mature.
 
 ### Fixed
 
+## [0.1.6] - 2026-03-09
+
+### Added
+
+- LangChain minimal adoption path documentation centered on
+  `create_langchain_execution_bundle(...)`.
+- installed-package-first smoke examples for the LangChain execution
+  contract surface.
+
+### Changed
+
+- Documented `v0.1.6` as a LangChain adoption-friction reduction
+  release while the canonical schema baseline remains `v0.1.0`.
+- Clarified that CrewAI remains compatibility-focused and secondary in
+  this release line.
+
 ## [0.1.5] - 2026-03-09
 
 ### Added

@@ -37,6 +37,8 @@ publication readiness for POP.
 - [POP v0.1.5 Announcement (ZH)](releases/v0.1.5-announcement.zh.md)
 - [LangChain Execution Contract Note](langchain-maintainer-note.md)
 - [POP v0.1.6 Plan](releases/v0.1.6-plan.md)
+- [POP v0.1.6 Release Notes](releases/v0.1.6-release-notes.md)
+- [LangChain Minimal Adoption Path](quickstart/langchain-minimal-adoption.md)
 - [POP v0.1.0-v0.1.4 Evolution Note](pop-evolution-v0.1.0-v0.1.4.md)
 - [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [TestPyPI Trusted Publisher Setup](testpypi-trusted-publisher-setup.md)
@@ -50,6 +52,8 @@ publication readiness for POP.
 - LangChain create_agent Example: `examples/integrations/langchain_create_agent_minimal.py`
 - LangChain Execution Example: `examples/integrations/langchain_execution_minimal.py`
 - LangChain Installed Contract Example: `examples/integrations/langchain_installed_contract_minimal.py`
+- LangChain Minimal 20-Line Example: `examples/integrations/langchain_minimal_20_lines.py`
+- LangChain Installed Smoke Example: `examples/integrations/langchain_installed_smoke_minimal.py`
 - CrewAI Execution Example: `examples/integrations/crewai_execution_minimal.py`
 
 ## Regression Assets

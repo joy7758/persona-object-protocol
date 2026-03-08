@@ -16,6 +16,8 @@ object.
 - CrewAI remains secondary and compatibility-focused
 - v0.1.5 continues to treat CrewAI as secondary while stabilizing the
   LangChain execution contract surface
+- v0.1.6 continues that line by reducing first-adoption friction rather
+  than expanding helper count
 
 ## Design Principle
 

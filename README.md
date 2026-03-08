@@ -111,6 +111,23 @@ surface in the current release line is:
 - `create_langchain_middleware_bundle(...)`
 - `maybe_build_langchain_agent_spec(...)`
 
+## LangChain Minimal Adoption (Early Preview)
+
+The primary LangChain-facing entry point remains
+`create_langchain_execution_bundle(...)`. This path is designed to
+reduce first-adoption friction and to keep installed-package smoke
+validation easy to reproduce.
+
+Compatibility helpers remain available for backward compatibility, but
+they are not the recommended primary path for first adoption. The
+canonical schema baseline remains `v0.1.0`.
+
+Minimal-adoption references:
+
+- [`examples/integrations/langchain_minimal_20_lines.py`](examples/integrations/langchain_minimal_20_lines.py)
+- [`examples/integrations/langchain_installed_smoke_minimal.py`](examples/integrations/langchain_installed_smoke_minimal.py)
+- [`docs/quickstart/langchain-minimal-adoption.md`](docs/quickstart/langchain-minimal-adoption.md)
+
 ## Portability Demo
 
 An early cross-runtime portability scaffold is available at
@@ -148,8 +165,8 @@ For the current public packaging position, see
 The runtime adapter release is documented at
 [`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
 The current execution-layer release is documented at
-[`docs/releases/v0.1.5-release-notes.md`](docs/releases/v0.1.5-release-notes.md).
-The current public release announcement is available in
+[`docs/releases/v0.1.6-release-notes.md`](docs/releases/v0.1.6-release-notes.md).
+A public release announcement is available in
 English at [`docs/releases/v0.1.5-announcement.md`](docs/releases/v0.1.5-announcement.md)
 and in Chinese at
 [`docs/releases/v0.1.5-announcement.zh.md`](docs/releases/v0.1.5-announcement.zh.md).
