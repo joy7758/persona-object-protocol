@@ -31,6 +31,7 @@ publication readiness for POP.
 - [POP v0.1.3 Release Notes](releases/v0.1.3-release-notes.md)
 - [POP v0.1.4 Plan](releases/v0.1.4-plan.md)
 - [POP v0.1.4 Release Notes](releases/v0.1.4-release-notes.md)
+- [POP v0.1.0-v0.1.4 Evolution Note](pop-evolution-v0.1.0-v0.1.4.md)
 - [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [TestPyPI Trusted Publisher Setup](testpypi-trusted-publisher-setup.md)
 - [PyPI Trusted Publisher Setup](pypi-trusted-publisher-setup.md)

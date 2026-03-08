@@ -147,6 +147,8 @@ The previous execution-layer increment remains documented at
 [`docs/releases/v0.1.3-release-notes.md`](docs/releases/v0.1.3-release-notes.md).
 LangChain-focused execution planning is documented in
 [`docs/releases/v0.1.4-plan.md`](docs/releases/v0.1.4-plan.md).
+The early release chronology is summarized in
+[`docs/pop-evolution-v0.1.0-v0.1.4.md`](docs/pop-evolution-v0.1.0-v0.1.4.md).
 
 ## TestPyPI and Trusted Publishing
 
