@@ -49,6 +49,26 @@ LangChain and CrewAI adapters are early-preview scaffolds that bind
 canonical POP persona objects to runtime-oriented representations
 without changing the schema baseline.
 
+## Runtime Integrations (Early Preview)
+
+LangChain integration scaffolds are available through the optional
+`langchain` extra, and CrewAI integration scaffolds are available
+through the optional `crewai` extra. The canonical schema baseline
+remains `v0.1.0` while runtime-facing binding surfaces continue to
+evolve.
+
+Install examples:
+
+```bash
+pip install "pop-persona[langchain]"
+pip install "pop-persona[crewai]"
+```
+
+Example scripts:
+
+- [`examples/integrations/langchain_minimal.py`](examples/integrations/langchain_minimal.py)
+- [`examples/integrations/crewai_minimal.py`](examples/integrations/crewai_minimal.py)
+
 ## Portability Demo
 
 An early cross-runtime portability scaffold is available at
@@ -85,6 +105,8 @@ For the current public packaging position, see
 [`docs/releases/v0.1.1-announcement.md`](docs/releases/v0.1.1-announcement.md).
 For the next runtime-facing package increment, see
 [`docs/releases/v0.1.2-plan.md`](docs/releases/v0.1.2-plan.md).
+Draft release notes are available at
+[`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
 
 ## TestPyPI and Trusted Publishing
 
@@ -313,4 +335,6 @@ python3 -m pip install build
 python3 -m build
 ```
 
-The repository includes a placeholder release workflow at [`.github/workflows/publish.yml`](.github/workflows/publish.yml), but real PyPI publication remains intentionally disabled until TestPyPI smoke and release discipline checks are complete.
+The repository includes dedicated TestPyPI and PyPI trusted publishing
+workflows under [`.github/workflows/`](.github/workflows/), and package
+publication now follows tagged release and smoke-validation discipline.

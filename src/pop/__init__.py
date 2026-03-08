@@ -1,4 +1,13 @@
 from pop.adapters import BasePersonaAdapter, CrewAIAdapter, LangChainAdapter
+from pop.integrations.crewai import (
+    bind_crewai_agent_kwargs,
+    create_crewai_agent_from_persona,
+)
+from pop.integrations.langchain import (
+    bind_langchain_context,
+    bind_langchain_middleware,
+    bind_langchain_prompt,
+)
 from pop.io import load_persona, save_persona
 from pop.models import PersonaObject
 from pop.schema import (
@@ -20,6 +29,11 @@ __all__ = [
     "BasePersonaAdapter",
     "CrewAIAdapter",
     "LangChainAdapter",
+    "bind_crewai_agent_kwargs",
+    "bind_langchain_context",
+    "bind_langchain_middleware",
+    "bind_langchain_prompt",
+    "create_crewai_agent_from_persona",
     "get_schema_id",
     "list_available_schema_versions",
     "load_persona",

@@ -40,8 +40,10 @@ schema = [
   "jsonschema>=4.25,<5"
 ]
 langchain = [
-  "langchain>=1.0.0",
-  "langchain-openai>=0.3.0"
+  "langchain>=1.0.0"
+]
+crewai = [
+  "crewai>=0.120.0"
 ]
 
 [project.urls]

@@ -9,6 +9,7 @@ as governance practices mature.
 ### Added
 
 - Runtime adapter scaffolding for LangChain and CrewAI.
+- Early runtime integration scaffolds for LangChain and CrewAI.
 
 ### Changed
 
