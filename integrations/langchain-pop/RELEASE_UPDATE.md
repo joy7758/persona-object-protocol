@@ -1,4 +1,4 @@
-# langchain-pop v0.1.1
+# langchain-pop v0.1.2
 
 Now available on PyPI.
 
@@ -8,4 +8,4 @@ Now available on PyPI.
 pip install langchain-pop
 ```
 
-This release provides the first public PyPI distribution of the LangChain POP middleware.
+This release provides the first stable PyPI distribution of the LangChain POP middleware.
