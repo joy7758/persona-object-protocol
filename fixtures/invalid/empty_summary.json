@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
+  "id": "pop.persona.invalid-empty-summary.v1",
+  "version": "0.1-draft",
+  "name": "Invalid Empty Summary Persona",
+  "summary": "",
+  "traits": [
+    "structured"
+  ],
+  "communication_style": [
+    "clear"
+  ],
+  "task_orientation": [
+    "analysis"
+  ],
+  "boundaries": [
+    "do not speculate"
+  ],
+  "preferred_outputs": [
+    "summary"
+  ],
+  "metadata": {
+    "fixture": "empty-summary"
+  }
+}

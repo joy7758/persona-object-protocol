@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
+  "id": "pop.persona.invalid-missing-name.v1",
+  "version": "0.1-draft",
+  "summary": "Invalid fixture missing the required name field.",
+  "traits": [
+    "cautious"
+  ],
+  "communication_style": [
+    "measured"
+  ],
+  "task_orientation": [
+    "analysis"
+  ],
+  "boundaries": [
+    "do not speculate"
+  ],
+  "preferred_outputs": [
+    "summary"
+  ],
+  "metadata": {
+    "fixture": "missing-name"
+  }
+}

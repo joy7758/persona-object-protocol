@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
+  "$id": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/versions/pop-persona.v0.1.0.schema.json",
   "title": "POP Persona Object",
-  "description": "Current preview alias for the POP persona schema. Versioned schemas under schema/versions/ are the normative historical snapshots. The persona core is defined separately from memory, tools, and permissions.",
+  "description": "Normative historical snapshot of the POP persona schema for v0.1.0. The persona core is defined separately from memory, tools, and permissions.",
   "type": "object",
   "additionalProperties": false,
   "properties": {

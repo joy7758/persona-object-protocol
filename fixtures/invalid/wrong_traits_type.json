@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
+  "id": "pop.persona.invalid-wrong-traits-type.v1",
+  "version": "0.1-draft",
+  "name": "Invalid Traits Type Persona",
+  "summary": "Invalid fixture with a wrong type for traits.",
+  "traits": "structured reasoning",
+  "communication_style": [
+    "clear"
+  ],
+  "task_orientation": [
+    "analysis"
+  ],
+  "boundaries": [
+    "do not speculate"
+  ],
+  "preferred_outputs": [
+    "summary"
+  ],
+  "metadata": {
+    "fixture": "wrong-traits-type"
+  }
+}

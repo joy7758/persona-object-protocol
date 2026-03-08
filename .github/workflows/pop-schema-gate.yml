@@ -1,0 +1,62 @@
+name: POP Schema Gate
+
+on:
+  push:
+    paths:
+      - "schema/**"
+      - "fixtures/**"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "README.md"
+      - "docs/**"
+  pull_request:
+    paths:
+      - "schema/**"
+      - "fixtures/**"
+      - "src/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "README.md"
+      - "docs/**"
+
+jobs:
+  schema-gate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package with schema extra
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[schema]"
+
+      - name: Run unit tests
+        run: |
+          python -m unittest discover -s tests -p "test_*.py"
+
+      - name: Run strict inspect on valid fixture
+        run: |
+          pop-inspect --strict-schema fixtures/valid/lawyer_persona.json
+
+      - name: Confirm invalid fixtures fail strict validation
+        run: |
+          for f in fixtures/invalid/*.json; do
+            if pop-inspect --strict-schema "$f" >/dev/null 2>&1; then
+              echo "UNEXPECTED PASS: $f"
+              exit 1
+            else
+              echo "EXPECTED FAIL: $f"
+            fi
+          done

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
+  "id": "pop.persona.minimal.v1",
+  "version": "0.1-draft",
+  "name": "Minimal Persona",
+  "summary": "A minimal POP persona object used for strict validation and regression testing.",
+  "traits": [
+    "concise"
+  ],
+  "communication_style": [
+    "clear"
+  ],
+  "task_orientation": [
+    "basic assistance"
+  ],
+  "boundaries": [
+    "do not claim capabilities beyond the provided task"
+  ],
+  "preferred_outputs": [
+    "short answer"
+  ],
+  "metadata": {
+    "fixture": "minimal-valid"
+  }
+}

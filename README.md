@@ -54,6 +54,15 @@ The current schema is an early preview intended to define the core
 structural boundary of a POP persona object. Within that boundary,
 persona remains separate from memory, tools, and permissions.
 
+`schema/pop-persona.schema.json` is the current preview alias.
+[`schema/versions/`](schema/versions/) contains versioned historical
+snapshots, and those versioned schemas are the normative references for
+stable review and comparison.
+
+Valid and invalid fixtures are maintained under [`fixtures/valid/`](fixtures/valid/)
+and [`fixtures/invalid/`](fixtures/invalid/) to support strict
+validation and protocol regression testing.
+
 ## Python SDK (Early Preview)
 
 A minimal Python SDK is provided as an early preview for loading,
@@ -75,6 +84,7 @@ CLI example:
 
 ```bash
 pop-inspect examples/cross-runtime-persona-portability/personas/lawyer_persona.json
+pop-inspect --list-schema-versions
 pop-inspect --strict-schema examples/cross-runtime-persona-portability/personas/lawyer_persona.json
 ```
 

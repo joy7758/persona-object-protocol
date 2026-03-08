@@ -7,9 +7,18 @@ object protocol.
 The canonical JSON Schema defines the current structural boundary of a
 POP persona object in early preview form.
 
+These materials support schema governance, regression safety, and
+protocol evolution discipline for POP.
+
 ## Documents
 
 - [Canonical JSON Schema](../schema/pop-persona.schema.json)
+- [Schema Evolution Note](schema-evolution.md)
+- [Versioned Schemas](../schema/versions/)
 - [POP Ecosystem Integration Roadmap](pop-ecosystem-roadmap.md)
 - [POP Adapter Model](pop-adapter-model.md)
 - [Portability Demo](../examples/cross-runtime-persona-portability/README.md)
+
+## Regression Assets
+
+- Fixture Corpus: `fixtures/valid` and `fixtures/invalid`
