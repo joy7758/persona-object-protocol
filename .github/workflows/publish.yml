@@ -13,3 +13,6 @@ jobs:
           echo "This workflow is reserved for future Trusted Publishing to PyPI."
           echo "Publication will only be enabled after PyPI trusted publisher configuration is complete."
           echo "Repository release and tag discipline must be in place first."
+          echo "Real PyPI publication remains intentionally disabled."
+          echo "TestPyPI smoke via trusted publishing should be completed first."
+          echo "Real PyPI publication will only be enabled after release/tag discipline and package identity are confirmed."

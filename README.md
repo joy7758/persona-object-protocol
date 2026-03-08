@@ -63,6 +63,22 @@ Valid and invalid fixtures are maintained under [`fixtures/valid/`](fixtures/val
 and [`fixtures/invalid/`](fixtures/invalid/) to support strict
 validation and protocol regression testing.
 
+## Release Baseline
+
+`v0.1.0` is the first tagged baseline release for POP. Versioned schemas
+under [`schema/versions/`](schema/versions/) are the normative
+snapshots, while the current alias continues to track the latest preview
+surface.
+
+TestPyPI smoke and Trusted Publishing setup are part of the
+release-readiness path for this baseline.
+
+## TestPyPI and Trusted Publishing
+
+TestPyPI is used for first publication smoke validation. Trusted
+Publishing is planned through GitHub Actions with OIDC, and real PyPI
+publication follows successful smoke validation and release discipline.
+
 ## Python SDK (Early Preview)
 
 A minimal Python SDK is provided as an early preview for loading,
