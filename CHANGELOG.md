@@ -8,16 +8,31 @@ as governance practices mature.
 
 ### Added
 
-- LangChain optional-dependency execution work for `create_agent`,
-  middleware, and runtime-context helper surfaces.
+### Changed
+
+### Fixed
+
+## [0.1.4] - 2026-03-09
+
+### Added
+
+- LangChain optional-dependency execution helpers aligned with
+  `create_agent`, middleware, and runtime-context helper surfaces.
+- A LangChain optional-dependency helper that reports whether the
+  `langchain` extra is available and returns a dependency-aware spec.
+- A `langchain_create_agent_minimal.py` example for local execution-side
+  scaffolding.
+- LangChain execution bundle and optional-dependency tests that keep the
+  helper surface dependency-light by default.
 
 ### Changed
 
-- LangChain is the primary execution-layer focus in the current release
-  line while preserving the canonical schema baseline at `v0.1.0`.
-- CrewAI remains compatibility-focused in the current release line.
-
-### Fixed
+- Documented `v0.1.4` as a LangChain optional-dependency execution
+  release while preserving the canonical schema baseline at `v0.1.0`.
+- Clarified that CrewAI remains compatibility-focused and secondary in
+  this release line.
+- Lowered legacy LangChain scaffold helpers to backward-compatibility
+  status in the documentation surface.
 
 ## [0.1.3] - 2026-03-09
 

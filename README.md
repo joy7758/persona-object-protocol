@@ -95,6 +95,16 @@ LangChain execution examples:
 - [`examples/integrations/langchain_create_agent_minimal.py`](examples/integrations/langchain_create_agent_minimal.py)
 - [`examples/integrations/langchain_execution_minimal.py`](examples/integrations/langchain_execution_minimal.py)
 
+Compatibility helpers from the earlier execution scaffolding line are
+retained for backward compatibility. The primary LangChain-facing
+surface in the current release line is:
+
+- `create_langchain_execution_bundle(...)`
+- `create_langchain_create_agent_kwargs(...)`
+- `create_langchain_context_bundle(...)`
+- `create_langchain_middleware_bundle(...)`
+- `maybe_build_langchain_agent_spec(...)`
+
 ## Portability Demo
 
 An early cross-runtime portability scaffold is available at
@@ -132,10 +142,10 @@ For the current public packaging position, see
 The runtime adapter release is documented at
 [`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
 The current execution-layer release is documented at
+[`docs/releases/v0.1.4-release-notes.md`](docs/releases/v0.1.4-release-notes.md).
+The previous execution-layer increment remains documented at
 [`docs/releases/v0.1.3-release-notes.md`](docs/releases/v0.1.3-release-notes.md).
-Execution-layer planning remains available in
-[`docs/releases/v0.1.3-plan.md`](docs/releases/v0.1.3-plan.md).
-The next LangChain-focused execution increment is planned in
+LangChain-focused execution planning is documented in
 [`docs/releases/v0.1.4-plan.md`](docs/releases/v0.1.4-plan.md).
 
 ## TestPyPI and Trusted Publishing

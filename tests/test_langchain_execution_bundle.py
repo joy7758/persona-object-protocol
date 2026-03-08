@@ -7,8 +7,11 @@ from pop import load_persona
 from pop.integrations.langchain import (
     create_langchain_context_bundle,
     create_langchain_create_agent_kwargs,
+    create_langchain_agent_kwargs,
     create_langchain_execution_bundle,
+    create_langchain_execution_scaffold,
     create_langchain_middleware_bundle,
+    create_langchain_middleware_scaffold,
 )
 
 
@@ -79,3 +82,49 @@ class LangChainExecutionBundleTest(unittest.TestCase):
         self.assertIn("context_bundle", execution_bundle)
         self.assertIn("middleware_bundle", execution_bundle)
         self.assertEqual(before, self.persona.to_dict())
+
+    def test_compatibility_agent_kwargs_wrap_new_create_agent_helper(self) -> None:
+        old_helper = create_langchain_agent_kwargs(
+            self.persona,
+            tools=["case_lookup"],
+            model="mock-model",
+            system_prompt_prefix="Follow POP guidance.",
+        )
+        new_helper = create_langchain_create_agent_kwargs(
+            self.persona,
+            tools=["case_lookup"],
+            model="mock-model",
+            system_prompt_prefix="Follow POP guidance.",
+        )
+        context_bundle = create_langchain_context_bundle(self.persona)
+        middleware_bundle = create_langchain_middleware_bundle(self.persona)
+
+        self.assertEqual(old_helper["system_prompt"], new_helper["system_prompt"])
+        self.assertEqual(old_helper["tools"], new_helper["tools"])
+        self.assertEqual(old_helper["model"], new_helper["model"])
+        self.assertEqual(old_helper["context"], context_bundle["persona"])
+        self.assertEqual(old_helper["middleware"], middleware_bundle[0]["binding"])
+
+    def test_compatibility_execution_scaffold_wraps_new_execution_bundle(self) -> None:
+        old_scaffold = create_langchain_execution_scaffold(
+            self.persona,
+            tools=["case_lookup"],
+            model="mock-model",
+        )
+        new_bundle = create_langchain_execution_bundle(
+            self.persona,
+            tools=["case_lookup"],
+            model="mock-model",
+        )
+        old_middleware = create_langchain_middleware_scaffold(self.persona)
+
+        self.assertEqual(old_scaffold["bundle"], new_bundle)
+        self.assertEqual(
+            old_scaffold["agent_kwargs"]["system_prompt"],
+            new_bundle["create_agent_kwargs"]["system_prompt"],
+        )
+        self.assertEqual(
+            old_scaffold["agent_kwargs"]["tools"],
+            new_bundle["create_agent_kwargs"]["tools"],
+        )
+        self.assertEqual(old_scaffold["middleware"], old_middleware)

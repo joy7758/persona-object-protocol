@@ -8,9 +8,9 @@ binding without changing the underlying schema baseline.
 
 ## Current Status
 
-`v0.1.3` planning focuses on early execution-layer helpers for
-LangChain and CrewAI. These helpers remain dependency-light by default
-and are designed to work as optional integration surfaces.
+The current execution-layer release line extends early helper surfaces
+for LangChain and CrewAI. These helpers remain dependency-light by
+default and are designed to work as optional integration surfaces.
 
 `v0.1.4` shifts the execution-layer focus toward LangChain. LangChain
 is the primary execution-layer target in this release line, while
@@ -28,6 +28,10 @@ These helpers target prompt, runtime-context, middleware, and tool-facing
 structures aligned with LangChain v1 `create_agent` and middleware
 surfaces. They remain helper-composable scaffolds, not official
 LangChain runtime objects.
+
+Compatibility helpers from the earlier execution line are retained for
+backward compatibility, but they are not the primary documentation
+surface for the current release line.
 
 ## CrewAI Execution Helper Surface
 
@@ -51,10 +55,9 @@ core.
 
 ## Compatibility Position
 
-`v0.1.3` focuses on execution-layer helpers while preserving the
-canonical schema baseline at `v0.1.0`. The helper surfaces are
-runtime-facing and optional-dependency-friendly, but they do not alter
-POP core semantics.
+The execution-layer release line preserves the canonical schema
+baseline at `v0.1.0`. The helper surfaces are runtime-facing and
+optional-dependency-friendly, but they do not alter POP core semantics.
 
 `v0.1.4` continues that compatibility position while concentrating on
 LangChain optional-dependency execution helpers. The canonical schema
