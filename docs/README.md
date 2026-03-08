@@ -36,6 +36,7 @@ publication readiness for POP.
 - [POP v0.1.5 Announcement (EN)](releases/v0.1.5-announcement.md)
 - [POP v0.1.5 Announcement (ZH)](releases/v0.1.5-announcement.zh.md)
 - [LangChain Execution Contract Note](langchain-maintainer-note.md)
+- [POP v0.1.7 Release Notes](releases/v0.1.7-release-notes.md)
 - [POP v0.1.6 Plan](releases/v0.1.6-plan.md)
 - [POP v0.1.6 Release Notes](releases/v0.1.6-release-notes.md)
 - [LangChain Minimal Adoption Path](quickstart/langchain-minimal-adoption.md)

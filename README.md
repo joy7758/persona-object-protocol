@@ -165,7 +165,7 @@ For the current public packaging position, see
 The runtime adapter release is documented at
 [`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
 The current execution-layer release is documented at
-[`docs/releases/v0.1.6-release-notes.md`](docs/releases/v0.1.6-release-notes.md).
+[`docs/releases/v0.1.7-release-notes.md`](docs/releases/v0.1.7-release-notes.md).
 A public release announcement is available in
 English at [`docs/releases/v0.1.5-announcement.md`](docs/releases/v0.1.5-announcement.md)
 and in Chinese at

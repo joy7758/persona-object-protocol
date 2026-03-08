@@ -12,6 +12,15 @@ as governance practices mature.
 
 ### Fixed
 
+## [0.1.7] - 2026-03-09
+
+### Fixed
+
+- Fixed the graceful no-`langchain` path in
+  `maybe_build_langchain_agent_spec(...)`.
+- Restored test and build consistency for the LangChain adoption path
+  while preserving the canonical schema baseline at `v0.1.0`.
+
 ## [0.1.6] - 2026-03-09
 
 ### Added

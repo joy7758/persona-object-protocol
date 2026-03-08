@@ -228,6 +228,7 @@ def maybe_build_langchain_agent_spec(
             "langchain_available": False,
             "runtime": "langchain",
             "target": "create_agent",
+            "kind": "langchain_execution_scaffold",
             "execution_bundle": create_langchain_execution_bundle(
                 persona,
                 tools=tools,
