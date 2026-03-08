@@ -12,6 +12,8 @@ object.
 - LangChain adapter scaffold
 - CrewAI adapter scaffold
 - both are early preview and intentionally dependency-light
+- LangChain is the primary execution-layer focus in the current release line
+- CrewAI remains secondary and compatibility-focused
 
 ## Design Principle
 
@@ -32,3 +34,7 @@ Real runtime package integrations may be added later. For the current
 stage, adapter contract tests are the main proof surface: they show
 that runtime-facing bindings can exist without changing the canonical
 POP persona boundary.
+
+CrewAI runtime compatibility should currently be validated on Python
+3.10-3.13. Runtime-facing inputs such as tools remain outside the POP
+persona core even when adapter or execution helpers are used.

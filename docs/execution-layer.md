@@ -12,15 +12,22 @@ binding without changing the underlying schema baseline.
 LangChain and CrewAI. These helpers remain dependency-light by default
 and are designed to work as optional integration surfaces.
 
+`v0.1.4` shifts the execution-layer focus toward LangChain. LangChain
+is the primary execution-layer target in this release line, while
+CrewAI remains secondary and compatibility-focused.
+
 ## LangChain Execution Helper Surface
 
-- `create_langchain_agent_kwargs(...)`
-- `create_langchain_execution_scaffold(...)`
-- `create_langchain_middleware_scaffold(...)`
+- `create_langchain_create_agent_kwargs(...)`
+- `create_langchain_context_bundle(...)`
+- `create_langchain_middleware_bundle(...)`
+- `create_langchain_execution_bundle(...)`
+- `maybe_build_langchain_agent_spec(...)`
 
-These helpers target prompt, context, middleware, and tool-facing
-structures that can be consumed by LangChain-side execution entry
-points.
+These helpers target prompt, runtime-context, middleware, and tool-facing
+structures aligned with LangChain v1 `create_agent` and middleware
+surfaces. They remain helper-composable scaffolds, not official
+LangChain runtime objects.
 
 ## CrewAI Execution Helper Surface
 
@@ -29,6 +36,11 @@ points.
 
 These helpers target Agent-style initialization surfaces such as role,
 goal, backstory, tools, and optional execution flags.
+
+CrewAI execution surfaces remain early preview in this release line.
+Runtime compatibility should currently be validated on Python 3.10-3.13,
+and runtime-facing inputs such as tools remain outside the POP persona
+core.
 
 ## Non-Goals
 
@@ -43,3 +55,7 @@ goal, backstory, tools, and optional execution flags.
 canonical schema baseline at `v0.1.0`. The helper surfaces are
 runtime-facing and optional-dependency-friendly, but they do not alter
 POP core semantics.
+
+`v0.1.4` continues that compatibility position while concentrating on
+LangChain optional-dependency execution helpers. The canonical schema
+baseline remains `v0.1.0`.

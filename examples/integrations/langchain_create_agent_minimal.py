@@ -19,14 +19,15 @@ PERSONA_PATH = ROOT / "fixtures" / "valid" / "lawyer_persona.json"
 
 def main() -> None:
     persona = load_persona(PERSONA_PATH)
+
     print("LangChain create_agent Kwargs")
     print(
         json.dumps(
             create_langchain_create_agent_kwargs(
                 persona,
                 tools=["case_lookup"],
-                system_prompt_prefix="Execution scaffold",
                 model="mock-model",
+                system_prompt_prefix="Execution surface",
             ),
             indent=2,
             ensure_ascii=False,
@@ -58,7 +59,7 @@ def main() -> None:
                 persona,
                 tools=["case_lookup"],
                 model="mock-model",
-                system_prompt_prefix="Execution scaffold",
+                system_prompt_prefix="Execution surface",
             ),
             indent=2,
             ensure_ascii=False,
@@ -72,7 +73,7 @@ def main() -> None:
                 persona,
                 tools=["case_lookup"],
                 model="mock-model",
-                system_prompt_prefix="Execution scaffold",
+                system_prompt_prefix="Execution surface",
             ),
             indent=2,
             ensure_ascii=False,

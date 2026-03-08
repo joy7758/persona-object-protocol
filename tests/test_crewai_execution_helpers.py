@@ -56,3 +56,17 @@ class CrewAIExecutionHelperTest(unittest.TestCase):
             self.persona.task_orientation[0],
         )
         self.assertEqual(before, self.persona.to_dict())
+
+    def test_runtime_passthrough_stays_outside_persona_core(self) -> None:
+        before = self.persona.to_dict()
+        scaffold = create_crewai_execution_scaffold(
+            self.persona,
+            tools=["case_lookup"],
+            llm={"provider": "mock"},
+            verbose=False,
+        )
+        self.assertEqual(scaffold["agent_kwargs"]["tools"], ["case_lookup"])
+        self.assertEqual(scaffold["agent_kwargs"]["llm"], {"provider": "mock"})
+        self.assertFalse(scaffold["agent_kwargs"]["verbose"])
+        self.assertNotIn("tools", self.persona.to_dict())
+        self.assertEqual(before, self.persona.to_dict())

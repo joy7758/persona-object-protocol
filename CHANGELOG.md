@@ -8,10 +8,14 @@ as governance practices mature.
 
 ### Added
 
+- LangChain optional-dependency execution work for `create_agent`,
+  middleware, and runtime-context helper surfaces.
+
 ### Changed
 
-- Execution-layer helper work continues while preserving the
-  canonical schema baseline at `v0.1.0`.
+- LangChain is the primary execution-layer focus in the current release
+  line while preserving the canonical schema baseline at `v0.1.0`.
+- CrewAI remains compatibility-focused in the current release line.
 
 ### Fixed
 

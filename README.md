@@ -78,8 +78,22 @@ baseline remains `v0.1.0`.
 
 Execution-layer examples:
 
+- [`examples/integrations/langchain_create_agent_minimal.py`](examples/integrations/langchain_create_agent_minimal.py)
 - [`examples/integrations/langchain_execution_minimal.py`](examples/integrations/langchain_execution_minimal.py)
 - [`examples/integrations/crewai_execution_minimal.py`](examples/integrations/crewai_execution_minimal.py)
+
+## LangChain Execution Integration (Early Preview)
+
+LangChain execution helpers are available through the optional
+`langchain` extra. They are aligned with LangChain v1
+`create_agent`, middleware, and runtime-context helper surfaces, but
+they are not official LangChain runtime objects. The canonical schema
+baseline remains `v0.1.0`.
+
+LangChain execution examples:
+
+- [`examples/integrations/langchain_create_agent_minimal.py`](examples/integrations/langchain_create_agent_minimal.py)
+- [`examples/integrations/langchain_execution_minimal.py`](examples/integrations/langchain_execution_minimal.py)
 
 ## Portability Demo
 
@@ -121,6 +135,8 @@ The current execution-layer release is documented at
 [`docs/releases/v0.1.3-release-notes.md`](docs/releases/v0.1.3-release-notes.md).
 Execution-layer planning remains available in
 [`docs/releases/v0.1.3-plan.md`](docs/releases/v0.1.3-plan.md).
+The next LangChain-focused execution increment is planned in
+[`docs/releases/v0.1.4-plan.md`](docs/releases/v0.1.4-plan.md).
 
 ## TestPyPI and Trusted Publishing
 

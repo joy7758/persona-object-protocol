@@ -29,6 +29,8 @@ publication readiness for POP.
 - [POP Execution-Layer Helpers](execution-layer.md)
 - [POP v0.1.3 Plan](releases/v0.1.3-plan.md)
 - [POP v0.1.3 Release Notes](releases/v0.1.3-release-notes.md)
+- [POP v0.1.4 Plan](releases/v0.1.4-plan.md)
+- [POP v0.1.4 Release Notes](releases/v0.1.4-release-notes.md)
 - [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [TestPyPI Trusted Publisher Setup](testpypi-trusted-publisher-setup.md)
 - [PyPI Trusted Publisher Setup](pypi-trusted-publisher-setup.md)
@@ -38,6 +40,7 @@ publication readiness for POP.
 - [Portability Demo](../examples/cross-runtime-persona-portability/README.md)
 - LangChain Integration Example: `examples/integrations/langchain_minimal.py`
 - CrewAI Integration Example: `examples/integrations/crewai_minimal.py`
+- LangChain create_agent Example: `examples/integrations/langchain_create_agent_minimal.py`
 - LangChain Execution Example: `examples/integrations/langchain_execution_minimal.py`
 - CrewAI Execution Example: `examples/integrations/crewai_execution_minimal.py`
 

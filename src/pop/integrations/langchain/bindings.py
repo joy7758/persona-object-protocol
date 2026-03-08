@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from importlib import import_module
+
 from pop.adapters import LangChainAdapter
 from pop.models import PersonaObject
 
@@ -59,14 +61,37 @@ def bind_langchain_middleware(persona: PersonaObject) -> dict:
     }
 
 
-def create_langchain_agent_kwargs(
+def create_langchain_context_bundle(persona: PersonaObject) -> dict:
+    """Return a runtime-context scaffold aligned with LangChain v1 context usage."""
+
+    return {
+        "kind": "runtime_context",
+        "runtime": "langchain",
+        "persona": bind_langchain_context(persona),
+    }
+
+
+def create_langchain_middleware_bundle(
+    persona: PersonaObject,
+) -> list[dict]:
+    """Return a middleware-facing helper bundle, not an official LangChain type."""
+
+    return [
+        {
+            "name": "pop_persona_middleware",
+            "binding": bind_langchain_middleware(persona),
+        }
+    ]
+
+
+def create_langchain_create_agent_kwargs(
     persona: PersonaObject,
     *,
     tools: list | None = None,
-    system_prompt_prefix: str | None = None,
     model: str | None = None,
+    system_prompt_prefix: str | None = None,
 ) -> dict:
-    """Return an early-preview create_agent helper, not an official LangChain type."""
+    """Return an early-preview helper aligned with LangChain v1 create_agent surfaces."""
 
     prompt = bind_langchain_prompt(persona)
     if system_prompt_prefix:
@@ -74,12 +99,56 @@ def create_langchain_agent_kwargs(
 
     agent_kwargs = {
         "system_prompt": prompt,
-        "context": bind_langchain_context(persona),
-        "middleware": bind_langchain_middleware(persona),
         "tools": list(tools or []),
     }
     if model is not None:
         agent_kwargs["model"] = model
+    return agent_kwargs
+
+
+def create_langchain_execution_bundle(
+    persona: PersonaObject,
+    *,
+    tools: list | None = None,
+    model: str | None = None,
+    system_prompt_prefix: str | None = None,
+) -> dict:
+    """Return a combined execution helper surface aligned with LangChain v1."""
+
+    return {
+        "runtime": "langchain",
+        "target": "create_agent",
+        "persona_id": persona.id,
+        "create_agent_kwargs": create_langchain_create_agent_kwargs(
+            persona,
+            tools=tools,
+            model=model,
+            system_prompt_prefix=system_prompt_prefix,
+        ),
+        "context_bundle": create_langchain_context_bundle(persona),
+        "middleware_bundle": create_langchain_middleware_bundle(persona),
+    }
+
+
+def create_langchain_agent_kwargs(
+    persona: PersonaObject,
+    *,
+    tools: list | None = None,
+    system_prompt_prefix: str | None = None,
+    model: str | None = None,
+) -> dict:
+    """Return a backward-compatible LangChain helper with bundled context and middleware."""
+
+    agent_kwargs = dict(
+        create_langchain_create_agent_kwargs(
+            persona,
+            tools=tools,
+            model=model,
+            system_prompt_prefix=system_prompt_prefix,
+        )
+    )
+    agent_kwargs["context"] = bind_langchain_context(persona)
+    agent_kwargs["middleware"] = bind_langchain_middleware(persona)
     return agent_kwargs
 
 
@@ -89,8 +158,13 @@ def create_langchain_execution_scaffold(
     tools: list | None = None,
     model: str | None = None,
 ) -> dict:
-    """Return an early-preview execution scaffold for LangChain consumption."""
+    """Return a backward-compatible execution scaffold for LangChain consumption."""
 
+    bundle = create_langchain_execution_bundle(
+        persona,
+        tools=tools,
+        model=model,
+    )
     return {
         "runtime": "langchain",
         "adapter": "langchain",
@@ -101,21 +175,17 @@ def create_langchain_execution_scaffold(
             model=model,
         ),
         "context": bind_langchain_context(persona),
-        "middleware": create_langchain_middleware_scaffold(persona),
+        "middleware": create_langchain_middleware_bundle(persona),
+        "bundle": bundle,
     }
 
 
 def create_langchain_middleware_scaffold(
     persona: PersonaObject,
 ) -> list[dict]:
-    """Return an early-preview middleware list, not an official LangChain type."""
+    """Return a backward-compatible middleware scaffold wrapper."""
 
-    return [
-        {
-            "name": "pop_persona_middleware",
-            "binding": bind_langchain_middleware(persona),
-        }
-    ]
+    return create_langchain_middleware_bundle(persona)
 
 
 def build_langchain_agent_input(
@@ -131,3 +201,44 @@ def build_langchain_agent_input(
         tools=tools,
         model=model,
     )
+
+
+def maybe_build_langchain_agent_spec(
+    persona: PersonaObject,
+    *,
+    tools: list | None = None,
+    model: str | None = None,
+    system_prompt_prefix: str | None = None,
+) -> dict:
+    """Return a dependency-aware LangChain spec without requiring live execution."""
+
+    try:
+        langchain_module = import_module("langchain")
+    except ImportError:
+        return {
+            "langchain_available": False,
+            "runtime": "langchain",
+            "target": "create_agent",
+            "execution_bundle": create_langchain_execution_bundle(
+                persona,
+                tools=tools,
+                model=model,
+                system_prompt_prefix=system_prompt_prefix,
+            ),
+            "note": "Install the optional langchain extra for dependency-aware execution helpers.",
+        }
+
+    return {
+        "langchain_available": True,
+        "langchain_version": getattr(langchain_module, "__version__", "unknown"),
+        "runtime": "langchain",
+        "target": "create_agent",
+        "create_agent_kwargs": create_langchain_create_agent_kwargs(
+            persona,
+            tools=tools,
+            model=model,
+            system_prompt_prefix=system_prompt_prefix,
+        ),
+        "context_bundle": create_langchain_context_bundle(persona),
+        "middleware_bundle": create_langchain_middleware_bundle(persona),
+    }
