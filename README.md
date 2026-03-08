@@ -80,6 +80,12 @@ Strict schema validation is available through an optional dependency:
 pip install -e '.[schema]'
 ```
 
+For package build and release-readiness checks:
+
+```bash
+pip install -e '.[dev,schema]'
+```
+
 CLI example:
 
 ```bash

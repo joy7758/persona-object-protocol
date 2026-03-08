@@ -1,0 +1,27 @@
+changelog:
+  exclude:
+    authors:
+      - dependabot
+      - github-actions
+  categories:
+    - title: Protocol & Schema
+      labels:
+        - protocol
+        - schema
+    - title: SDK & CLI
+      labels:
+        - sdk
+        - cli
+    - title: Adapters & Examples
+      labels:
+        - adapter
+        - examples
+    - title: Fixtures & Validation
+      labels:
+        - fixtures
+        - validation
+        - tests
+    - title: Documentation
+      labels:
+        - documentation
+        - docs

@@ -10,11 +10,17 @@ POP persona object in early preview form.
 These materials support schema governance, regression safety, and
 protocol evolution discipline for POP.
 
+These documents govern protocol evolution, release hygiene, and
+publication readiness for POP.
+
 ## Documents
 
 - [Canonical JSON Schema](../schema/pop-persona.schema.json)
 - [Schema Evolution Note](schema-evolution.md)
 - [Versioned Schemas](../schema/versions/)
+- [Release and Tagging Discipline](release-discipline.md)
+- [Migration Templates](migrations/MIGRATION_TEMPLATE.md)
+- [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [POP Ecosystem Integration Roadmap](pop-ecosystem-roadmap.md)
 - [POP Adapter Model](pop-adapter-model.md)
 - [Portability Demo](../examples/cross-runtime-persona-portability/README.md)

@@ -1,54 +1,15 @@
-name: Publish Python Package
+name: PyPI Publish Placeholder
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
 
 jobs:
-  build:
+  reserved:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install build tool
+      - name: Reserved for future Trusted Publishing
         run: |
-          python -m pip install --upgrade pip
-          pip install build
-
-      - name: Build distributions
-        run: |
-          python -m build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-
-    environment:
-      name: pypi
-      url: https://pypi.org/p/persona-object-protocol
-
-    permissions:
-      id-token: write
-
-    steps:
-      - name: Download distributions
-        uses: actions/download-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+          echo "This workflow is reserved for future Trusted Publishing to PyPI."
+          echo "Publication will only be enabled after PyPI trusted publisher configuration is complete."
+          echo "Repository release and tag discipline must be in place first."

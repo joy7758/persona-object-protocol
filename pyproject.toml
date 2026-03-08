@@ -6,14 +6,36 @@ build-backend = "setuptools.build_meta"
 name = "pop-persona"
 version = "0.1.0"
 description = "Framework-neutral persona object protocol for agent runtimes."
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
   { name = "Bin Zhang" }
 ]
+keywords = [
+  "persona",
+  "protocol",
+  "agent",
+  "json-schema",
+  "interoperability"
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
 
 [project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "twine>=5"
+]
 schema = [
   "jsonschema>=4.25,<5"
 ]
@@ -26,6 +48,7 @@ langchain = [
 Homepage = "https://github.com/joy7758/persona-object-protocol"
 Repository = "https://github.com/joy7758/persona-object-protocol"
 Issues = "https://github.com/joy7758/persona-object-protocol/issues"
+Documentation = "https://github.com/joy7758/persona-object-protocol/tree/main/docs"
 
 [project.scripts]
 pop = "pop_protocol.cli:main"

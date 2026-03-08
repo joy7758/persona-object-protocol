@@ -5,67 +5,41 @@
   "description": "Current preview alias for the POP persona schema. Versioned schemas under schema/versions/ are the normative historical snapshots. The persona core is defined separately from memory, tools, and permissions.",
   "type": "object",
   "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A required non-empty string value."
+    },
+    "stringList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "description": "An ordered list of non-empty string values."
+    },
+    "metadataObject": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Loose metadata for annotations that remain outside the POP persona core."
+    }
+  },
   "properties": {
     "$schema": {
       "type": "string",
       "format": "uri",
       "description": "Optional self-declared schema identifier for the POP persona object."
     },
-    "id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "version": {
-      "type": "string",
-      "minLength": 1
-    },
-    "name": {
-      "type": "string",
-      "minLength": 1
-    },
-    "summary": {
-      "type": "string",
-      "minLength": 1
-    },
-    "traits": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "communication_style": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "task_orientation": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "boundaries": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "preferred_outputs": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "metadata": {
-      "type": "object",
-      "additionalProperties": true
-    }
+    "id": { "$ref": "#/$defs/nonEmptyString" },
+    "version": { "$ref": "#/$defs/nonEmptyString" },
+    "name": { "$ref": "#/$defs/nonEmptyString" },
+    "summary": { "$ref": "#/$defs/nonEmptyString" },
+    "traits": { "$ref": "#/$defs/stringList" },
+    "communication_style": { "$ref": "#/$defs/stringList" },
+    "task_orientation": { "$ref": "#/$defs/stringList" },
+    "boundaries": { "$ref": "#/$defs/stringList" },
+    "preferred_outputs": { "$ref": "#/$defs/stringList" },
+    "metadata": { "$ref": "#/$defs/metadataObject" }
   },
   "required": [
     "id",
