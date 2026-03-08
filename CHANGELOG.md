@@ -12,6 +12,22 @@ as governance practices mature.
 
 ### Fixed
 
+## [0.1.5] - 2026-03-09
+
+### Added
+
+- LangChain execution contract work centered on
+  `create_langchain_execution_bundle(...)`.
+- Installed-package and optional-dependency smoke paths for the
+  LangChain contract surface.
+
+### Changed
+
+- Documented `v0.1.5` as a LangChain execution contract release while
+  the canonical schema baseline remains `v0.1.0`.
+- Clarified that CrewAI remains compatibility-focused and secondary in
+  this release line.
+
 ## [0.1.4] - 2026-03-09
 
 ### Added

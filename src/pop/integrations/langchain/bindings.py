@@ -62,7 +62,7 @@ def bind_langchain_middleware(persona: PersonaObject) -> dict:
 
 
 def create_langchain_context_bundle(persona: PersonaObject) -> dict:
-    """Return a runtime-context scaffold aligned with LangChain v1 context usage."""
+    """Return an early-preview runtime-context scaffold, not a create_agent parameter."""
 
     return {
         "kind": "runtime_context",
@@ -74,7 +74,7 @@ def create_langchain_context_bundle(persona: PersonaObject) -> dict:
 def create_langchain_middleware_bundle(
     persona: PersonaObject,
 ) -> list[dict]:
-    """Return a middleware-facing helper bundle, not an official LangChain type."""
+    """Return an early-preview middleware-facing helper bundle, not an official LangChain type."""
 
     return [
         {
@@ -91,7 +91,7 @@ def create_langchain_create_agent_kwargs(
     model: str | None = None,
     system_prompt_prefix: str | None = None,
 ) -> dict:
-    """Return an early-preview helper aligned with LangChain v1 create_agent surfaces."""
+    """Return an early-preview helper aligned with LangChain v1 create_agent parameter semantics."""
 
     prompt = bind_langchain_prompt(persona)
     if system_prompt_prefix:
@@ -113,7 +113,7 @@ def create_langchain_execution_bundle(
     model: str | None = None,
     system_prompt_prefix: str | None = None,
 ) -> dict:
-    """Return a combined execution helper surface aligned with LangChain v1."""
+    """Return the main early-preview LangChain execution contract surface."""
 
     return {
         "runtime": "langchain",
@@ -127,6 +127,15 @@ def create_langchain_execution_bundle(
         ),
         "context_bundle": create_langchain_context_bundle(persona),
         "middleware_bundle": create_langchain_middleware_bundle(persona),
+        "metadata": {
+            "entrypoint": "create_langchain_execution_bundle",
+            "surface": "execution_contract",
+            "compatibility_helpers": [
+                "create_langchain_agent_kwargs",
+                "create_langchain_execution_scaffold",
+                "create_langchain_middleware_scaffold",
+            ],
+        },
     }
 
 
@@ -137,7 +146,7 @@ def create_langchain_agent_kwargs(
     system_prompt_prefix: str | None = None,
     model: str | None = None,
 ) -> dict:
-    """Return a backward-compatible LangChain helper with bundled context and middleware."""
+    """Return an early-preview compatibility helper, not the main contract surface."""
 
     agent_kwargs = dict(
         create_langchain_create_agent_kwargs(
@@ -158,7 +167,7 @@ def create_langchain_execution_scaffold(
     tools: list | None = None,
     model: str | None = None,
 ) -> dict:
-    """Return a backward-compatible execution scaffold for LangChain consumption."""
+    """Return an early-preview compatibility helper wrapping the main execution bundle."""
 
     bundle = create_langchain_execution_bundle(
         persona,
@@ -183,7 +192,7 @@ def create_langchain_execution_scaffold(
 def create_langchain_middleware_scaffold(
     persona: PersonaObject,
 ) -> list[dict]:
-    """Return a backward-compatible middleware scaffold wrapper."""
+    """Return an early-preview compatibility helper wrapping the middleware bundle."""
 
     return create_langchain_middleware_bundle(persona)
 
@@ -194,7 +203,7 @@ def build_langchain_agent_input(
     tools: list | None = None,
     model: str | None = None,
 ) -> dict:
-    """Return a lightweight LangChain-facing input bundle for local scaffolds."""
+    """Return an early-preview compatibility helper for local LangChain scaffolds."""
 
     return create_langchain_execution_scaffold(
         persona,
@@ -210,7 +219,7 @@ def maybe_build_langchain_agent_spec(
     model: str | None = None,
     system_prompt_prefix: str | None = None,
 ) -> dict:
-    """Return a dependency-aware LangChain spec without requiring live execution."""
+    """Return an early-preview dependency-aware LangChain helper spec without live execution."""
 
     try:
         langchain_module = import_module("langchain")
@@ -233,6 +242,7 @@ def maybe_build_langchain_agent_spec(
         "langchain_version": getattr(langchain_module, "__version__", "unknown"),
         "runtime": "langchain",
         "target": "create_agent",
+        "kind": "langchain_execution_helper_spec",
         "create_agent_kwargs": create_langchain_create_agent_kwargs(
             persona,
             tools=tools,

@@ -16,6 +16,12 @@ default and are designed to work as optional integration surfaces.
 is the primary execution-layer target in this release line, while
 CrewAI remains secondary and compatibility-focused.
 
+`v0.1.5` shifts from expanding helper surfaces to stabilizing the
+LangChain execution contract surface. In this release line,
+`create_langchain_execution_bundle(...)` is the main public LangChain
+entry point, while compatibility helpers remain available for backward
+compatibility.
+
 ## LangChain Execution Helper Surface
 
 - `create_langchain_create_agent_kwargs(...)`
@@ -60,5 +66,6 @@ baseline at `v0.1.0`. The helper surfaces are runtime-facing and
 optional-dependency-friendly, but they do not alter POP core semantics.
 
 `v0.1.4` continues that compatibility position while concentrating on
-LangChain optional-dependency execution helpers. The canonical schema
-baseline remains `v0.1.0`.
+LangChain optional-dependency execution helpers. `v0.1.5` further
+stabilizes that line as an execution contract surface. The canonical
+schema baseline remains `v0.1.0`.

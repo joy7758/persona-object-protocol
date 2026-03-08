@@ -82,7 +82,7 @@ Execution-layer examples:
 - [`examples/integrations/langchain_execution_minimal.py`](examples/integrations/langchain_execution_minimal.py)
 - [`examples/integrations/crewai_execution_minimal.py`](examples/integrations/crewai_execution_minimal.py)
 
-## LangChain Execution Integration (Early Preview)
+## LangChain Execution Contract (Early Preview)
 
 LangChain execution helpers are available through the optional
 `langchain` extra. They are aligned with LangChain v1
@@ -90,10 +90,16 @@ LangChain execution helpers are available through the optional
 they are not official LangChain runtime objects. The canonical schema
 baseline remains `v0.1.0`.
 
-LangChain execution examples:
+The main LangChain-facing entry point in this release line is
+`create_langchain_execution_bundle(...)`. Optional `langchain` support
+enables richer helper/spec paths, while compatibility helpers remain
+available but are no longer the primary documented path.
+
+LangChain contract examples:
 
 - [`examples/integrations/langchain_create_agent_minimal.py`](examples/integrations/langchain_create_agent_minimal.py)
 - [`examples/integrations/langchain_execution_minimal.py`](examples/integrations/langchain_execution_minimal.py)
+- [`examples/integrations/langchain_installed_contract_minimal.py`](examples/integrations/langchain_installed_contract_minimal.py)
 
 Compatibility helpers from the earlier execution scaffolding line are
 retained for backward compatibility. The primary LangChain-facing
@@ -142,11 +148,11 @@ For the current public packaging position, see
 The runtime adapter release is documented at
 [`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
 The current execution-layer release is documented at
-[`docs/releases/v0.1.4-release-notes.md`](docs/releases/v0.1.4-release-notes.md).
+[`docs/releases/v0.1.5-release-notes.md`](docs/releases/v0.1.5-release-notes.md).
 The previous execution-layer increment remains documented at
 [`docs/releases/v0.1.3-release-notes.md`](docs/releases/v0.1.3-release-notes.md).
-LangChain-focused execution planning is documented in
-[`docs/releases/v0.1.4-plan.md`](docs/releases/v0.1.4-plan.md).
+The LangChain contract-focused release plan is documented in
+[`docs/releases/v0.1.5-plan.md`](docs/releases/v0.1.5-plan.md).
 The early release chronology is summarized in
 [`docs/pop-evolution-v0.1.0-v0.1.4.md`](docs/pop-evolution-v0.1.0-v0.1.4.md).
 

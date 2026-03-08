@@ -31,6 +31,8 @@ publication readiness for POP.
 - [POP v0.1.3 Release Notes](releases/v0.1.3-release-notes.md)
 - [POP v0.1.4 Plan](releases/v0.1.4-plan.md)
 - [POP v0.1.4 Release Notes](releases/v0.1.4-release-notes.md)
+- [POP v0.1.5 Plan](releases/v0.1.5-plan.md)
+- [POP v0.1.5 Release Notes](releases/v0.1.5-release-notes.md)
 - [POP v0.1.0-v0.1.4 Evolution Note](pop-evolution-v0.1.0-v0.1.4.md)
 - [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [TestPyPI Trusted Publisher Setup](testpypi-trusted-publisher-setup.md)
@@ -43,6 +45,7 @@ publication readiness for POP.
 - CrewAI Integration Example: `examples/integrations/crewai_minimal.py`
 - LangChain create_agent Example: `examples/integrations/langchain_create_agent_minimal.py`
 - LangChain Execution Example: `examples/integrations/langchain_execution_minimal.py`
+- LangChain Installed Contract Example: `examples/integrations/langchain_installed_contract_minimal.py`
 - CrewAI Execution Example: `examples/integrations/crewai_execution_minimal.py`
 
 ## Regression Assets

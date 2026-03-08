@@ -14,6 +14,8 @@ object.
 - both are early preview and intentionally dependency-light
 - LangChain is the primary execution-layer focus in the current release line
 - CrewAI remains secondary and compatibility-focused
+- v0.1.5 continues to treat CrewAI as secondary while stabilizing the
+  LangChain execution contract surface
 
 ## Design Principle
 
