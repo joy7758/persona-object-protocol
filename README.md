@@ -41,6 +41,14 @@ Architecture overview:
 For the current ecosystem plan, see [`docs/pop-ecosystem-roadmap.md`](docs/pop-ecosystem-roadmap.md).
 For the adapter strategy, see [`docs/pop-adapter-model.md`](docs/pop-adapter-model.md).
 
+## Runtime Adapter Layer
+
+The runtime-facing adapter surface is documented in
+[`docs/runtime-adapters.md`](docs/runtime-adapters.md). The current
+LangChain and CrewAI adapters are early-preview scaffolds that bind
+canonical POP persona objects to runtime-oriented representations
+without changing the schema baseline.
+
 ## Portability Demo
 
 An early cross-runtime portability scaffold is available at
@@ -72,6 +80,11 @@ surface.
 
 TestPyPI smoke and Trusted Publishing setup are part of the
 release-readiness path for this baseline.
+
+For the current public packaging position, see
+[`docs/releases/v0.1.1-announcement.md`](docs/releases/v0.1.1-announcement.md).
+For the next runtime-facing package increment, see
+[`docs/releases/v0.1.2-plan.md`](docs/releases/v0.1.2-plan.md).
 
 ## TestPyPI and Trusted Publishing
 

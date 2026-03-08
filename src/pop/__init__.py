@@ -1,3 +1,4 @@
+from pop.adapters import BasePersonaAdapter, CrewAIAdapter, LangChainAdapter
 from pop.io import load_persona, save_persona
 from pop.models import PersonaObject
 from pop.schema import (
@@ -16,6 +17,9 @@ from pop.validate import (
 __all__ = [
     "PersonaObject",
     "PersonaValidationError",
+    "BasePersonaAdapter",
+    "CrewAIAdapter",
+    "LangChainAdapter",
     "get_schema_id",
     "list_available_schema_versions",
     "load_persona",

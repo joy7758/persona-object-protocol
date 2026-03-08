@@ -8,7 +8,12 @@ as governance practices mature.
 
 ### Added
 
+- Runtime adapter scaffolding for LangChain and CrewAI.
+
 ### Changed
+
+- Projection helpers now align with adapter classes while preserving
+  backward compatibility.
 
 ### Fixed
 
