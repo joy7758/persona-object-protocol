@@ -12,9 +12,16 @@ as governance practices mature.
 
 ### Fixed
 
-- Bundled canonical schema resources into the installable package so
-  installed wheels expose versioned schema snapshots and support strict
-  schema validation outside the source repository.
+## [0.1.1] - 2026-03-09
+
+### Fixed
+
+- Bundled canonical schema resources into the installable package.
+- Updated schema loading to work from installed package resources, not
+  only source-tree assumptions.
+- Restored installed-package visibility of available schema versions.
+- Clarified the strict smoke installation path for the optional schema
+  dependency.
 
 ## [0.1.0] - 2026-03-09
 

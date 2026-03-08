@@ -94,6 +94,7 @@ Strict schema validation is available through an optional dependency:
 
 ```bash
 pip install -e '.[schema]'
+pip install "pop-persona[schema]"
 ```
 
 For package build and release-readiness checks:
@@ -108,6 +109,16 @@ CLI example:
 pop-inspect examples/cross-runtime-persona-portability/personas/lawyer_persona.json
 pop-inspect --list-schema-versions
 pop-inspect --strict-schema examples/cross-runtime-persona-portability/personas/lawyer_persona.json
+```
+
+Core installation provides lightweight inspection. Strict schema
+validation requires the optional `schema` extra.
+
+TestPyPI smoke example:
+
+```bash
+python -m pip install --index-url https://test.pypi.org/simple/ \
+  --extra-index-url https://pypi.org/simple "pop-persona[schema]"
 ```
 
 Python API example:
@@ -281,4 +292,4 @@ python3 -m pip install build
 python3 -m build
 ```
 
-The repository also includes a release workflow at [`.github/workflows/publish.yml`](.github/workflows/publish.yml). Pushing a tag such as `v0.1.0` will build the package and publish it to PyPI through GitHub Actions.
+The repository includes a placeholder release workflow at [`.github/workflows/publish.yml`](.github/workflows/publish.yml), but real PyPI publication remains intentionally disabled until TestPyPI smoke and release discipline checks are complete.
