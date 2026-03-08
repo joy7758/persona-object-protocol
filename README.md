@@ -149,10 +149,18 @@ The runtime adapter release is documented at
 [`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
 The current execution-layer release is documented at
 [`docs/releases/v0.1.5-release-notes.md`](docs/releases/v0.1.5-release-notes.md).
+The current public release announcement is available in
+English at [`docs/releases/v0.1.5-announcement.md`](docs/releases/v0.1.5-announcement.md)
+and in Chinese at
+[`docs/releases/v0.1.5-announcement.zh.md`](docs/releases/v0.1.5-announcement.zh.md).
+For a maintainer-facing LangChain summary, see
+[`docs/langchain-maintainer-note.md`](docs/langchain-maintainer-note.md).
 The previous execution-layer increment remains documented at
 [`docs/releases/v0.1.3-release-notes.md`](docs/releases/v0.1.3-release-notes.md).
 The LangChain contract-focused release plan is documented in
 [`docs/releases/v0.1.5-plan.md`](docs/releases/v0.1.5-plan.md).
+The next positioning draft is documented in
+[`docs/releases/v0.1.6-plan.md`](docs/releases/v0.1.6-plan.md).
 The early release chronology is summarized in
 [`docs/pop-evolution-v0.1.0-v0.1.4.md`](docs/pop-evolution-v0.1.0-v0.1.4.md).
 
