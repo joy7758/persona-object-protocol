@@ -7,8 +7,7 @@ from langchain.agents.middleware import AgentMiddleware, ModelRequest
 from langchain.tools.tool_node import ToolCallRequest
 from langchain_core.messages import SystemMessage, ToolMessage
 
-from pop_protocol.adapters.langchain import build_langchain_system_prompt
-from pop_protocol.core import load_pop, slugify
+from langchain_pop._pop_compat import build_langchain_system_prompt, load_pop, slugify
 
 
 @dataclass(frozen=True)

@@ -13,7 +13,6 @@ authors = [
   { name = "Bin Zhang" }
 ]
 dependencies = [
-  "persona-object-protocol>=0.1.0",
   "langchain>=1.0.0"
 ]
 

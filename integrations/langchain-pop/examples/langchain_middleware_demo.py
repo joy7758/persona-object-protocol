@@ -11,10 +11,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
-MONOREPO_SRC = ROOT.parents[1] / "src"
-for candidate in (SRC, MONOREPO_SRC):
-    if candidate.exists() and str(candidate) not in sys.path:
-        sys.path.insert(0, str(candidate))
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
 
 def knowledge_lookup(topic: str) -> str:
@@ -100,8 +98,8 @@ def main() -> int:
         from langchain_pop.middleware import POPMiddleware
     except ImportError as exc:
         raise SystemExit(
-            "Install development dependencies first: "
-            "`pip install -e ../../ && pip install -e \\\".[openai]\\\"`"
+            "Install the package first: "
+            "`pip install -e .`"
         ) from exc
 
     args = build_parser().parse_args()

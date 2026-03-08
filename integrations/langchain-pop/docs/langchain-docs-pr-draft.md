@@ -1,28 +1,38 @@
+---
+title: langchain-pop
+subtitle: Portable persona middleware for LangChain agents
+---
+
 # langchain-pop
 
-Portable persona middleware for LangChain agents.
+`langchain-pop` is a middleware-style integration package for using POP persona objects inside LangChain agents.
 
-This page is a draft for a future LangChain docs repo integration page. It assumes `langchain-pop` is published as a standalone package and `persona-object-protocol` is available as the canonical POP parser and schema layer.
+It allows portable persona objects to be loaded, migrated from legacy POP drafts, converted into runtime persona framing, and enforced through boundary-aware tool filtering.
+
+## Why use langchain-pop
+
+Many persona configurations in agent systems are still represented as prompt fragments or local configuration blocks. `langchain-pop` provides a more structured path by treating persona as a portable object that can be loaded into runtime state and reflected in agent behavior.
+
+This package is useful when you want:
+
+- structured persona loading instead of ad hoc prompt-only role injection
+- portable persona objects across agent runtimes
+- runtime persona state with explicit identity fields
+- boundary-aware tool filtering
 
 ## Installation
 
 ```bash
-python -m pip install persona-object-protocol
-python -m pip install "langchain-pop[openai]"
+pip install langchain-pop
 ```
 
-## Why langchain-pop
+Or for local development:
 
-`langchain-pop` connects Persona Object Protocol (POP) objects to LangChain's native agent runtime. It is designed as middleware rather than a prompt-only adapter.
+```bash
+pip install -e ".[openai]"
+```
 
-The integration provides:
-
-- POP-derived system prompt injection
-- persona identity retention in runtime state
-- boundary-aware tool filtering
-- legacy POP 0.1 migration support through the POP core package
-
-## Quick Start
+## Quickstart
 
 ```python
 from langchain_openai import ChatOpenAI
@@ -35,104 +45,97 @@ def knowledge_lookup(topic: str) -> str:
     return f"Knowledge lookup result for: {topic}"
 
 
-pop_object = {
-    "kind": "persona-object",
-    "id": "persona:mentor:docs",
-    "version": "1.0.0",
-    "role": "mentor",
-    "traits": ["calm", "analytical", "structured"],
-    "boundaries": {
-        "financial_advice": False
-    },
-    "status": "active",
-    "provenance": {
-        "issuer": "langchain-pop-docs",
-        "created": "2026-03-08"
-    }
-}
-
-model = ChatOpenAI(model="gpt-4.1-mini", temperature=0.0)
 agent = create_pop_agent(
-    pop_source=pop_object,
-    model=model,
+    pop_source="tests/fixtures/mentor.v1.json",
+    model=ChatOpenAI(model="gpt-4o", temperature=0.0),
     tools=[knowledge_lookup],
     name="mentor_agent",
 )
+
+print(agent)
 ```
 
-## Using POPMiddleware Directly
+## Inspect middleware output
 
-```python
-from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
-
-from langchain_pop.middleware import POPMiddleware
-
-
-middleware = POPMiddleware("mentor.v1.json")
-model = ChatOpenAI(model="gpt-4.1-mini", temperature=0.0)
-
-agent = create_agent(
-    model=model,
-    tools=[knowledge_lookup],
-    middleware=[middleware],
-    name="mentor_agent",
-)
-```
-
-## Boundary-Aware Tool Filtering
-
-If a POP boundary targets a tool, `POPMiddleware` removes that tool from the available tool list before the model call. If a blocked tool call still appears at runtime, the middleware returns an explicit error `ToolMessage`.
-
-Example boundary:
-
-```json
-{
-  "tool.salary_estimator": {
-    "decision": "disallow",
-    "reason": "Salary estimation is outside this mentor persona's approved scope."
-  }
-}
-```
-
-With that boundary active:
-
-- `knowledge_lookup` remains available
-- `salary_estimator` is filtered out before the model call
-- direct runtime use of `salary_estimator` is blocked with a POP boundary error
-
-## Legacy POP 0.1 Migration
-
-`langchain-pop` accepts legacy POP 0.1 objects through the `persona-object-protocol` dependency. The POP core package migrates the legacy object to the canonical POP v1 structure before the middleware uses it.
-
-```python
-from langchain_pop.middleware import POPMiddleware
-
-middleware = POPMiddleware("mentor.pop01.json")
-print(middleware.persona_state()["version"])
-# 1.0.0-migrated
-```
-
-## Relationship to persona-object-protocol
-
-`persona-object-protocol` remains the protocol mother package:
-
-- POP core semantics
-- POP JSON binding
-- schema validation
-- CLI
-
-`langchain-pop` is the runtime integration package:
-
-- LangChain middleware
-- LangChain agent constructor helper
-- runtime-facing examples and tests
-
-## Development Notes
-
-Recommended minimum checks before submitting a docs PR:
+To inspect runtime persona configuration without invoking a live model:
 
 ```bash
-python -m unittest discover -s tests
 python examples/langchain_middleware_demo.py --print-config
 ```
+
+This prints:
+
+- persona state
+- generated system prompt
+- allowed tools
+- blocked tools
+
+## POP Middleware
+
+`POPMiddleware` is the central integration point.
+
+It is responsible for:
+
+- loading canonical POP persona objects
+- migrating legacy `pop-0.1` objects
+- constructing runtime persona framing
+- filtering tools according to persona boundaries
+
+Example:
+
+```python
+from langchain_pop.middleware import POPMiddleware
+
+middleware = POPMiddleware("tests/fixtures/mentor.v1.json")
+
+print(middleware.persona_state())
+print(middleware.system_prompt)
+```
+
+## Boundary-aware tool filtering
+
+`langchain-pop` can block or filter tools based on persona boundary rules.
+
+For example, if a persona object disallows finance-related actions, a tool such as `salary_estimator` can be filtered out before runtime use.
+
+This allows persona constraints to influence runtime tool availability rather than existing only as prompt instructions.
+
+## Legacy migration
+
+Legacy `pop-0.1` inputs are supported through automatic migration.
+
+```python
+from langchain_openai import ChatOpenAI
+
+from langchain_pop.agent import create_pop_agent
+
+
+agent = create_pop_agent(
+    pop_source="tests/fixtures/mentor.pop01.json",
+    model=ChatOpenAI(model="gpt-4o", temperature=0.0),
+    tools=[],
+)
+```
+
+## What this integration is
+
+`langchain-pop` is:
+
+- a LangChain ecosystem integration
+- a persona middleware preview
+- a runtime bridge for POP persona objects
+
+## What this integration is not
+
+`langchain-pop` is not:
+
+- a replacement for LangChain agents
+- a complete governance framework
+- a full interoperability benchmark
+- an official LangChain core primitive
+
+## Project status
+
+This package is currently an early integration preview.
+
+It demonstrates that POP persona objects can be consumed by a real agent runtime and converted into middleware-governed persona behavior. It should be understood as an ecosystem integration package rather than a final standard component.

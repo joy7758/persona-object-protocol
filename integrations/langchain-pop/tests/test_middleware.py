@@ -7,10 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
-MONOREPO_SRC = ROOT.parents[1] / "src"
-for candidate in (SRC, MONOREPO_SRC):
-    if candidate.exists() and str(candidate) not in sys.path:
-        sys.path.insert(0, str(candidate))
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
 from langchain_pop.middleware import POPMiddleware
 

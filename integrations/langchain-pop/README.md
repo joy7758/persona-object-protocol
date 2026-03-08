@@ -1,28 +1,40 @@
+[![CI](https://github.com/joy7758/langchain-pop/actions/workflows/test.yml/badge.svg)](https://github.com/joy7758/langchain-pop/actions/workflows/test.yml)
+[![PyPI version](https://img.shields.io/pypi/v/langchain-pop.svg)](https://pypi.org/project/langchain-pop/)
+[![Python versions](https://img.shields.io/pypi/pyversions/langchain-pop.svg)](https://pypi.org/project/langchain-pop/)
+[![License](https://img.shields.io/pypi/l/langchain-pop.svg)](https://pypi.org/project/langchain-pop/)
+
 # langchain-pop
 
-Portable persona middleware for LangChain agents.
+`langchain-pop` is a preview middleware package that brings portable persona objects into LangChain agent runtimes.
 
-`langchain-pop` is the extraction-ready runtime integration package for Persona Object Protocol (POP). It keeps the POP protocol layer in `persona-object-protocol` and exposes a LangChain-native middleware/toolkit layer for agent construction.
+It allows POP persona objects to be loaded into LangChain, injected as runtime persona framing, and enforced through boundary-aware tool filtering. The package is designed as a middleware and toolkit-style ecosystem integration for the Persona Object Protocol (POP), not as a replacement for LangChain's own agent abstractions.
 
-The package centers on two entry points:
+## Status
 
-- `POPMiddleware`: injects a POP-derived system prompt, preserves persona identity in agent state, and filters tools against POP boundaries
-- `create_pop_agent(...)`: convenience wrapper that attaches `POPMiddleware` to `langchain.agents.create_agent(...)`
+`langchain-pop` is an early integration preview.
 
-## Install
+Current capabilities include:
 
-Published path:
+- POP v1 canonical object loading
+- legacy `pop-0.1` migration
+- persona-aware system prompt construction
+- boundary-based tool filtering
+- LangChain agent construction via `create_pop_agent(...)`
+
+This package currently demonstrates runtime integration and middleware behavior. It does not yet provide a full interoperability benchmark or production-grade governance system.
+
+## Installation
+
+### Minimal install
 
 ```bash
-python -m pip install persona-object-protocol
-python -m pip install "langchain-pop[openai]"
+pip install langchain-pop
 ```
 
-Local development from this monorepo:
+### With OpenAI provider support
 
 ```bash
-python -m pip install -e ../../
-python -m pip install -e ".[openai]"
+pip install "langchain-pop[openai]"
 ```
 
 ## Quick Start
@@ -38,101 +50,138 @@ def knowledge_lookup(topic: str) -> str:
     return f"Knowledge lookup result for: {topic}"
 
 
-pop_object = {
-    "kind": "persona-object",
-    "id": "persona:mentor:quickstart",
-    "version": "1.0.0",
-    "role": "mentor",
-    "traits": ["calm", "analytical", "structured"],
-    "boundaries": {
-        "tool.knowledge_lookup": {
-            "decision": "allow",
-            "reason": "Knowledge lookup is within scope."
-        },
-        "financial_advice": False
-    },
-    "status": "active",
-    "provenance": {
-        "issuer": "langchain-pop-readme",
-        "created": "2026-03-08"
-    }
-}
-
-model = ChatOpenAI(model="gpt-4.1-mini", temperature=0.0)
 agent = create_pop_agent(
-    pop_source=pop_object,
-    model=model,
+    pop_source="tests/fixtures/mentor.v1.json",
+    model=ChatOpenAI(model="gpt-4o", temperature=0.0),
     tools=[knowledge_lookup],
     name="mentor_agent",
 )
+
+print(agent)
 ```
 
-## Boundary-Aware Tool Filtering
-
-```python
-from langchain_pop.middleware import POPMiddleware
-
-
-def knowledge_lookup(topic: str) -> str:
-    """Look up a topic in a mock knowledge base."""
-    return topic
-
-
-def salary_estimator(role: str) -> str:
-    """Estimate salary bands for a role."""
-    return role
-
-
-middleware = POPMiddleware("tests/fixtures/mentor.v1.json")
-allowed_tools, blocked_tools = middleware.filter_tools(
-    [knowledge_lookup, salary_estimator]
-)
-```
-
-For the `mentor.v1.json` fixture, `knowledge_lookup` remains available and `salary_estimator` is blocked by the `tool.salary_estimator` boundary.
-
-## Legacy POP 0.1 Support
-
-Legacy POP 0.1 objects are accepted as migration inputs. `POPMiddleware` loads a legacy object, migrates it to the canonical POP v1 shape, and then proceeds with normal middleware behavior.
-
-```python
-from langchain_pop.middleware import POPMiddleware
-
-middleware = POPMiddleware("tests/fixtures/mentor.pop01.json")
-print(middleware.persona_state()["version"])
-# 1.0.0-migrated
-```
-
-## Demo
+To inspect the generated runtime configuration without invoking a live model:
 
 ```bash
 python examples/langchain_middleware_demo.py --print-config
-python examples/langchain_middleware_demo.py --invoke --model gpt-4.1-mini
 ```
 
-## Tests
+## What langchain-pop does
 
-```bash
-python -m unittest discover -s tests
+`langchain-pop` maps a POP persona object into LangChain runtime components:
+
+- persona role and traits -> system-level runtime framing
+- persona boundaries -> runtime tool filtering
+- POP identity fields -> runtime persona state
+
+This makes persona handling more structured than ad hoc prompt-only role injection and aligns the integration with a toolkit-style runtime workflow instead of a thin adapter layer.
+
+## Example: Middleware Preview
+
+```python
+from langchain_pop.middleware import POPMiddleware
+
+middleware = POPMiddleware("tests/fixtures/mentor.v1.json")
+
+print(middleware.persona_state())
+print(middleware.system_prompt)
 ```
 
-## Repository Layout
+## Example: Legacy Migration
+
+Legacy `pop-0.1` objects are supported through automatic migration:
+
+```python
+from langchain_pop.agent import create_pop_agent
+from langchain_openai import ChatOpenAI
+
+
+agent = create_pop_agent(
+    pop_source="tests/fixtures/mentor.pop01.json",
+    model=ChatOpenAI(model="gpt-4o", temperature=0.0),
+    tools=[],
+)
+```
+
+## Design Scope
+
+`langchain-pop` is designed as a LangChain ecosystem integration for portable persona objects.
+
+It is not:
+
+- a full agent framework
+- a replacement for LangChain middleware
+- a production governance framework
+- a complete interoperability standard
+
+Its purpose is to demonstrate that POP persona objects can function as runtime-integrated persona middleware in a real agent stack.
+
+## Docs PR Draft
+
+The repository includes a docs-PR-oriented draft page in two forms:
+
+- [`docs/langchain_pop.mdx`](docs/langchain_pop.mdx): toolkit-oriented draft matching the LangChain docs naming style
+- [`docs/langchain-docs-pr-draft.md`](docs/langchain-docs-pr-draft.md): local draft copy for iterative editing
+
+## Repository Structure
 
 ```text
 langchain-pop/
-  pyproject.toml
-  README.md
-  docs/
-    langchain-docs-pr-draft.md
-  examples/
-    langchain_middleware_demo.py
-  src/
-    langchain_pop/
-      __init__.py
-      agent.py
-      middleware.py
-  tests/
-    fixtures/
-    test_agent.py
-    test_middleware.py
+├── src/langchain_pop/
+│   ├── __init__.py
+│   ├── _pop_compat.py
+│   ├── middleware.py
+│   └── agent.py
+├── tests/
+├── examples/
+├── docs/
+└── README.md
 ```
+
+## Development
+
+Run tests:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Build distributions:
+
+```bash
+python -m build
+```
+
+Run demo:
+
+```bash
+python examples/langchain_middleware_demo.py --print-config
+```
+
+For local editable development:
+
+```bash
+pip install -e .
+```
+
+## Relationship to POP
+
+`langchain-pop` is an ecosystem integration layer for portable persona objects.
+
+- `persona-object-protocol` defines the protocol semantics, schema, examples, and reference tooling.
+- `langchain-pop` demonstrates how POP persona objects can be consumed inside a real agent runtime.
+
+In other words:
+
+- POP = protocol layer
+- `langchain-pop` = runtime integration layer
+
+## Maturity
+
+This package should currently be understood as:
+
+- an early middleware preview
+- a runtime integration proof point
+- a bridge between POP and LangChain agents
+
+It should not yet be interpreted as a final or official LangChain standard component.
