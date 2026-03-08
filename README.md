@@ -46,6 +46,38 @@ For the adapter strategy, see [`docs/pop-adapter-model.md`](docs/pop-adapter-mod
 An early cross-runtime portability scaffold is available at
 [`examples/cross-runtime-persona-portability/README.md`](examples/cross-runtime-persona-portability/README.md).
 
+## Python SDK (Early Preview)
+
+A minimal Python SDK is provided as an early preview for loading,
+validating, and projecting canonical POP persona objects.
+
+Install from the repository root:
+
+```bash
+pip install -e .
+```
+
+CLI example:
+
+```bash
+pop-inspect examples/cross-runtime-persona-portability/personas/lawyer_persona.json
+```
+
+Python API example:
+
+```python
+from pop import load_persona, validate_persona
+from pop.projections import project_to_crewai, project_to_langchain
+
+persona = load_persona(
+    "examples/cross-runtime-persona-portability/personas/lawyer_persona.json"
+)
+validate_persona(persona)
+
+langchain_view = project_to_langchain(persona)
+crewai_view = project_to_crewai(persona)
+```
+
 ## POP-Core Paper
 
 Zhang, B. (2026). *POP-Core: Formal Semantics and Interoperability of Portable Persona Objects*. Zenodo. https://doi.org/10.5281/zenodo.18907957

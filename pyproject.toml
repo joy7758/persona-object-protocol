@@ -3,11 +3,11 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "persona-object-protocol"
+name = "pop-persona"
 version = "0.1.0"
-description = "Reference CLI for Persona Object Protocol (POP)."
+description = "Framework-neutral persona object protocol for agent runtimes."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 license = "MIT"
 authors = [
   { name = "Bin Zhang" }
@@ -29,6 +29,7 @@ Issues = "https://github.com/joy7758/persona-object-protocol/issues"
 
 [project.scripts]
 pop = "pop_protocol.cli:main"
+pop-inspect = "pop.cli:main"
 
 [tool.setuptools.package-dir]
 "" = "src"
