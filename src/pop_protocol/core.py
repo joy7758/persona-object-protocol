@@ -7,8 +7,6 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from jsonschema import Draft202012Validator
-
 
 ROOT = Path(__file__).resolve().parents[2]
 V1_SCHEMA_PATH = ROOT / "schema" / "pop.schema.json"
@@ -94,9 +92,21 @@ def schema_path_for_kind(schema_kind: str) -> Path:
     raise ValueError(f"Unsupported schema kind: {schema_kind}")
 
 
-def load_validator(schema_kind: str) -> Draft202012Validator:
+def _load_jsonschema_validator() -> Any:
+    try:
+        from jsonschema import Draft202012Validator
+    except ImportError as exc:
+        raise RuntimeError(
+            "Schema validation requires the optional `schema` dependency. "
+            "Install it with `pip install -e '.[schema]'`."
+        ) from exc
+    return Draft202012Validator
+
+
+def load_validator(schema_kind: str) -> Any:
     schema = load_json(schema_path_for_kind(schema_kind))
-    return Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER)
+    validator_cls = _load_jsonschema_validator()
+    return validator_cls(schema, format_checker=validator_cls.FORMAT_CHECKER)
 
 
 def validate_schema_errors(payload: Any, schema_kind: str) -> list[str]:

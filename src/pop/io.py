@@ -6,7 +6,7 @@ from pathlib import Path
 from pop.models import PersonaObject
 
 
-def load_persona(path: str | Path) -> PersonaObject:
+def load_persona_data(path: str | Path) -> dict:
     file_path = Path(path).expanduser()
     try:
         raw = file_path.read_text(encoding="utf-8")
@@ -23,7 +23,11 @@ def load_persona(path: str | Path) -> PersonaObject:
     if not isinstance(data, dict):
         raise ValueError(f"POP persona file must contain a JSON object: {file_path}")
 
-    return PersonaObject.from_dict(data)
+    return data
+
+
+def load_persona(path: str | Path) -> PersonaObject:
+    return PersonaObject.from_dict(load_persona_data(path))
 
 
 def save_persona(persona: PersonaObject, path: str | Path) -> None:

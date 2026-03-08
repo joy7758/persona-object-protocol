@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
   "id": "pop.persona.legal-analyst.v1",
   "version": "0.1-draft",
   "name": "Legal Analysis Persona",

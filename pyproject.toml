@@ -12,11 +12,11 @@ license = "MIT"
 authors = [
   { name = "Bin Zhang" }
 ]
-dependencies = [
-  "jsonschema>=4.23,<5"
-]
 
 [project.optional-dependencies]
+schema = [
+  "jsonschema>=4.25,<5"
+]
 langchain = [
   "langchain>=1.0.0",
   "langchain-openai>=0.3.0"

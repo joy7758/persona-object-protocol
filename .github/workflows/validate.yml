@@ -21,7 +21,7 @@ jobs:
       - name: Install POP CLI
         run: |
           python -m pip install --upgrade pip
-          pip install -e .
+          pip install -e ".[schema]"
 
       - name: Validate all example POP objects
         run: |

@@ -46,6 +46,14 @@ For the adapter strategy, see [`docs/pop-adapter-model.md`](docs/pop-adapter-mod
 An early cross-runtime portability scaffold is available at
 [`examples/cross-runtime-persona-portability/README.md`](examples/cross-runtime-persona-portability/README.md).
 
+## Canonical JSON Schema
+
+POP provides a canonical JSON Schema for persona objects at
+[`schema/pop-persona.schema.json`](schema/pop-persona.schema.json).
+The current schema is an early preview intended to define the core
+structural boundary of a POP persona object. Within that boundary,
+persona remains separate from memory, tools, and permissions.
+
 ## Python SDK (Early Preview)
 
 A minimal Python SDK is provided as an early preview for loading,
@@ -57,10 +65,17 @@ Install from the repository root:
 pip install -e .
 ```
 
+Strict schema validation is available through an optional dependency:
+
+```bash
+pip install -e '.[schema]'
+```
+
 CLI example:
 
 ```bash
 pop-inspect examples/cross-runtime-persona-portability/personas/lawyer_persona.json
+pop-inspect --strict-schema examples/cross-runtime-persona-portability/personas/lawyer_persona.json
 ```
 
 Python API example:
