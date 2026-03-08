@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: If you use this repository, please cite it using the metadata below.
+message: If you use this repository, cite the POP-Core paper below by default; use the software metadata when you need the exact archived release.
 title: Persona Object Protocol (POP)
 type: software
 authors:
@@ -9,5 +9,16 @@ version: v0.1.1-archive
 date-released: 2026-03-07
 license: Apache-2.0
 repository-code: https://github.com/joy7758/persona-object-protocol
+url: https://github.com/joy7758/persona-object-protocol
 doi: 10.5281/zenodo.18898252
 abstract: A lightweight public draft protocol for portable persona objects in multimodal AI systems.
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Zhang
+      given-names: Bin
+  title: "POP-Core: Formal Semantics and Interoperability of Portable Persona Objects"
+  journal: Zenodo
+  year: 2026
+  doi: 10.5281/zenodo.18907957
+  url: https://doi.org/10.5281/zenodo.18907957

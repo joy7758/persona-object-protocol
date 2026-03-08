@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "persona-object-protocol"
+version = "0.1.0"
+description = "Reference CLI for Persona Object Protocol (POP)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+  { name = "Bin Zhang" }
+]
+dependencies = [
+  "jsonschema>=4.23,<5"
+]
+
+[project.optional-dependencies]
+langchain = [
+  "langchain>=1.0.0",
+  "langchain-openai>=0.3.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/joy7758/persona-object-protocol"
+Repository = "https://github.com/joy7758/persona-object-protocol"
+Issues = "https://github.com/joy7758/persona-object-protocol/issues"
+
+[project.scripts]
+pop = "pop_protocol.cli:main"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]

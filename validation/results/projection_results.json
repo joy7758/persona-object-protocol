@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-03-07T16:19:51.200230+00:00",
+  "canonical_source": "examples/mentor.persona.json",
+  "canonical_persona_id": "urn:pop:mentor:structured-guidance",
+  "canonical_persona_name": "Structured Mentor",
+  "projections": [
+    {
+      "projection": "prompt_based",
+      "artifact_path": "validation/cases/projection/prompt_based.json",
+      "identifier_preserved": "no",
+      "version_preserved": "no",
+      "role_label_preserved": "yes",
+      "expressive_tendencies": "weakened",
+      "interaction_boundaries": "weakened",
+      "governance_status_metadata": "lost",
+      "notes": "Flattened into a single prompt string with no stable slot for identity or governance metadata."
+    },
+    {
+      "projection": "app_layer_role_model",
+      "artifact_path": "validation/cases/projection/app_layer_role_model.json",
+      "identifier_preserved": "yes",
+      "version_preserved": "yes",
+      "role_label_preserved": "yes",
+      "expressive_tendencies": "complete",
+      "interaction_boundaries": "complete",
+      "governance_status_metadata": "complete",
+      "notes": "Mapped into explicit app-layer slots that preserve identity, style, boundaries, and integration hints."
+    },
+    {
+      "projection": "agent_runtime",
+      "artifact_path": "validation/cases/projection/agent_runtime.json",
+      "identifier_preserved": "yes",
+      "version_preserved": "yes",
+      "role_label_preserved": "yes",
+      "expressive_tendencies": "complete",
+      "interaction_boundaries": "complete",
+      "governance_status_metadata": "complete",
+      "notes": "Retained as a runtime contract with separate identity, behavior, boundary, and integration sections."
+    }
+  ]
+}

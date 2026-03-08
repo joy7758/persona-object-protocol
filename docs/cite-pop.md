@@ -1,25 +1,52 @@
 # Cite POP
 
-This document defines the minimal citation entry points for Persona Object Protocol (POP). Use the smallest reference that matches your purpose.
+Use the POP-Core paper as the default scholarly citation for POP in papers, posters, slides, and repository references.
 
-## Project-level citation
+## Preferred scholarly citation
 
-Use the Concept DOI when referring to POP as an ongoing public project rather than a single archived version.
+- Paper DOI: `10.5281/zenodo.18907957`
+- DOI URL: `https://doi.org/10.5281/zenodo.18907957`
 
-- Concept DOI: `10.5281/zenodo.18898251`
-- DOI URL: `https://doi.org/10.5281/zenodo.18898251`
+APA:
+
+```text
+Zhang, B. (2026).
+POP-Core: Formal Semantics and Interoperability of Portable Persona Objects.
+Zenodo.
+https://doi.org/10.5281/zenodo.18907957
+```
+
+IEEE:
+
+```text
+B. Zhang,
+"POP-Core: Formal Semantics and Interoperability of Portable Persona Objects,"
+Zenodo, 2026.
+doi:10.5281/zenodo.18907957
+```
+
+BibTeX:
+
+```bibtex
+@misc{zhang2026popcore,
+  author       = {Bin Zhang},
+  title        = {POP-Core: Formal Semantics and Interoperability of Portable Persona Objects},
+  year         = 2026,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.18907957},
+  url          = {https://doi.org/10.5281/zenodo.18907957}
+}
+```
 
 Use this for:
 
-- project overviews
-- landscape mapping
-- protocol discussions that are not tied to one specific release
+- papers discussing POP semantics or interoperability
+- posters, profiles, and landing pages
+- default GitHub citation behavior via `CITATION.cff`
 
-## Version-level citation
+## Software archive citation
 
-Use the Version DOI or the corresponding GitHub release when referring to a specific archived release.
-
-Current archived release:
+Use the version DOI when you need to cite the exact archived repository state rather than the POP-Core paper.
 
 - Release tag: `v0.1.1-archive`
 - Version DOI: `10.5281/zenodo.18898252`
@@ -28,41 +55,21 @@ Current archived release:
 
 Use this for:
 
-- references to the archived release state
-- exact version comparisons
-- citations that need a stable, version-specific record
+- exact implementation snapshots
+- reproducibility notes tied to a release artifact
+- software-only references
 
-## Repository entry point
+## Project-level citation
 
-Use the repository URL when the goal is browsing, implementation access, or development reference rather than formal archival citation.
+Use the concept DOI when referring to POP as an evolving project rather than a specific paper or software release.
 
-- Repository: `https://github.com/joy7758/persona-object-protocol`
-
-Use this for:
-
-- source browsing
-- issue discussions
-- implementation follow-up
-- linking readers to the current working tree
+- Concept DOI: `10.5281/zenodo.18898251`
+- DOI URL: `https://doi.org/10.5281/zenodo.18898251`
 
 ## Recommended rule
 
-Use the Concept DOI for POP as a project.
+Use the POP-Core paper DOI by default.
 
-Use the Version DOI or GitHub release URL for a specific release.
+Use the software archive DOI for a specific released repository state.
 
-Use the repository URL for engineering access.
-
-## Quick copy
-
-### Project
-
-Persona Object Protocol (POP). Concept DOI: `10.5281/zenodo.18898251`.
-
-### Version
-
-Persona Object Protocol (POP), `v0.1.1-archive`. Version DOI: `10.5281/zenodo.18898252`.
-
-### Repository
-
-Persona Object Protocol (POP) repository: `https://github.com/joy7758/persona-object-protocol`.
+Use the concept DOI for POP as an ongoing project.

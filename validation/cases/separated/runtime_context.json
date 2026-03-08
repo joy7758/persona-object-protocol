@@ -1,0 +1,21 @@
+{
+  "persona_source": "validation/cases/separated/persona_object.json",
+  "memory": {
+    "hook_binding": "progress-log",
+    "namespace": "persona/default-progress-log"
+  },
+  "tool_settings": {
+    "enabled_plugins": [
+      "lesson-planner"
+    ],
+    "planner_profile": "default"
+  },
+  "role_instructions": {
+    "system_prompt_template": "Use the attached persona object as the authoritative source of role identity, tone, and boundaries.",
+    "handoff_policy": "Escalate to a human for professional advice requests."
+  },
+  "ui": {
+    "badge_source": "persona_object.name",
+    "header_source": "persona_object.name"
+  }
+}

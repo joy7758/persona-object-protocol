@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-03-07T16:19:51.242566+00:00",
+  "schema_path": "schema/persona.schema.json",
+  "valid_case_count": 3,
+  "invalid_case_count": 5,
+  "summary": {
+    "total_cases": 8,
+    "passed": 8,
+    "failed": 0
+  },
+  "cases": [
+    {
+      "case_id": "caregiver.persona",
+      "category": "valid",
+      "source": "validation/cases/valid/caregiver.persona.json",
+      "expected": "valid",
+      "actual": "valid",
+      "pass_fail": "pass",
+      "notes": "Repository example evaluated as a valid POP persona object.",
+      "errors": []
+    },
+    {
+      "case_id": "companion.persona",
+      "category": "valid",
+      "source": "validation/cases/valid/companion.persona.json",
+      "expected": "valid",
+      "actual": "valid",
+      "pass_fail": "pass",
+      "notes": "Repository example evaluated as a valid POP persona object.",
+      "errors": []
+    },
+    {
+      "case_id": "mentor.persona",
+      "category": "valid",
+      "source": "validation/cases/valid/mentor.persona.json",
+      "expected": "valid",
+      "actual": "valid",
+      "pass_fail": "pass",
+      "notes": "Repository example evaluated as a valid POP persona object.",
+      "errors": []
+    },
+    {
+      "case_id": "missing_required_field",
+      "category": "invalid",
+      "source": "validation/cases/invalid/missing_required_field.json",
+      "expected": "invalid",
+      "actual": "invalid",
+      "pass_fail": "pass",
+      "notes": "Removed required field `description`. First error: 'description' is a required property",
+      "errors": [
+        "'description' is a required property"
+      ]
+    },
+    {
+      "case_id": "wrong_field_type",
+      "category": "invalid",
+      "source": "validation/cases/invalid/wrong_field_type.json",
+      "expected": "invalid",
+      "actual": "invalid",
+      "pass_fail": "pass",
+      "notes": "Changed `traits` from an array to a free-text string. First error: 'patient, structured, clear' is not of type 'array'",
+      "errors": [
+        "'patient, structured, clear' is not of type 'array'"
+      ]
+    },
+    {
+      "case_id": "invalid_version",
+      "category": "invalid",
+      "source": "validation/cases/invalid/invalid_version.json",
+      "expected": "invalid",
+      "actual": "invalid",
+      "pass_fail": "pass",
+      "notes": "Changed `schema_version` away from the allowed draft constant. First error: 'pop-0.1' was expected",
+      "errors": [
+        "'pop-0.1' was expected"
+      ]
+    },
+    {
+      "case_id": "unknown_field",
+      "category": "invalid",
+      "source": "validation/cases/invalid/unknown_field.json",
+      "expected": "invalid",
+      "actual": "invalid",
+      "pass_fail": "pass",
+      "notes": "Added an undeclared operational policy block. First error: Additional properties are not allowed ('operator_policy' was unexpected)",
+      "errors": [
+        "Additional properties are not allowed ('operator_policy' was unexpected)"
+      ]
+    },
+    {
+      "case_id": "free_text_profile",
+      "category": "invalid",
+      "source": "validation/cases/invalid/free_text_profile.json",
+      "expected": "invalid",
+      "actual": "invalid",
+      "pass_fail": "pass",
+      "notes": "Collapsed the persona into a vague free-text `profile` field. First error: Additional properties are not allowed ('profile' was unexpected)",
+      "errors": [
+        "Additional properties are not allowed ('profile' was unexpected)",
+        "'description' is a required property",
+        "'traits' is a required property",
+        "'anchors' is a required property",
+        "'behavior' is a required property",
+        "'memory_hooks' is a required property",
+        "'plugins' is a required property"
+      ]
+    }
+  ]
+}

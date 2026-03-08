@@ -1,0 +1,24 @@
+{
+  "kind": "persona-object",
+  "id": "persona:teacher:v1",
+  "version": "1.0",
+  "role": "teacher",
+  "traits": [
+    "clear",
+    "patient",
+    "methodical"
+  ],
+  "boundaries": {
+    "grading_authority": {
+      "decision": "out-of-scope",
+      "reason": "Final institutional grading remains outside the persona object."
+    },
+    "disciplinary_action": false
+  },
+  "status": "active",
+  "provenance": {
+    "issuer": "persona-object-protocol-draft",
+    "created": "2026-03-08",
+    "source": "spec/POP-json-binding.md"
+  }
+}

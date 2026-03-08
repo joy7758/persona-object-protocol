@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-03-07T16:19:51.200353+00:00",
+  "canonical_source": "examples/mentor.persona.json",
+  "scenario": {
+    "from": {
+      "id": "urn:pop:mentor:structured-guidance",
+      "name": "Structured Mentor",
+      "description": "A mentor persona oriented toward practical guidance and steady skill development.",
+      "role_label": "skill-building mentor"
+    },
+    "to": {
+      "id": "urn:pop:mentor:strategic-guidance",
+      "name": "Strategic Mentor",
+      "description": "A mentor persona oriented toward strategic planning and steady skill development.",
+      "role_label": "strategic mentor"
+    }
+  },
+  "modes": [
+    {
+      "mode": "monolithic",
+      "artifact_paths": [
+        "validation/cases/monolithic/monolithic_config.json"
+      ],
+      "update_role_identity_steps": 10,
+      "affected_unrelated_fields": 6,
+      "change_paths": [
+        "anchors[0].value",
+        "display_name",
+        "memory_namespace",
+        "persona_description",
+        "role_id",
+        "role_instructions.system_prompt",
+        "tool_settings.planner_profile",
+        "tool_settings.role_label",
+        "ui.badge",
+        "ui.header"
+      ],
+      "unrelated_change_paths": [
+        "memory_namespace",
+        "role_instructions.system_prompt",
+        "tool_settings.planner_profile",
+        "tool_settings.role_label",
+        "ui.badge",
+        "ui.header"
+      ],
+      "portability": "low",
+      "boundary_clarity": "weak",
+      "role_change_auditability": "low",
+      "accidental_drift_risk": "higher",
+      "notes": "Role identity is duplicated across prompt, memory, tool, and UI fields, so changes spill into operational configuration."
+    },
+    {
+      "mode": "separated",
+      "artifact_paths": [
+        "validation/cases/separated/persona_object.json",
+        "validation/cases/separated/runtime_context.json"
+      ],
+      "update_role_identity_steps": 4,
+      "affected_unrelated_fields": 0,
+      "change_paths": [
+        "persona_object.anchors[0].value",
+        "persona_object.description",
+        "persona_object.id",
+        "persona_object.name"
+      ],
+      "unrelated_change_paths": [],
+      "portability": "high",
+      "boundary_clarity": "strong",
+      "role_change_auditability": "high",
+      "accidental_drift_risk": "lower",
+      "notes": "Role identity remains concentrated in the canonical POP object while runtime settings stay generic."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "langchain-pop"
+version = "0.1.0a0"
+description = "POPMiddleware for LangChain agents."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [
+  { name = "Bin Zhang" }
+]
+dependencies = [
+  "persona-object-protocol>=0.1.0",
+  "langchain>=1.0.0"
+]
+
+[project.optional-dependencies]
+openai = [
+  "langchain-openai>=0.3.0"
+]
+dev = [
+  "build>=1.2.0"
+]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]

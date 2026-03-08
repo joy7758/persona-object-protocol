@@ -1,6 +1,9 @@
 # Persona Object Protocol (POP)
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18898252.svg)](https://doi.org/10.5281/zenodo.18898252)
+[![CI](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml/badge.svg)](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml)
+[![PyPI](https://img.shields.io/pypi/v/persona-object-protocol)](https://pypi.org/project/persona-object-protocol/)
+[![Python](https://img.shields.io/pypi/pyversions/persona-object-protocol)](https://pypi.org/project/persona-object-protocol/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18907957.svg)](https://doi.org/10.5281/zenodo.18907957)
 [![Release](https://img.shields.io/github/v/release/joy7758/persona-object-protocol)](https://github.com/joy7758/persona-object-protocol/releases)
 [![License](https://img.shields.io/github/license/joy7758/persona-object-protocol)](./LICENSE)
 
@@ -8,9 +11,15 @@
 
 POP is a lightweight public draft for representing portable persona objects with explicit boundaries. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
 
-POP is publicly archived on Zenodo and can be cited via DOI: [10.5281/zenodo.18898252](https://doi.org/10.5281/zenodo.18898252).
+Preferred scholarly citation for POP is the POP-Core paper: [10.5281/zenodo.18907957](https://doi.org/10.5281/zenodo.18907957).
+
+The repository itself is separately archived on Zenodo at [10.5281/zenodo.18898252](https://doi.org/10.5281/zenodo.18898252) for version-specific software citation.
 
 For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
+
+## POP-Core Paper
+
+Zhang, B. (2026). *POP-Core: Formal Semantics and Interoperability of Portable Persona Objects*. Zenodo. https://doi.org/10.5281/zenodo.18907957
 
 ## What POP is
 
@@ -84,3 +93,75 @@ For external messaging and positioning copy, see [`docs/communication-kit.md`](d
 ## Status
 
 This repository contains a positioning-first `v0.1.0-draft`. It is a draft protocol, not a stable standard, and not a guarantee of high-fidelity persona transfer across models or products.
+
+For a forward-looking RFC-style core draft, see [`spec/POP-core.md`](spec/POP-core.md).
+For the draft canonical JSON binding, see [`spec/POP-json-binding.md`](spec/POP-json-binding.md) and [`schema/pop.schema.json`](schema/pop.schema.json).
+For minimal runtime integration patterns, see [`docs/interop.md`](docs/interop.md).
+
+## CLI
+
+The repository now includes a minimal reference CLI for POP:
+
+```bash
+python3 -m pip install -e .
+pop validate examples/mentor.v1.json
+pop project examples/mentor.v1.json --runtime prompt
+pop migrate-pop01 examples/mentor.persona.json
+```
+
+For direct local execution without installation:
+
+```bash
+python3 cli/pop_cli.py validate examples/mentor.v1.json
+```
+
+## LangChain Integration
+
+POP now includes a first runtime integration for LangChain:
+
+```bash
+python3 -m pip install -e ".[langchain]"
+python3 examples/langchain_agent.py examples/mentor.v1.json --print-config
+```
+
+Middleware-oriented preview package:
+
+```bash
+python3 examples/langchain_middleware_demo.py --print-config
+```
+
+The installed package exposes `langchain_pop` as a middleware-oriented preview layer for LangChain agents. It injects the POP-derived system prompt, preserves persona identity in runtime state, and filters tools against POP boundaries.
+
+An extraction-ready standalone package scaffold is available at [`integrations/langchain-pop`](integrations/langchain-pop).
+
+If you have `OPENAI_API_KEY` configured, you can invoke a live LangChain agent:
+
+```bash
+python3 examples/langchain_agent.py examples/mentor.v1.json --model gpt-4.1-mini
+python3 examples/langchain_middleware_demo.py --invoke --model gpt-4.1-mini
+```
+
+Package API:
+
+```python
+from pop_protocol.adapters.langchain import create_langchain_agent, pop_to_langchain_config
+from langchain_pop.agent import create_pop_agent
+from langchain_pop.middleware import POPMiddleware
+```
+
+## CI And Packaging
+
+The repository includes a GitHub Actions workflow at [`.github/workflows/validate.yml`](.github/workflows/validate.yml) that:
+
+- validates all JSON example objects with `pop validate`
+- builds the Python distribution with `python -m build`
+
+Typical local packaging commands:
+
+```bash
+python3 -m pip install -e .
+python3 -m pip install build
+python3 -m build
+```
+
+The repository also includes a release workflow at [`.github/workflows/publish.yml`](.github/workflows/publish.yml). Pushing a tag such as `v0.1.0` will build the package and publish it to PyPI through GitHub Actions.

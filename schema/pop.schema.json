@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pop:schema:persona-object:1.0",
+  "title": "Persona Object Protocol v1.0 Core JSON Binding",
+  "description": "Canonical JSON schema for POP v1.0 core persona objects.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "id",
+    "version",
+    "role",
+    "traits",
+    "boundaries",
+    "status",
+    "provenance"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "const": "persona-object",
+      "description": "Object kind discriminator for POP core persona objects."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:[^\\s]+$",
+      "description": "Stable URI-like identifier for the persona object."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(0|[1-9]\\d*)(\\.(0|[1-9]\\d*)){1,2}([.-][A-Za-z0-9]+)*$",
+      "description": "Object revision identifier, not protocol version."
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Primary persona role label."
+    },
+    "traits": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Stable descriptive tendencies for the persona object."
+    },
+    "boundaries": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9._:-]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/boundaryEntry"
+      },
+      "description": "Named boundary constraints that limit authority or scope."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "replaced",
+        "revoked"
+      ],
+      "description": "Lifecycle state of the persona object."
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    }
+  },
+  "$defs": {
+    "boundaryEntry": {
+      "oneOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "decision"
+          ],
+          "properties": {
+            "decision": {
+              "type": "string",
+              "enum": [
+                "allow",
+                "disallow",
+                "requires-review",
+                "out-of-scope",
+                "unspecified"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "scope": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "created"
+      ],
+      "properties": {
+        "author": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issuer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "string",
+              "format": "date-time"
+            }
+          ]
+        },
+        "updated": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "string",
+              "format": "date-time"
+            }
+          ]
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "legacy_source": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "author"
+          ]
+        },
+        {
+          "required": [
+            "issuer"
+          ]
+        }
+      ],
+      "description": "Origin and issuance metadata for auditability."
+    }
+  },
+  "examples": [
+    {
+      "kind": "persona-object",
+      "id": "persona:mentor:v1",
+      "version": "1.0",
+      "role": "mentor",
+      "traits": [
+        "calm",
+        "analytical"
+      ],
+      "boundaries": {
+        "financial_advice": false
+      },
+      "status": "active",
+      "provenance": {
+        "author": "example",
+        "created": "2026-03-01"
+      }
+    }
+  ]
+}
