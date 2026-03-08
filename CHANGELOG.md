@@ -8,15 +8,28 @@ as governance practices mature.
 
 ### Added
 
-- Runtime adapter scaffolding for LangChain and CrewAI.
-- Early runtime integration scaffolds for LangChain and CrewAI.
+### Changed
+
+- Runtime adapter release preparation continues while preserving the
+  canonical schema baseline at `v0.1.0`.
+
+### Fixed
+
+## [0.1.2] - 2026-03-09
+
+### Added
+
+- Early LangChain runtime integration scaffold.
+- Early CrewAI runtime integration scaffold.
+- Integration examples for LangChain and CrewAI.
+- Dependency-light integration contract tests.
 
 ### Changed
 
-- Projection helpers now align with adapter classes while preserving
-  backward compatibility.
-
-### Fixed
+- Aligned runtime-facing integration bindings with existing
+  adapter/projection surfaces.
+- Documented `v0.1.2` as a runtime adapter release while preserving the
+  canonical schema baseline at `v0.1.0`.
 
 ## [0.1.1] - 2026-03-09
 

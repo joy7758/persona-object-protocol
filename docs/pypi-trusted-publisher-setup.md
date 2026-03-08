@@ -49,7 +49,7 @@ easier to audit.
 
 ## First PyPI Smoke Checklist
 
-- confirm `v0.1.1` (or the intended tag) is pushed
+- confirm `v0.1.2` (or the intended tag) is pushed
 - confirm package-check and schema-gate workflows are green
 - dispatch the `PyPI Publish` workflow manually
 - confirm the project page appears on PyPI
