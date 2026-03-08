@@ -39,6 +39,8 @@ effective trust surface and makes release review easier.
 - upload to TestPyPI
 - verify the package page
 - verify installation from TestPyPI in a clean virtual environment
+- if strict schema validation is part of the smoke path, install
+  `pop-persona[schema]` rather than the core package alone
 
 ## Transition to Real PyPI
 

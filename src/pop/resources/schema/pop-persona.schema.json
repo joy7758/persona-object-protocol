@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/schema/pop-persona.schema.json",
+  "title": "POP Persona Object",
+  "description": "Current preview alias for the POP persona schema. Versioned schemas under schema/versions/ are the normative historical snapshots. The persona core is defined separately from memory, tools, and permissions.",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A required non-empty string value."
+    },
+    "stringList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nonEmptyString"
+      },
+      "description": "An ordered list of non-empty string values."
+    },
+    "metadataObject": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Loose metadata for annotations that remain outside the POP persona core."
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional self-declared schema identifier for the POP persona object."
+    },
+    "id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "version": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "name": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "summary": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "traits": {
+      "$ref": "#/$defs/stringList"
+    },
+    "communication_style": {
+      "$ref": "#/$defs/stringList"
+    },
+    "task_orientation": {
+      "$ref": "#/$defs/stringList"
+    },
+    "boundaries": {
+      "$ref": "#/$defs/stringList"
+    },
+    "preferred_outputs": {
+      "$ref": "#/$defs/stringList"
+    },
+    "metadata": {
+      "$ref": "#/$defs/metadataObject"
+    }
+  },
+  "required": [
+    "id",
+    "version",
+    "name",
+    "summary",
+    "traits",
+    "communication_style",
+    "task_orientation",
+    "boundaries",
+    "preferred_outputs",
+    "metadata"
+  ]
+}

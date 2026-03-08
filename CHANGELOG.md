@@ -12,6 +12,10 @@ as governance practices mature.
 
 ### Fixed
 
+- Bundled canonical schema resources into the installable package so
+  installed wheels expose versioned schema snapshots and support strict
+  schema validation outside the source repository.
+
 ## [0.1.0] - 2026-03-09
 
 ### Added

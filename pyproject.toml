@@ -59,3 +59,9 @@ pop-inspect = "pop.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+pop = [
+  "resources/schema/*.json",
+  "resources/schema/versions/*.json"
+]
