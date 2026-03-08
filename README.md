@@ -181,6 +181,13 @@ The next positioning draft is documented in
 The early release chronology is summarized in
 [`docs/pop-evolution-v0.1.0-v0.1.4.md`](docs/pop-evolution-v0.1.0-v0.1.4.md).
 
+## Outreach and Evaluation Materials
+
+- [`docs/outreach/langchain-forum-post.md`](docs/outreach/langchain-forum-post.md)
+- [`docs/outreach/langchain-maintainer-short-note.md`](docs/outreach/langchain-maintainer-short-note.md)
+- [`docs/outreach/langchain-evaluation-checklist.md`](docs/outreach/langchain-evaluation-checklist.md)
+- [`docs/releases/v0.1.8-options.md`](docs/releases/v0.1.8-options.md)
+
 ## TestPyPI and Trusted Publishing
 
 TestPyPI is used for first publication smoke validation. Trusted
