@@ -25,6 +25,7 @@ publication readiness for POP.
 - [Release Notes: v0.1.1](releases/v0.1.1-release-notes.md)
 - [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [TestPyPI Trusted Publisher Setup](testpypi-trusted-publisher-setup.md)
+- [PyPI Trusted Publisher Setup](pypi-trusted-publisher-setup.md)
 - [POP Ecosystem Integration Roadmap](pop-ecosystem-roadmap.md)
 - [POP Adapter Model](pop-adapter-model.md)
 - [Portability Demo](../examples/cross-runtime-persona-portability/README.md)

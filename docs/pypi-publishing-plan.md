@@ -9,8 +9,9 @@ review.
 
 ## Current Status
 
-The package is PyPI-ready in structure, but automated publication is not
-yet enabled for production use.
+The package is PyPI-ready in structure. TestPyPI smoke publication is
+already exercised, while real PyPI publication remains gated on a
+separate Trusted Publisher configuration and workflow identity.
 
 ## Recommended Publication Path
 
@@ -20,6 +21,11 @@ yet enabled for production use.
 - publish to TestPyPI first if additional rehearsal is needed
 - publish a stable draft release only after repository release and tag
   discipline is in place
+
+The repository keeps TestPyPI and PyPI publication separate. The
+expected workflow file for real publication is
+`.github/workflows/pypi-publish.yml`, and the recommended GitHub
+environment name is `pypi`.
 
 ## Trusted Publishing Rationale
 

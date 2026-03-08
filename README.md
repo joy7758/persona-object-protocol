@@ -1,8 +1,8 @@
 # Persona Object Protocol (POP)
 
 [![CI](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml/badge.svg)](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml)
-[![PyPI](https://img.shields.io/pypi/v/persona-object-protocol)](https://pypi.org/project/persona-object-protocol/)
-[![Python](https://img.shields.io/pypi/pyversions/persona-object-protocol)](https://pypi.org/project/persona-object-protocol/)
+[![PyPI](https://img.shields.io/pypi/v/pop-persona)](https://pypi.org/project/pop-persona/)
+[![Python](https://img.shields.io/pypi/pyversions/pop-persona)](https://pypi.org/project/pop-persona/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18907957.svg)](https://doi.org/10.5281/zenodo.18907957)
 [![Release](https://img.shields.io/github/v/release/joy7758/persona-object-protocol)](https://github.com/joy7758/persona-object-protocol/releases)
 [![License](https://img.shields.io/github/license/joy7758/persona-object-protocol)](./LICENSE)
@@ -78,6 +78,14 @@ release-readiness path for this baseline.
 TestPyPI is used for first publication smoke validation. Trusted
 Publishing is planned through GitHub Actions with OIDC, and real PyPI
 publication follows successful smoke validation and release discipline.
+
+## PyPI Publication Path
+
+Real PyPI publication is prepared through a dedicated GitHub Actions
+workflow and a separate `pypi` environment. The recommended order is:
+configure the PyPI Trusted Publisher, dispatch the PyPI publish
+workflow, and then validate installation from the public PyPI index in a
+clean virtual environment.
 
 ## Python SDK (Early Preview)
 
