@@ -10,10 +10,29 @@ as governance practices mature.
 
 ### Changed
 
-- Runtime adapter release preparation continues while preserving the
+- Execution-layer helper work continues while preserving the
   canonical schema baseline at `v0.1.0`.
 
 ### Fixed
+
+## [0.1.3] - 2026-03-09
+
+### Added
+
+- Early LangChain execution-layer helpers for agent kwargs, middleware,
+  and execution scaffolds.
+- Early CrewAI execution-layer helpers for Agent-style kwargs and
+  execution scaffolds.
+- Execution-layer examples for LangChain and CrewAI.
+- Dependency-light smoke tests for execution-layer helper surfaces.
+- Execution-layer planning and release documentation.
+
+### Changed
+
+- Extended runtime-facing integration helpers without changing the
+  canonical top-level persona boundary.
+- Documented `v0.1.3` as an execution-layer release while preserving
+  the canonical schema baseline at `v0.1.0`.
 
 ## [0.1.2] - 2026-03-09
 

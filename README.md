@@ -69,6 +69,18 @@ Example scripts:
 - [`examples/integrations/langchain_minimal.py`](examples/integrations/langchain_minimal.py)
 - [`examples/integrations/crewai_minimal.py`](examples/integrations/crewai_minimal.py)
 
+## Execution-Layer Helpers (Early Preview)
+
+LangChain execution helpers are available through optional runtime
+integration surfaces, and CrewAI execution helpers are available
+through optional runtime integration surfaces. The canonical schema
+baseline remains `v0.1.0`.
+
+Execution-layer examples:
+
+- [`examples/integrations/langchain_execution_minimal.py`](examples/integrations/langchain_execution_minimal.py)
+- [`examples/integrations/crewai_execution_minimal.py`](examples/integrations/crewai_execution_minimal.py)
+
 ## Portability Demo
 
 An early cross-runtime portability scaffold is available at
@@ -103,10 +115,12 @@ release-readiness path for this baseline.
 
 For the current public packaging position, see
 [`docs/releases/v0.1.1-announcement.md`](docs/releases/v0.1.1-announcement.md).
-For the next runtime-facing package increment, see
-[`docs/releases/v0.1.2-plan.md`](docs/releases/v0.1.2-plan.md).
-Draft release notes are available at
+The runtime adapter release is documented at
 [`docs/releases/v0.1.2-release-notes.md`](docs/releases/v0.1.2-release-notes.md).
+The current execution-layer release is documented at
+[`docs/releases/v0.1.3-release-notes.md`](docs/releases/v0.1.3-release-notes.md).
+Execution-layer planning remains available in
+[`docs/releases/v0.1.3-plan.md`](docs/releases/v0.1.3-plan.md).
 
 ## TestPyPI and Trusted Publishing
 

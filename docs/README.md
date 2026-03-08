@@ -26,6 +26,9 @@ publication readiness for POP.
 - [POP v0.1.1 Announcement](releases/v0.1.1-announcement.md)
 - [POP v0.1.2 Plan](releases/v0.1.2-plan.md)
 - [POP v0.1.2 Release Notes](releases/v0.1.2-release-notes.md)
+- [POP Execution-Layer Helpers](execution-layer.md)
+- [POP v0.1.3 Plan](releases/v0.1.3-plan.md)
+- [POP v0.1.3 Release Notes](releases/v0.1.3-release-notes.md)
 - [PyPI Publishing Plan](pypi-publishing-plan.md)
 - [TestPyPI Trusted Publisher Setup](testpypi-trusted-publisher-setup.md)
 - [PyPI Trusted Publisher Setup](pypi-trusted-publisher-setup.md)
@@ -35,6 +38,8 @@ publication readiness for POP.
 - [Portability Demo](../examples/cross-runtime-persona-portability/README.md)
 - LangChain Integration Example: `examples/integrations/langchain_minimal.py`
 - CrewAI Integration Example: `examples/integrations/crewai_minimal.py`
+- LangChain Execution Example: `examples/integrations/langchain_execution_minimal.py`
+- CrewAI Execution Example: `examples/integrations/crewai_execution_minimal.py`
 
 ## Regression Assets
 

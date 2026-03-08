@@ -17,16 +17,69 @@ def bind_crewai_agent_kwargs(persona: PersonaObject) -> dict:
     }
 
 
+def create_crewai_agent_kwargs(
+    persona: PersonaObject,
+    *,
+    tools: list | None = None,
+    llm: object | None = None,
+    verbose: bool | None = None,
+) -> dict:
+    """Return an early-preview Agent(...) helper, not an official CrewAI type."""
+
+    agent_kwargs = bind_crewai_agent_kwargs(persona)
+    agent_kwargs["tools"] = list(tools or [])
+    if llm is not None:
+        agent_kwargs["llm"] = llm
+    if verbose is not None:
+        agent_kwargs["verbose"] = verbose
+    return agent_kwargs
+
+
+def create_crewai_execution_scaffold(
+    persona: PersonaObject,
+    *,
+    tools: list | None = None,
+    llm: object | None = None,
+    verbose: bool | None = None,
+) -> dict:
+    """Return an early-preview execution scaffold for CrewAI consumption."""
+
+    return {
+        "runtime": "crewai",
+        "adapter": "crewai",
+        "persona_id": persona.id,
+        "agent_kwargs": create_crewai_agent_kwargs(
+            persona,
+            tools=tools,
+            llm=llm,
+            verbose=verbose,
+        ),
+    }
+
+
 def create_crewai_agent_from_persona(
     persona: PersonaObject, **kwargs
 ) -> dict:
     """Return a runtime-facing CrewAI agent scaffold, not an official type."""
 
-    scaffold = bind_crewai_agent_kwargs(persona)
-    passthrough = dict(kwargs)
-    if "tools" in passthrough:
-        passthrough["tools"] = list(passthrough["tools"])
-    scaffold.update(passthrough)
+    scaffold = create_crewai_agent_kwargs(persona, **kwargs)
     scaffold["adapter"] = "crewai"
     scaffold["persona_id"] = persona.id
     return scaffold
+
+
+def build_crewai_agent_spec(
+    persona: PersonaObject,
+    *,
+    tools: list | None = None,
+    llm: object | None = None,
+    verbose: bool | None = None,
+) -> dict:
+    """Return a lightweight CrewAI-facing spec bundle for local scaffolds."""
+
+    return create_crewai_execution_scaffold(
+        persona,
+        tools=tools,
+        llm=llm,
+        verbose=verbose,
+    )
