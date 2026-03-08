@@ -17,6 +17,13 @@ The repository itself is separately archived on Zenodo at [10.5281/zenodo.188982
 
 For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
 
+## Digital Biosphere Ecosystem
+
+This repository is part of the **Digital Biosphere Architecture**.
+
+Architecture overview:
+https://github.com/joy7758/digital-biosphere-architecture
+
 ## POP-Core Paper
 
 Zhang, B. (2026). *POP-Core: Formal Semantics and Interoperability of Portable Persona Objects*. Zenodo. https://doi.org/10.5281/zenodo.18907957
