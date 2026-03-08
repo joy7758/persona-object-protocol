@@ -9,7 +9,7 @@
 
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
-POP is a lightweight public draft for representing portable persona objects with explicit boundaries. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
+POP is a lightweight public draft for representing portable persona objects with explicit boundaries. POP is a framework-neutral persona object protocol for agent runtimes. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
 
 Preferred scholarly citation for POP is the POP-Core paper: [10.5281/zenodo.18907957](https://doi.org/10.5281/zenodo.18907957).
 
@@ -23,6 +23,28 @@ This repository is part of the **Digital Biosphere Architecture**.
 
 Architecture overview:
 [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+
+## Positioning
+
+- POP is not a full agent framework.
+- POP is not a prompt template library.
+- POP is not a memory or permissions system.
+- POP focuses on portable persona objects and adapter-based runtime projection.
+
+## Ecosystem Direction
+
+- LangChain integration
+- CrewAI projection
+- Microsoft Agent Framework exploration
+- LlamaIndex exploration
+
+For the current ecosystem plan, see [`docs/pop-ecosystem-roadmap.md`](docs/pop-ecosystem-roadmap.md).
+For the adapter strategy, see [`docs/pop-adapter-model.md`](docs/pop-adapter-model.md).
+
+## Portability Demo
+
+An early cross-runtime portability scaffold is available at
+[`examples/cross-runtime-persona-portability/README.md`](examples/cross-runtime-persona-portability/README.md).
 
 ## POP-Core Paper
 
@@ -83,11 +105,20 @@ For external messaging and positioning copy, see [`docs/communication-kit.md`](d
 ├── CITATION.cff
 ├── LICENSE
 ├── README.md
+├── adapters
+│   ├── crewai
+│   ├── langchain
+│   ├── llamaindex
+│   └── microsoft-agent-framework
 ├── docs
+│   ├── README.md
 │   ├── cite-pop.md
 │   ├── communication-kit.md
+│   ├── pop-adapter-model.md
+│   ├── pop-ecosystem-roadmap.md
 │   └── short-outreach-kit.md
 ├── examples
+│   ├── cross-runtime-persona-portability
 │   ├── caregiver.persona.json
 │   ├── companion.persona.json
 │   └── mentor.persona.json
