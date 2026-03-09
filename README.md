@@ -146,6 +146,34 @@ This demonstrates:
 POP personas -> CrewAI-style `agents.yaml` -> method-aligned
 CrewBase-style Python structure
 
+### AutoGen-Aligned Prototype
+
+This repository includes an early POP -> AutoGen adapter prototype
+aligned with the current AutoGen quickstart shape:
+
+- `AssistantAgent`
+- `model_client`
+- `tools`
+- `system_message`
+
+Example:
+
+- `example_autogen.py`
+
+Current capabilities:
+
+- map POP personas into AutoGen-style config
+- generate `system_message` from persona objects
+- return a safe preview object if AutoGen is not installed
+- require an explicit `model_client` for real `AssistantAgent`
+  construction
+
+Recommended AutoGen installation (upstream style):
+
+```bash
+pip install -U "autogen-agentchat" "autogen-ext[openai,azure]"
+```
+
 ## Execution-Layer Helpers (Early Preview)
 
 LangChain execution helpers are available through optional runtime
