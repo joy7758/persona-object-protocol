@@ -42,3 +42,11 @@ def load_persona(path: str | Path) -> Persona:
         raise ValueError(f"Missing required persona fields: {', '.join(missing)}")
 
     return Persona(data)
+
+
+def validate_persona(path):
+    try:
+        load_persona(path)
+        return {"valid": True, "path": str(path)}
+    except Exception as e:
+        return {"valid": False, "path": str(path), "error": str(e)}

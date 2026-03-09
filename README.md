@@ -189,6 +189,22 @@ Related files:
 - `spec/POP-agent-runtime-profile.md`
 - `schema/profiles/pop-agent-runtime-profile.schema.json`
 
+## POP Registry / SDK Prototype
+
+This repository includes an early local registry / SDK prototype for
+persona objects.
+
+Current capabilities:
+
+- `list_personas()` to enumerate local persona files
+- `resolve_persona(persona_id)` to map persona IDs to files
+- `load_persona_by_id(...)` to load personas through the registry
+- `validate_persona(...)` to perform minimal validation
+
+Example:
+
+- `example_registry.py`
+
 ## Execution-Layer Helpers (Early Preview)
 
 LangChain execution helpers are available through optional runtime
