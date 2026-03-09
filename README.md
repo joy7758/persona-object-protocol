@@ -174,6 +174,21 @@ Recommended AutoGen installation (upstream style):
 pip install -U "autogen-agentchat" "autogen-ext[openai,azure]"
 ```
 
+## POP Agent Runtime Profile
+
+This repository now distinguishes between:
+
+- POP canonical persona objects (protocol-layer objects)
+- POP Agent Runtime Profiles (framework-facing runtime bindings)
+
+The current `personas/*.json` examples are treated as Agent Runtime
+Profiles for agent frameworks such as CrewAI and AutoGen.
+
+Related files:
+
+- `spec/POP-agent-runtime-profile.md`
+- `schema/profiles/pop-agent-runtime-profile.schema.json`
+
 ## Execution-Layer Helpers (Early Preview)
 
 LangChain execution helpers are available through optional runtime

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schema/profiles/pop-agent-runtime-profile.schema.json",
+  "title": "POP Agent Runtime Profile",
+  "type": "object",
+  "required": ["persona_id", "name", "role"],
+  "properties": {
+    "persona_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "traits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "communication_style": {
+      "type": "string"
+    },
+    "memory_scope": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
