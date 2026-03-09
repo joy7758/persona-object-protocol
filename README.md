@@ -69,6 +69,53 @@ Example scripts:
 - [`examples/integrations/langchain_minimal.py`](examples/integrations/langchain_minimal.py)
 - [`examples/integrations/crewai_minimal.py`](examples/integrations/crewai_minimal.py)
 
+## POP → CrewAI Prototype
+
+This repository includes an early POP → CrewAI adapter prototype.
+
+Current capabilities:
+
+- load POP personas from JSON
+- convert POP personas into CrewAI-compatible agent configuration
+- export CrewAI YAML from POP persona objects
+
+Example persona files:
+
+- `personas/marketing_manager.json`
+- `personas/engineer.json`
+- `personas/designer.json`
+
+Generated example:
+
+- `personas/marketing_manager.crewai.yaml`
+
+Example scripts:
+
+- `example_crewai.py`
+- `example_crewai_export.py`
+
+Current scope:
+
+- local persona loading
+- CrewAI config generation
+- YAML export for CrewAI-style configuration
+
+This is an early adapter prototype intended to demonstrate POP as an
+agent-framework persona layer.
+
+### CrewAI YAML Export
+
+POP personas can also be exported into CrewAI-style multi-agent YAML
+configuration.
+
+Example:
+
+- `example_crewai_multiagent_export.py`
+- generated file: `personas/agents.crewai.yaml`
+
+This makes POP usable not only for direct agent construction, but also
+for CrewAI's recommended YAML-based configuration flow.
+
 ## Execution-Layer Helpers (Early Preview)
 
 LangChain execution helpers are available through optional runtime

@@ -25,6 +25,22 @@ def _yaml_quote(value):
     return json.dumps(value, ensure_ascii=False)
 
 
+def _render_crewai_agent_yaml_lines(agent_name, config):
+    lines = [
+        f"{agent_name}:",
+        f"  role: {_yaml_quote(config['role'])}",
+        f"  goal: {_yaml_quote(config['goal'])}",
+        f"  backstory: {_yaml_quote(config['backstory'])}",
+    ]
+
+    if config.get("tools"):
+        lines.append("  tools:")
+        for tool in config["tools"]:
+            lines.append(f"    - {_yaml_quote(tool)}")
+
+    return lines
+
+
 def agent_from_persona(path, llm, tools=None, **agent_kwargs):
     try:
         from crewai import Agent
@@ -62,18 +78,18 @@ def persona_to_crewai_config(path):
 def export_crewai_agent_yaml(path, output_path, agent_name="agent"):
     config = persona_to_crewai_config(path)
     output_path = Path(output_path)
-
-    lines = [
-        f"{agent_name}:",
-        f"  role: {_yaml_quote(config['role'])}",
-        f"  goal: {_yaml_quote(config['goal'])}",
-        f"  backstory: {_yaml_quote(config['backstory'])}",
-    ]
-
-    if config.get("tools"):
-        lines.append("  tools:")
-        for tool in config["tools"]:
-            lines.append(f"    - {_yaml_quote(tool)}")
-
+    lines = _render_crewai_agent_yaml_lines(agent_name, config)
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return str(output_path)
+
+
+def export_crewai_agents_yaml(persona_map, output_path):
+    output_path = Path(output_path)
+    blocks = []
+
+    for agent_key, persona_path in persona_map.items():
+        config = persona_to_crewai_config(persona_path)
+        blocks.append("\n".join(_render_crewai_agent_yaml_lines(agent_key, config)))
+
+    output_path.write_text("\n\n".join(blocks) + "\n", encoding="utf-8")
     return str(output_path)
