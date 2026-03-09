@@ -17,6 +17,16 @@ The repository itself is separately archived on Zenodo at [10.5281/zenodo.188982
 
 For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
 
+## First Trial
+
+Want to try POP quickly without setting up a full runtime?
+Start here:
+
+- [Try POP in 3 Minutes](TRY_POP.md)
+
+This dry-run demo shows 3 portable persona objects projected into 3
+CrewAI-style runtime roles.
+
 ## Digital Biosphere Ecosystem
 
 This repository is part of the **Digital Biosphere Architecture**.
