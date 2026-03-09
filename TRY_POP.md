@@ -1,6 +1,7 @@
 # Try POP in 3 Minutes
 
 POP is a lightweight protocol for treating persona as a portable object layer instead of prompt fragments.
+Runtime configurations are derived projections, not the protocol core.
 
 ## Install
 

@@ -7,6 +7,8 @@
 [![Release](https://img.shields.io/github/v/release/joy7758/persona-object-protocol)](https://github.com/joy7758/persona-object-protocol/releases)
 [![License](https://img.shields.io/github/license/joy7758/persona-object-protocol)](./LICENSE)
 
+A portable persona object layer for agent runtimes.
+
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
 POP is a lightweight public draft for representing portable persona objects with explicit boundaries. POP is a framework-neutral persona object protocol for agent runtimes. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
@@ -26,6 +28,16 @@ Start here:
 
 This dry-run demo shows 3 portable persona objects projected into 3
 CrewAI-style runtime roles.
+
+## Design Position
+
+POP defines a portable persona object layer for agent runtimes.
+
+The protocol focuses on representing persona as a standalone object that can be referenced, resolved, validated, and projected into different runtime environments.
+
+Runtime configurations such as CrewAI agents or other framework-specific configs are derived projections rather than the protocol core.
+
+This separation keeps persona definitions portable across agent frameworks while runtime environments remain free to implement their own execution models.
 
 ## Digital Biosphere Ecosystem
 
