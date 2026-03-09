@@ -1,19 +1,40 @@
 # POP Team Demo
 
-This demo is meant to show portable persona objects projected into 3 CrewAI-style runtime roles.
+A tiny POP team demo showing 3 portable persona objects projected into 3 CrewAI-style runtime roles.
 
-It is dry-run first and does not require a real model or live CrewAI execution.
+## What this demo shows
 
-Run:
+- `persona_ref -> persona object`
+- `persona object -> CrewAI-style agent config`
+- `3 roles -> 1 shared task brief`
+
+## Dry Run (default)
 
 ```bash
 python examples/pop_team_demo/demo.py
 ```
 
-Output structure:
+- no model required
+- no CrewAI install required
+- prints structured role projection output
 
-- `role_key`
-- `persona_ref`
-- `source_path`
-- `crewai_agent_kwargs`
-- `shared_task_brief`
+## Live Run (optional)
+
+```bash
+pip install crewai
+python examples/pop_team_demo/demo_live.py
+```
+
+- requires CrewAI
+- may require model/provider configuration
+- exits gracefully if dependencies are missing
+
+## Demo roles
+
+- Designer
+- Engineer
+- Marketing Manager
+
+## Shared task brief
+
+`Plan the first POP landing page and launch outline`
