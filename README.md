@@ -131,6 +131,21 @@ This demonstrates:
 POP personas -> CrewAI-style `agents.yaml` -> config-based agent
 construction
 
+### CrewAI CrewBase-Style Demo
+
+CrewAI documentation recommends YAML-based agent configuration, with
+YAML keys matching method names in Python code.
+
+This repository now includes a POP-driven CrewBase-style demo:
+
+- `examples/crewai_crewbase_demo/config/agents.yaml`
+- `examples/crewai_crewbase_demo/crew_demo.py`
+
+This demonstrates:
+
+POP personas -> CrewAI-style `agents.yaml` -> method-aligned
+CrewBase-style Python structure
+
 ## Execution-Layer Helpers (Early Preview)
 
 LangChain execution helpers are available through optional runtime
