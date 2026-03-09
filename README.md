@@ -116,6 +116,21 @@ Example:
 This makes POP usable not only for direct agent construction, but also
 for CrewAI's recommended YAML-based configuration flow.
 
+### CrewAI Recommended YAML Flow
+
+CrewAI documentation recommends YAML configuration for defining agents.
+POP can now export multi-agent YAML that fits this path.
+
+Demo files:
+
+- `examples/crewai_config_demo/config/agents.yaml`
+- `examples/crewai_config_demo/crew_example.py`
+
+This demonstrates:
+
+POP personas -> CrewAI-style `agents.yaml` -> config-based agent
+construction
+
 ## Execution-Layer Helpers (Early Preview)
 
 LangChain execution helpers are available through optional runtime
