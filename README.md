@@ -29,6 +29,24 @@ Start here:
 This dry-run demo shows 3 portable persona objects projected into 3
 CrewAI-style runtime roles.
 
+## Persona Layer Diagram
+
+```mermaid
+flowchart TD
+    A[Persona Ref] --> B[POP Persona Object]
+    B --> C[Resolve / Validate]
+    C --> D[Runtime Projection]
+    D --> E[CrewAI]
+    D --> F[LangChain]
+    D --> G[AutoGen]
+
+    H[POP treats persona as a portable object layer for agent runtimes.<br/>Framework configs are derived projections.]:::note
+
+    B --- H
+
+    classDef note fill:#f6f8fa,stroke:#d0d7de,color:#24292f,font-size:12px;
+```
+
 ## Design Position
 
 POP defines a portable persona object layer for agent runtimes.
