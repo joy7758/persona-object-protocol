@@ -47,6 +47,8 @@ flowchart TD
     classDef note fill:#f6f8fa,stroke:#d0d7de,color:#24292f,font-size:12px;
 ```
 
+Static assets: [SVG](docs/assets/pop-persona-layer-diagram.svg) · [PNG](docs/assets/pop-persona-layer-diagram.png)
+
 ## Design Position
 
 POP defines a portable persona object layer for agent runtimes.
