@@ -1,4 +1,28 @@
+import json
+from pathlib import Path
+
 from .loader import load_persona
+
+
+def _goal_from_persona(persona):
+    if persona.goals:
+        return "; ".join(persona.goals)
+    return f"Act effectively as {persona.role}"
+
+
+def _backstory_from_persona(persona):
+    backstory_bits = [persona.name]
+    if persona.traits:
+        backstory_bits.append(f"Traits: {', '.join(persona.traits)}")
+    if persona.style:
+        backstory_bits.append(f"Communication style: {persona.style}")
+    if persona.memory_scope:
+        backstory_bits.append(f"Memory scope: {persona.memory_scope}")
+    return ". ".join(backstory_bits)
+
+
+def _yaml_quote(value):
+    return json.dumps(value, ensure_ascii=False)
 
 
 def agent_from_persona(path, llm, tools=None, **agent_kwargs):
@@ -13,23 +37,43 @@ def agent_from_persona(path, llm, tools=None, **agent_kwargs):
 
     resolved_tools = tools if tools is not None else p.tools
 
-    backstory_bits = [f"{p.name}"]
-    if p.traits:
-        backstory_bits.append(f"Traits: {', '.join(p.traits)}")
-    if p.style:
-        backstory_bits.append(f"Communication style: {p.style}")
-    if p.memory_scope:
-        backstory_bits.append(f"Memory scope: {p.memory_scope}")
-
-    backstory = ". ".join(backstory_bits)
-
     agent = Agent(
         role=p.role,
-        goal="; ".join(p.goals) if p.goals else f"Act effectively as {p.role}",
-        backstory=backstory,
+        goal=_goal_from_persona(p),
+        backstory=_backstory_from_persona(p),
         tools=resolved_tools,
         llm=llm,
         **agent_kwargs,
     )
 
     return agent
+
+
+def persona_to_crewai_config(path):
+    p = load_persona(path)
+    return {
+        "role": p.role,
+        "goal": _goal_from_persona(p),
+        "backstory": _backstory_from_persona(p),
+        "tools": p.tools,
+    }
+
+
+def export_crewai_agent_yaml(path, output_path, agent_name="agent"):
+    config = persona_to_crewai_config(path)
+    output_path = Path(output_path)
+
+    lines = [
+        f"{agent_name}:",
+        f"  role: {_yaml_quote(config['role'])}",
+        f"  goal: {_yaml_quote(config['goal'])}",
+        f"  backstory: {_yaml_quote(config['backstory'])}",
+    ]
+
+    if config.get("tools"):
+        lines.append("  tools:")
+        for tool in config["tools"]:
+            lines.append(f"    - {_yaml_quote(tool)}")
+
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return str(output_path)
