@@ -18,6 +18,68 @@ from pop_protocol.core import (
 )
 
 
+def _resolve_persona_or_exit(persona_ref: str) -> Path:
+    try:
+        from pop.registry import resolve_persona
+    except Exception as exc:  # pragma: no cover
+        raise SystemExit("Persona registry support is unavailable in this environment.") from exc
+
+    path = resolve_persona(persona_ref)
+    if path is None:
+        raise SystemExit(f"Persona not found: {persona_ref}")
+    return Path(path)
+
+
+def _project_runtime_profile(persona: Any, runtime: str) -> str | dict[str, Any]:
+    if runtime == "prompt":
+        segments = [f"You are a {persona.role}."]
+        if getattr(persona, "traits", None):
+            segments.append(f"Traits: {', '.join(persona.traits)}.")
+        if getattr(persona, "goals", None):
+            segments.append(f"Goals: {'; '.join(persona.goals)}.")
+        if getattr(persona, "style", None):
+            segments.append(f"Communication style: {persona.style}.")
+        if getattr(persona, "memory_scope", None):
+            segments.append(f"Memory scope: {persona.memory_scope}.")
+        return " ".join(segments)
+
+    if runtime == "app":
+        return {
+            "projection_type": "app",
+            "role_model": {
+                "persona_id": persona.persona_id,
+                "name": persona.name,
+                "role": persona.role,
+                "traits": list(persona.traits),
+                "goals": list(persona.goals),
+                "tools": list(persona.tools),
+                "communication_style": persona.style,
+                "memory_scope": persona.memory_scope,
+            },
+        }
+
+    if runtime == "agent":
+        return {
+            "projection_type": "agent",
+            "runtime_contract": {
+                "persona_ref": {
+                    "persona_id": persona.persona_id,
+                    "name": persona.name,
+                },
+                "behavior_contract": {
+                    "role": persona.role,
+                    "traits": list(persona.traits),
+                    "goals": list(persona.goals),
+                },
+                "tool_contract": list(persona.tools),
+                "communication_style": persona.style,
+                "memory_scope": persona.memory_scope,
+            },
+        }
+
+    raise ValueError(f"Unsupported runtime: {runtime}")
+
+
 def print_error_lines(lines: list[str]) -> None:
     for line in lines:
         print(f"ERROR {line}", file=sys.stderr)
@@ -107,6 +169,37 @@ def handle_migrate(args: argparse.Namespace) -> int:
     return 0
 
 
+def handle_resolve(args: argparse.Namespace) -> int:
+    path = _resolve_persona_or_exit(args.persona_ref)
+    print(path.as_posix())
+    return 0
+
+
+def handle_validate_id(args: argparse.Namespace) -> int:
+    try:
+        from pop.loader import validate_persona as validate_runtime_persona
+    except Exception as exc:  # pragma: no cover
+        raise SystemExit("Persona loader support is unavailable in this environment.") from exc
+
+    path = _resolve_persona_or_exit(args.persona_ref)
+    result = validate_runtime_persona(path)
+    print(json.dumps(result, indent=2, ensure_ascii=True))
+    return 0 if result.get("valid") else 1
+
+
+def handle_project_id(args: argparse.Namespace) -> int:
+    try:
+        from pop.registry import load_persona_by_id
+    except Exception as exc:  # pragma: no cover
+        raise SystemExit("Persona registry support is unavailable in this environment.") from exc
+
+    persona = load_persona_by_id(args.persona_ref)
+    projection = _project_runtime_profile(persona, runtime=args.runtime)
+    output_path = Path(args.output).expanduser() if args.output else None
+    emit_projection(projection, output_path)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pop", description="POP reference CLI")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
@@ -143,6 +236,38 @@ def build_parser() -> argparse.ArgumentParser:
     )
     project_parser.set_defaults(handler=handle_project)
 
+    resolve_parser = subparsers.add_parser(
+        "resolve",
+        help="Resolve persona ref to local file path",
+    )
+    resolve_parser.add_argument("persona_ref")
+    resolve_parser.set_defaults(handler=handle_resolve)
+
+    validate_id_parser = subparsers.add_parser(
+        "validate-id",
+        help="Validate persona by persona ref",
+    )
+    validate_id_parser.add_argument("persona_ref")
+    validate_id_parser.set_defaults(handler=handle_validate_id)
+
+    project_id_parser = subparsers.add_parser(
+        "project-id",
+        help="Project persona by persona ref",
+    )
+    project_id_parser.add_argument("persona_ref")
+    project_id_parser.add_argument(
+        "--runtime",
+        choices=["prompt", "app", "agent"],
+        required=True,
+        help="Projection target runtime",
+    )
+    project_id_parser.add_argument(
+        "-o",
+        "--output",
+        help="Optional output path for the projection result",
+    )
+    project_id_parser.set_defaults(handler=handle_project_id)
+
     migrate_parser = subparsers.add_parser(
         "migrate-pop01",
         help="Migrate a legacy POP 0.1 object into the canonical POP v1.0 binding",
@@ -162,3 +287,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     return int(args.handler(args))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -511,6 +511,21 @@ pop project examples/mentor.v1.json --runtime prompt
 pop migrate-pop01 examples/mentor.persona.json
 ```
 
+### CLI registry / persona reference commands
+
+The POP CLI prototype now supports persona-reference-based operations.
+
+Examples:
+
+```bash
+pop resolve pop:marketing_manager_v1
+pop validate-id pop:marketing_manager_v1
+pop project-id pop:marketing_manager_v1 --runtime agent
+```
+
+This extends the CLI from file-based usage toward registry-based
+persona resolution.
+
 For direct local execution without installation:
 
 ```bash
