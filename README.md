@@ -526,6 +526,88 @@ pop project-id pop:marketing_manager_v1 --runtime agent
 This extends the CLI from file-based usage toward registry-based
 persona resolution.
 
+## End-to-end quickstart
+
+This repository now supports a minimal end-to-end POP workflow based on
+persona references.
+
+### 1. Prepare environment
+
+Create a virtual environment and install the minimal dependencies used
+by the current prototype:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install pyyaml jsonschema
+```
+
+### 2. Inspect the local persona registry prototype
+
+```bash
+python example_registry.py
+```
+
+Expected output includes:
+
+- available local persona files
+- normalized persona IDs such as `marketing_manager_v1`
+- resolution of `pop:marketing_manager_v1` to `personas/marketing_manager.json`
+
+### 3. Resolve a persona reference
+
+```bash
+PYTHONPATH=src python -m pop_protocol.cli resolve pop:marketing_manager_v1
+```
+
+Example output:
+
+```text
+personas/marketing_manager.json
+```
+
+### 4. Validate a persona by reference
+
+```bash
+PYTHONPATH=src python -m pop_protocol.cli validate-id pop:marketing_manager_v1
+```
+
+Example output:
+
+```json
+{
+  "valid": true,
+  "path": "personas/marketing_manager.json"
+}
+```
+
+### 5. Project a persona into an agent-oriented runtime view
+
+```bash
+PYTHONPATH=src python -m pop_protocol.cli project-id pop:marketing_manager_v1 --runtime agent
+```
+
+This returns a non-empty JSON projection that demonstrates a minimal
+runtime-facing contract derived from a POP persona reference.
+
+### Workflow summary
+
+The current prototype now supports the following end-to-end flow:
+
+```text
+persona ref
+→ registry resolve
+→ schema validate
+→ runtime projection
+```
+
+This quickstart reflects the current prototype stage of POP tooling and
+is intended for early experimentation rather than production
+deployment.
+
+For a slightly more detailed walkthrough, see
+[`docs/quickstart.md`](docs/quickstart.md).
+
 For direct local execution without installation:
 
 ```bash
