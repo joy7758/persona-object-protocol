@@ -197,13 +197,28 @@ persona objects.
 Current capabilities:
 
 - `list_personas()` to enumerate local persona files
-- `resolve_persona(persona_id)` to map persona IDs to files
+- `list_persona_ids()` to enumerate local persona IDs
+- `resolve_persona(persona_ref)` to map persona references to files
 - `load_persona_by_id(...)` to load personas through the registry
 - `validate_persona(...)` to perform minimal validation
 
 Example:
 
 - `example_registry.py`
+
+### Persona ID / URI convention (prototype)
+
+The POP registry prototype now supports normalized persona references.
+
+Examples:
+
+- `marketing_manager_v1`
+- `pop:marketing_manager_v1`
+
+This is an early prototype for stable persona identifiers in POP-based
+tooling. The current implementation normalizes `pop:<persona_id>`
+references into local registry resolution, preparing for future
+URI-based registry evolution.
 
 ## Execution-Layer Helpers (Early Preview)
 

@@ -1,38 +1,81 @@
-import json
 from pathlib import Path
+from typing import List, Optional
 
-from .loader import load_persona
-
-
-DEFAULT_PERSONA_DIR = Path("personas")
+from .loader import load_persona, validate_persona
 
 
-def list_personas(persona_dir=DEFAULT_PERSONA_DIR):
-    persona_dir = Path(persona_dir)
-    if not persona_dir.exists():
+PERSONA_DIR = Path("personas")
+POP_ID_PREFIX = "pop:"
+
+
+def normalize_persona_ref(persona_ref: str) -> str:
+    """
+    Normalize a POP persona reference.
+
+    Supported inputs:
+    - marketing_manager_v1
+    - pop:marketing_manager_v1
+    """
+    if persona_ref.startswith(POP_ID_PREFIX):
+        return persona_ref[len(POP_ID_PREFIX) :]
+    return persona_ref
+
+
+def _iter_persona_files():
+    if not PERSONA_DIR.exists():
         return []
+    return sorted(PERSONA_DIR.glob("*.json"))
 
-    return sorted(str(path) for path in persona_dir.glob("*.json") if path.is_file())
+
+def list_personas() -> List[str]:
+    """
+    List available persona file paths in the local registry.
+    """
+    return [str(path) for path in _iter_persona_files()]
 
 
-def resolve_persona(persona_id, persona_dir=DEFAULT_PERSONA_DIR):
-    persona_dir = Path(persona_dir)
+def list_persona_ids() -> List[str]:
+    """
+    List normalized persona IDs from local registry files.
+    """
+    ids: List[str] = []
+    for path in _iter_persona_files():
+        persona = load_persona(path)
+        ids.append(persona.persona_id)
+    return ids
 
-    for path in persona_dir.glob("*.json"):
-        try:
-            with path.open("r", encoding="utf-8") as f:
-                data = json.load(f)
-        except Exception:
-            continue
 
-        if data.get("persona_id") == persona_id:
-            return str(path)
+def resolve_persona(persona_ref: str) -> Optional[Path]:
+    """
+    Resolve persona reference to a file path.
+
+    Resolution order:
+    1. Match normalized ref against persona.persona_id
+    2. Fallback to filename stem match
+    """
+    normalized = normalize_persona_ref(persona_ref)
+
+    for path in _iter_persona_files():
+        persona = load_persona(path)
+        if persona.persona_id == normalized:
+            return path
+
+    fallback = PERSONA_DIR / f"{normalized}.json"
+    if fallback.exists():
+        return fallback
 
     return None
 
 
-def load_persona_by_id(persona_id, persona_dir=DEFAULT_PERSONA_DIR):
-    path = resolve_persona(persona_id, persona_dir=persona_dir)
+def load_persona_by_id(persona_ref: str):
+    """
+    Load persona by normalized POP persona reference.
+    """
+    path = resolve_persona(persona_ref)
     if path is None:
-        raise FileNotFoundError(f"Persona not found for persona_id={persona_id!r}")
-    return load_persona(path)
+        raise ValueError(f"Persona not found: {persona_ref}")
+
+    persona = load_persona(path)
+    validate_persona(path)
+
+    return persona

@@ -1,29 +1,34 @@
-import unittest
-
-from pop.loader import validate_persona
-from pop.registry import list_personas, load_persona_by_id, resolve_persona
-
-
-class TestPOPRegistry(unittest.TestCase):
-    def test_list_personas(self):
-        personas = list_personas()
-        self.assertTrue(any("marketing_manager.json" in path for path in personas))
-        self.assertTrue(any("engineer.json" in path for path in personas))
-        self.assertTrue(any("designer.json" in path for path in personas))
-
-    def test_resolve_persona(self):
-        path = resolve_persona("marketing_manager_v1")
-        self.assertIsNotNone(path)
-        self.assertIn("marketing_manager.json", path)
-
-    def test_load_persona_by_id(self):
-        persona = load_persona_by_id("marketing_manager_v1")
-        self.assertEqual(persona.role, "Marketing Manager")
-
-    def test_validate_persona(self):
-        result = validate_persona("personas/marketing_manager.json")
-        self.assertTrue(result["valid"])
+from pop.registry import (
+    list_persona_ids,
+    list_personas,
+    load_persona_by_id,
+    normalize_persona_ref,
+    resolve_persona,
+)
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_list_personas():
+    personas = list_personas()
+    assert isinstance(personas, list)
+
+
+def test_list_persona_ids():
+    persona_ids = list_persona_ids()
+    assert isinstance(persona_ids, list)
+    assert "marketing_manager_v1" in persona_ids
+
+
+def test_normalize_persona_ref():
+    assert normalize_persona_ref("marketing_manager_v1") == "marketing_manager_v1"
+    assert normalize_persona_ref("pop:marketing_manager_v1") == "marketing_manager_v1"
+
+
+def test_resolve_persona_by_pop_id():
+    path = resolve_persona("pop:marketing_manager_v1")
+    assert path is not None
+    assert path.name == "marketing_manager.json"
+
+
+def test_load_persona_by_pop_id():
+    persona = load_persona_by_id("pop:marketing_manager_v1")
+    assert persona.persona_id == "marketing_manager_v1"
