@@ -19,6 +19,12 @@ The repository itself is separately archived on Zenodo at [10.5281/zenodo.188982
 
 For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
 
+## Architecture Context
+
+This repository is part of the [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture) ecosystem.
+It contributes the Persona Layer rather than trying to be the whole stack.
+Its focus is portable persona objects and identity attachment across runtimes.
+
 ## First Trial
 
 Want to try POP quickly without setting up a full runtime?
@@ -58,13 +64,6 @@ The protocol focuses on representing persona as a standalone object that can be 
 Runtime configurations such as CrewAI agents or other framework-specific configs are derived projections rather than the protocol core.
 
 This separation keeps persona definitions portable across agent frameworks while runtime environments remain free to implement their own execution models.
-
-## Digital Biosphere Ecosystem
-
-This repository is part of the **Digital Biosphere Architecture**.
-
-Architecture overview:
-[digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
 
 ## Positioning
 
