@@ -21,8 +21,9 @@ For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
 
 ## Architecture Context
 
-This repository is part of the [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture) ecosystem.
-It contributes the Persona Layer rather than trying to be the whole stack.
+This repository is a focused layer in the [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture) ecosystem.
+It does not try to be the full stack.
+It contributes the Persona Layer for verifiable AI systems.
 Its focus is portable persona objects and identity attachment across runtimes.
 
 ## First Trial
