@@ -7,11 +7,13 @@
 [![Release](https://img.shields.io/github/v/release/joy7758/persona-object-protocol)](https://github.com/joy7758/persona-object-protocol/releases)
 [![License](https://img.shields.io/github/license/joy7758/persona-object-protocol)](./LICENSE)
 
-A portable persona object layer for agent runtimes.
+A portable persona object layer for the Digital Biosphere Architecture.
 
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
-POP is a lightweight public draft for representing portable persona objects with explicit boundaries. POP is a framework-neutral persona object protocol for agent runtimes. It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
+POP is the Persona Layer of the [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture). It focuses on one layer of the broader architecture rather than a full agent stack. POP is a framework-agnostic persona object protocol built as a reusable interface and projection model for portable persona objects with explicit boundaries.
+
+It is positioning-first and protocol-oriented: not a product, not a persona generation pipeline, and not a full runtime stack.
 
 Preferred scholarly citation for POP is the POP-Core paper: [10.5281/zenodo.18907957](https://doi.org/10.5281/zenodo.18907957).
 
@@ -24,7 +26,7 @@ For minimal citation guidance, see [`docs/cite-pop.md`](docs/cite-pop.md).
 This repository is a focused layer in the [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture) ecosystem.
 It does not try to be the full stack.
 It contributes the Persona Layer for verifiable AI systems.
-Its focus is portable persona objects and identity attachment across runtimes.
+Its focus is portable persona objects, reusable projection surfaces, and identity attachment across runtimes.
 
 ## First Trial
 
