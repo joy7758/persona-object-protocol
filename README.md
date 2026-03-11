@@ -77,7 +77,18 @@ This separation keeps persona definitions portable across agent frameworks while
 - POP is not a full agent framework.
 - POP is not a prompt template library.
 - POP is not a memory or permissions system.
+- POP does not define task intent objects.
+- POP does not define action exchange objects.
+- POP does not define result exchange objects.
 - POP focuses on portable persona objects and adapter-based runtime projection.
+
+## Relationship to the Interaction Layer
+
+POP defines who the agent is.
+The Interaction Layer defines what is being requested or attempted.
+This separation keeps identity distinct from task semantics.
+
+For the interaction-layer draft in the broader ecosystem, see [Agent Intent Protocol](https://github.com/joy7758/agent-intent-protocol).
 
 ## Ecosystem Direction
 
@@ -489,6 +500,9 @@ POP is not:
 - a robotics stack
 - a digital immortality framework
 - a universal cross-model persona injection method
+- a task intent object format
+- an action exchange object format
+- a result exchange object format
 - a substitute for permission, identity, or memory systems
 
 ## Minimal structure
