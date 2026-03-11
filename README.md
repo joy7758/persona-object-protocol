@@ -28,6 +28,10 @@ It does not try to be the full stack.
 It contributes the Persona Layer for verifiable AI systems.
 Its focus is portable persona objects, reusable projection surfaces, and identity attachment across runtimes.
 
+## Relationship to Adjacent Repositories
+
+POP is the persona-layer interface and projection model in the broader stack. It is not the full architecture, not the audit layer, and not a generic end-to-end demo. For the system view, start with [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture); for the walkthrough path, see [verifiable-agent-demo](https://github.com/joy7758/verifiable-agent-demo); for adjacent lower-level protocol work around structured agent objects, see [agent-object-protocol](https://github.com/joy7758/agent-object-protocol).
+
 ## First Trial
 
 Want to try POP quickly without setting up a full runtime?
