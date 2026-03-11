@@ -728,3 +728,4 @@ python3 -m build
 The repository includes dedicated TestPyPI and PyPI trusted publishing
 workflows under [`.github/workflows/`](.github/workflows/), and package
 publication now follows tagged release and smoke-validation discipline.
+<!-- render-refresh: 20260311T205242Z -->
