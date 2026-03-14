@@ -1,3 +1,4 @@
+# Protocol executor baseline: keep repository and workflow dependencies under weekly review.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
