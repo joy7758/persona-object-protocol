@@ -50,6 +50,7 @@ external plugin packages. By default, the runtime looks for a local
 template is available at [`plugin_config.example.json`](plugin_config.example.json),
 and the config shape is defined by
 [`plugin_config.schema.json`](plugin_config.schema.json).
+The example config is also validated in CI so schema drift is caught during PR review.
 
 For temporary overrides, you can also point discovery at external plugin
 packages with `POP_PLUGIN_CONFIG_FILE`, `POP_PLUGIN_PACKAGES`, and
