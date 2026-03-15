@@ -1,0 +1,29 @@
+{
+  "$schema": "./task_input.schema.json",
+  "task_name": "Checkout Flow UX Review",
+  "task_type": "ux_review",
+  "inputs": {
+    "subject_name": "Checkout Flow",
+    "subject_category": "E-commerce Experience",
+    "subject_attributes": [
+      "Mobile checkout",
+      "Form abandonment",
+      "Payment trust"
+    ],
+    "target_audience": "Returning shoppers on mobile devices",
+    "constraints": [
+      "Reduce friction without removing required payment checks",
+      "Keep the review focused on high-impact improvements"
+    ],
+    "success_metrics": [
+      "Clear UX friction map",
+      "Prioritized improvement plan",
+      "Stakeholder-ready rollout message"
+    ]
+  },
+  "objectives": [
+    "Define a better checkout experience",
+    "Identify friction and usage patterns",
+    "Package the UX improvement plan for rollout"
+  ]
+}
