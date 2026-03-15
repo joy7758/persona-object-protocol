@@ -14,18 +14,15 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from demos.task_context import TaskContext
 from demos.task_registry import (
+    build_deliverable,
     build_stage_output,
-    deliverable_type_for,
+    persona_path_for,
+    stage_sequence_for,
     supported_task_types,
 )
 
 DEFAULT_TASK_INPUT_PATH = PROJECT_ROOT / "demos" / "market_research_task.json"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "demos" / "generated"
-STAGE_PROGRESS = {
-    "design": "Designing",
-    "research": "Researching",
-    "marketing": "Marketing",
-}
 
 
 def load_persona_loader_module() -> Any:
@@ -46,6 +43,7 @@ load_persona = PERSONA_LOADER_MODULE.load_persona
 
 def snapshot_result(result: dict[str, object]) -> dict[str, object]:
     return {
+        "stage_name": result.get("stage_name"),
         "persona_name": result.get("persona_name"),
         "role": result.get("role"),
         "task_output": result.get("task_output"),
@@ -150,15 +148,14 @@ def normalize_task_input(raw_task_input: dict[str, Any]) -> dict[str, Any]:
     return normalized
 
 
-def load_personas() -> tuple[Persona, Persona, Persona]:
-    design_persona = load_persona(PROJECT_ROOT / "personas" / "design_persona.json")
-    research_persona = load_persona(
-        PROJECT_ROOT / "personas" / "researcher_persona.json"
-    )
-    marketing_persona = load_persona(
-        PROJECT_ROOT / "personas" / "marketing_persona.json"
-    )
-    return design_persona, research_persona, marketing_persona
+def load_personas_for_task(task_type: str) -> dict[str, Persona]:
+    personas: dict[str, Persona] = {}
+    for stage in stage_sequence_for(task_type):
+        if stage.persona_id in personas:
+            continue
+        persona_path = PROJECT_ROOT / persona_path_for(stage.persona_id)
+        personas[stage.persona_id] = load_persona(persona_path)
+    return personas
 
 
 def slugify(value: str) -> str:
@@ -184,58 +181,37 @@ def write_deliverable(output_path: Path, payload: dict[str, Any]) -> Path:
 
 
 def run_stage(
-    stage_name: str,
+    task_type: str,
+    stage_definition: Any,
     persona: Persona,
     context: TaskContext,
-    previous_persona_names: tuple[str, ...] = (),
 ) -> dict[str, object]:
     previous_results: list[dict[str, object]] = []
-    for previous_persona_name in previous_persona_names:
-        previous_result = context.get_result(previous_persona_name)
+    for dependency_stage in stage_definition.depends_on:
+        previous_result = context.get_stage_result(dependency_stage)
         if previous_result:
             previous_results.append(snapshot_result(previous_result))
 
-    context.update_progress(persona.name, STAGE_PROGRESS[stage_name])
+    context.update_progress(
+        persona.name,
+        stage_definition.progress_label,
+        stage_definition.stage_name,
+    )
     result = {
+        "stage_name": stage_definition.stage_name,
+        "persona_id": stage_definition.persona_id,
         "persona_name": persona.name,
         "role": persona.role,
         "skills": persona.skills,
         "task_output": build_stage_output(
-            context.task_type,
-            stage_name,
+            task_type,
+            stage_definition.stage_name,
             context.task_input,
         ),
         "previous_results": previous_results,
     }
-    context.set_result(persona.name, result)
+    context.set_result(persona.name, result, stage_definition.stage_name)
     return result
-
-
-def build_final_deliverable(
-    context: TaskContext,
-    design_persona_name: str,
-    research_persona_name: str,
-    marketing_persona_name: str,
-) -> dict[str, Any]:
-    design_result = context.get_result(design_persona_name)
-    research_result = context.get_result(research_persona_name)
-    marketing_result = context.get_result(marketing_persona_name)
-    return {
-        "task_name": context.task_name,
-        "task_type": context.task_type,
-        "deliverable_type": deliverable_type_for(context.task_type),
-        "inputs": context.task_input.get("inputs", {}),
-        "objectives": context.task_input.get("objectives", []),
-        "prepared_by": marketing_persona_name,
-        "persona_sequence": [
-            design_persona_name,
-            research_persona_name,
-            marketing_persona_name,
-        ],
-        "design_brief": design_result.get("task_output", {}),
-        "research_summary": research_result.get("task_output", {}),
-        "marketing_plan": marketing_result.get("task_output", {}),
-    }
 
 
 def workflow(task_input_path: Path, output_path: Path | None = None) -> Path:
@@ -246,11 +222,8 @@ def workflow(task_input_path: Path, output_path: Path | None = None) -> Path:
         str(task_input.get("task_type", "market_research")),
         task_input,
     )
-    (
-        design_persona,
-        research_persona,
-        marketing_persona,
-    ) = load_personas()
+    personas = load_personas_for_task(task_context.task_type)
+    stage_sequence = stage_sequence_for(task_context.task_type)
 
     print(f"Task: {task_context.task_name}")
     print("Task Input:")
@@ -258,32 +231,18 @@ def workflow(task_input_path: Path, output_path: Path | None = None) -> Path:
     print()
     print("Starting Task:")
 
-    design_result = run_stage("design", design_persona, task_context)
-    print(json.dumps(design_result, indent=2))
-
-    research_result = run_stage(
-        "research",
-        research_persona,
-        task_context,
-        (design_persona.name,),
-    )
-    print(json.dumps(research_result, indent=2))
-
-    marketing_result = run_stage(
-        "marketing",
-        marketing_persona,
-        task_context,
-        (design_persona.name, research_persona.name),
-    )
-    print(json.dumps(marketing_result, indent=2))
+    for stage_definition in stage_sequence:
+        persona = personas[stage_definition.persona_id]
+        result = run_stage(
+            task_context.task_type,
+            stage_definition,
+            persona,
+            task_context,
+        )
+        print(json.dumps(result, indent=2))
 
     task_context.set_final_deliverable(
-        build_final_deliverable(
-            task_context,
-            design_persona.name,
-            research_persona.name,
-            marketing_persona.name,
-        )
+        build_deliverable(task_context.task_type, task_context)
     )
 
     print()

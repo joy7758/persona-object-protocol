@@ -7,13 +7,48 @@ StageOutputBuilder = Callable[[dict[str, Any]], dict[str, Any]]
 
 
 @dataclass(frozen=True)
+class PersonaDefinition:
+    persona_id: str
+    file_path: str
+
+
+@dataclass(frozen=True)
+class StageDefinition:
+    stage_name: str
+    persona_id: str
+    progress_label: str
+    deliverable_section: str
+    depends_on: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
 class TaskTypeDefinition:
     task_type: str
     deliverable_type: str
+    stage_sequence: tuple[StageDefinition, ...]
     handlers: dict[str, StageOutputBuilder]
 
 
+PERSONA_REGISTRY: dict[str, PersonaDefinition] = {}
 TASK_REGISTRY: dict[str, TaskTypeDefinition] = {}
+
+
+def register_persona(definition: PersonaDefinition) -> None:
+    PERSONA_REGISTRY[definition.persona_id] = definition
+
+
+def get_persona_definition(persona_id: str) -> PersonaDefinition:
+    try:
+        return PERSONA_REGISTRY[persona_id]
+    except KeyError as exc:
+        available = ", ".join(sorted(PERSONA_REGISTRY))
+        raise ValueError(
+            f"Unknown persona `{persona_id}`. Expected one of: {available}."
+        ) from exc
+
+
+def persona_path_for(persona_id: str) -> str:
+    return get_persona_definition(persona_id).file_path
 
 
 def register_task_type(definition: TaskTypeDefinition) -> None:
@@ -49,8 +84,48 @@ def build_stage_output(
     return builder(task_input)
 
 
+def stage_sequence_for(task_type: str) -> tuple[StageDefinition, ...]:
+    return get_task_definition(task_type).stage_sequence
+
+
+def persona_sequence_for(task_type: str) -> tuple[str, ...]:
+    return tuple(stage.persona_id for stage in stage_sequence_for(task_type))
+
+
 def deliverable_type_for(task_type: str) -> str:
     return get_task_definition(task_type).deliverable_type
+
+
+def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
+    definition = get_task_definition(task_type)
+    persona_sequence: list[str] = []
+    stage_sequence: list[str] = []
+    stage_outputs: dict[str, dict[str, Any]] = {}
+
+    deliverable = {
+        "task_name": context.task_name,
+        "task_type": context.task_type,
+        "deliverable_type": definition.deliverable_type,
+        "inputs": context.task_input.get("inputs", {}),
+        "objectives": context.task_input.get("objectives", []),
+    }
+
+    for stage in definition.stage_sequence:
+        result = context.get_stage_result(stage.stage_name)
+        if not result:
+            continue
+        persona_name = str(result.get("persona_name") or stage.persona_id)
+        persona_sequence.append(persona_name)
+        stage_sequence.append(stage.stage_name)
+        task_output = result.get("task_output", {})
+        stage_outputs[stage.stage_name] = task_output
+        deliverable[stage.deliverable_section] = task_output
+
+    deliverable["prepared_by"] = persona_sequence[-1] if persona_sequence else ""
+    deliverable["persona_sequence"] = persona_sequence
+    deliverable["stage_sequence"] = stage_sequence
+    deliverable["stage_outputs"] = stage_outputs
+    return deliverable
 
 
 def subject_inputs(task_input: dict[str, Any]) -> dict[str, Any]:
@@ -305,10 +380,55 @@ def build_ux_review_marketing_output(task_input: dict[str, Any]) -> dict[str, An
     }
 
 
+COMMON_STAGE_SEQUENCE = (
+    StageDefinition(
+        stage_name="design",
+        persona_id="design_persona",
+        progress_label="Designing",
+        deliverable_section="design_brief",
+    ),
+    StageDefinition(
+        stage_name="research",
+        persona_id="research_persona",
+        progress_label="Researching",
+        deliverable_section="research_summary",
+        depends_on=("design",),
+    ),
+    StageDefinition(
+        stage_name="marketing",
+        persona_id="marketing_persona",
+        progress_label="Marketing",
+        deliverable_section="marketing_plan",
+        depends_on=("design", "research"),
+    ),
+)
+
+
+register_persona(
+    PersonaDefinition(
+        persona_id="design_persona",
+        file_path="personas/design_persona.json",
+    )
+)
+register_persona(
+    PersonaDefinition(
+        persona_id="research_persona",
+        file_path="personas/researcher_persona.json",
+    )
+)
+register_persona(
+    PersonaDefinition(
+        persona_id="marketing_persona",
+        file_path="personas/marketing_persona.json",
+    )
+)
+
+
 register_task_type(
     TaskTypeDefinition(
         task_type="market_research",
         deliverable_type="market_strategy_report",
+        stage_sequence=COMMON_STAGE_SEQUENCE,
         handlers={
             "design": build_market_research_design_output,
             "research": build_market_research_research_output,
@@ -321,6 +441,7 @@ register_task_type(
     TaskTypeDefinition(
         task_type="product_design",
         deliverable_type="product_concept_brief",
+        stage_sequence=COMMON_STAGE_SEQUENCE,
         handlers={
             "design": build_product_design_design_output,
             "research": build_product_design_research_output,
@@ -333,6 +454,7 @@ register_task_type(
     TaskTypeDefinition(
         task_type="ux_review",
         deliverable_type="ux_improvement_plan",
+        stage_sequence=COMMON_STAGE_SEQUENCE,
         handlers={
             "design": build_ux_review_design_output,
             "research": build_ux_review_research_output,
