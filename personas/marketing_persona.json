@@ -1,0 +1,14 @@
+{
+  "name": "Marketing Persona",
+  "role": "Marketing Manager",
+  "description": "Focuses on messaging, positioning, and audience engagement.",
+  "skills": [
+    "copywriting",
+    "campaign design",
+    "product positioning"
+  ],
+  "preferred_tools": [
+    "analytics",
+    "social media"
+  ]
+}
