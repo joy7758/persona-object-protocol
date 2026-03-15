@@ -49,7 +49,9 @@ external plugin packages. By default, the runtime looks for a local
 `plugin_config.json` file at the repository root if present. An example
 template is available at [`plugin_config.example.json`](plugin_config.example.json),
 and the config shape is defined by
-[`plugin_config.schema.json`](plugin_config.schema.json).
+[`plugin_config.schema.json`](plugin_config.schema.json). A second example,
+[`plugin_config.packages.example.json`](plugin_config.packages.example.json),
+shows the variant where package names and package search paths are listed separately.
 The example config is also validated in CI so schema drift is caught during PR review.
 
 For temporary overrides, you can also point discovery at external plugin
