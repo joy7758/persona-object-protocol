@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import importlib
 from dataclasses import dataclass
 from typing import Any, Callable
 
@@ -165,13 +164,32 @@ def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
 
 
 def load_builtin_registry() -> None:
-    importlib.import_module("demos.stage_handlers")
-    from demos.persona_definitions import BUILTIN_PERSONAS
-    from demos.task_types import BUILTIN_TASK_TYPES
+    from demos.discovery import collect_module_exports
 
-    for persona in BUILTIN_PERSONAS:
+    handlers = collect_module_exports(
+        "demos",
+        "STAGE_HANDLER_DEFINITIONS",
+        exact_names=("stage_handlers",),
+        prefixes=("stage_handlers_",),
+    )
+    personas = collect_module_exports(
+        "demos",
+        "PERSONA_DEFINITIONS",
+        exact_names=("persona_definitions",),
+        prefixes=("persona_definitions_",),
+    )
+    task_types = collect_module_exports(
+        "demos",
+        "TASK_TYPE_DEFINITIONS",
+        exact_names=("task_types",),
+        prefixes=("task_types_",),
+    )
+
+    for handler in handlers:
+        register_stage_handler(handler)
+    for persona in personas:
         register_persona(persona)
-    for task_type in BUILTIN_TASK_TYPES:
+    for task_type in task_types:
         register_task_type(task_type)
 
 

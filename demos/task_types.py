@@ -27,7 +27,7 @@ COMMON_STAGE_SEQUENCE = (
 )
 
 
-BUILTIN_TASK_TYPES = (
+TASK_TYPE_DEFINITIONS = (
     TaskTypeDefinition(
         task_type="market_research",
         deliverable_type="market_strategy_report",
@@ -59,3 +59,6 @@ BUILTIN_TASK_TYPES = (
         },
     ),
 )
+
+
+BUILTIN_TASK_TYPES = TASK_TYPE_DEFINITIONS

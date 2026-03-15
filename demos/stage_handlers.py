@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from demos.task_registry import StageHandlerDefinition, register_stage_handler
+from demos.task_registry import StageHandlerDefinition
 
 
 def subject_inputs(task_input: dict[str, Any]) -> dict[str, Any]:
@@ -257,57 +257,44 @@ def build_ux_review_marketing_output(task_input: dict[str, Any]) -> dict[str, An
     }
 
 
-register_stage_handler(
+STAGE_HANDLER_DEFINITIONS = (
     StageHandlerDefinition(
         handler_id="market_research.design",
         builder=build_market_research_design_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="market_research.research",
         builder=build_market_research_research_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="market_research.marketing",
         builder=build_market_research_marketing_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="product_design.design",
         builder=build_product_design_design_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="product_design.research",
         builder=build_product_design_research_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="product_design.marketing",
         builder=build_product_design_marketing_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="ux_review.design",
         builder=build_ux_review_design_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="ux_review.research",
         builder=build_ux_review_research_output,
-    )
-)
-register_stage_handler(
+    ),
     StageHandlerDefinition(
         handler_id="ux_review.marketing",
         builder=build_ux_review_marketing_output,
-    )
+    ),
 )
+
+
+BUILTIN_STAGE_HANDLERS = STAGE_HANDLER_DEFINITIONS
