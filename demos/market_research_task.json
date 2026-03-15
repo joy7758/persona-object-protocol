@@ -1,0 +1,17 @@
+{
+  "task_name": "Market Research and Product Design",
+  "product": {
+    "name": "Smartphone X",
+    "category": "Electronics",
+    "features": [
+      "Touchscreen",
+      "5G",
+      "Fast Charging"
+    ]
+  },
+  "objectives": [
+    "Design a product concept",
+    "Research market trends",
+    "Create marketing strategy"
+  ]
+}

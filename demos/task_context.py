@@ -4,8 +4,13 @@ from typing import Any
 
 
 class TaskContext:
-    def __init__(self, task_name: str) -> None:
+    def __init__(
+        self,
+        task_name: str,
+        task_input: dict[str, Any] | None = None,
+    ) -> None:
         self.task_name = task_name
+        self.task_input = task_input or {}
         self.progress: dict[str, str] = {}
         self.results: dict[str, dict[str, Any]] = {}
         self.final_deliverable: dict[str, Any] = {}
@@ -42,6 +47,7 @@ class TaskContext:
     def get_task_output(self) -> dict[str, Any]:
         return {
             "task_name": self.task_name,
+            "task_input": self.task_input,
             "progress": self.progress,
             "persona_outputs": self.results,
             "final_deliverable": self.final_deliverable,
