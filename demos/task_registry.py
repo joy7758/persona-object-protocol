@@ -59,6 +59,10 @@ def persona_path_for(persona_id: str) -> str:
     return get_persona_definition(persona_id).file_path
 
 
+def registered_persona_ids() -> frozenset[str]:
+    return frozenset(PERSONA_REGISTRY)
+
+
 def register_stage_handler(definition: StageHandlerDefinition) -> None:
     STAGE_HANDLER_REGISTRY[definition.handler_id] = definition
 
@@ -162,7 +166,8 @@ def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
 
 def load_builtin_registry() -> None:
     importlib.import_module("demos.stage_handlers")
-    from demos.task_types import BUILTIN_PERSONAS, BUILTIN_TASK_TYPES
+    from demos.persona_definitions import BUILTIN_PERSONAS
+    from demos.task_types import BUILTIN_TASK_TYPES
 
     for persona in BUILTIN_PERSONAS:
         register_persona(persona)
