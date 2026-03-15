@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 from dataclasses import dataclass
 from typing import Any, Callable
 
@@ -159,88 +160,14 @@ def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
     return deliverable
 
 
-COMMON_STAGE_SEQUENCE = (
-    StageDefinition(
-        stage_name="design",
-        persona_id="design_persona",
-        progress_label="Designing",
-        deliverable_section="design_brief",
-    ),
-    StageDefinition(
-        stage_name="research",
-        persona_id="research_persona",
-        progress_label="Researching",
-        deliverable_section="research_summary",
-        depends_on=("design",),
-    ),
-    StageDefinition(
-        stage_name="marketing",
-        persona_id="marketing_persona",
-        progress_label="Marketing",
-        deliverable_section="marketing_plan",
-        depends_on=("design", "research"),
-    ),
-)
+def load_builtin_registry() -> None:
+    importlib.import_module("demos.stage_handlers")
+    from demos.task_types import BUILTIN_PERSONAS, BUILTIN_TASK_TYPES
+
+    for persona in BUILTIN_PERSONAS:
+        register_persona(persona)
+    for task_type in BUILTIN_TASK_TYPES:
+        register_task_type(task_type)
 
 
-register_persona(
-    PersonaDefinition(
-        persona_id="design_persona",
-        file_path="personas/design_persona.json",
-    )
-)
-register_persona(
-    PersonaDefinition(
-        persona_id="research_persona",
-        file_path="personas/researcher_persona.json",
-    )
-)
-register_persona(
-    PersonaDefinition(
-        persona_id="marketing_persona",
-        file_path="personas/marketing_persona.json",
-    )
-)
-
-
-from demos import stage_handlers as _stage_handlers
-
-
-register_task_type(
-    TaskTypeDefinition(
-        task_type="market_research",
-        deliverable_type="market_strategy_report",
-        stage_sequence=COMMON_STAGE_SEQUENCE,
-        stage_handlers={
-            "design": "market_research.design",
-            "research": "market_research.research",
-            "marketing": "market_research.marketing",
-        },
-    )
-)
-
-register_task_type(
-    TaskTypeDefinition(
-        task_type="product_design",
-        deliverable_type="product_concept_brief",
-        stage_sequence=COMMON_STAGE_SEQUENCE,
-        stage_handlers={
-            "design": "product_design.design",
-            "research": "product_design.research",
-            "marketing": "product_design.marketing",
-        },
-    )
-)
-
-register_task_type(
-    TaskTypeDefinition(
-        task_type="ux_review",
-        deliverable_type="ux_improvement_plan",
-        stage_sequence=COMMON_STAGE_SEQUENCE,
-        stage_handlers={
-            "design": "ux_review.design",
-            "research": "ux_review.research",
-            "marketing": "ux_review.marketing",
-        },
-    )
-)
+load_builtin_registry()
