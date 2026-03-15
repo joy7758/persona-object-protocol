@@ -1,4 +1,5 @@
 {
+  "$schema": "./plugin_config.schema.json",
   "plugin_paths": [
     {
       "path": "/absolute/path/to/pop_plugin_package_root",
