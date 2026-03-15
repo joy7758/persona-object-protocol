@@ -42,6 +42,8 @@ PERSONA_REGISTRY: dict[str, PersonaDefinition] = {}
 STAGE_HANDLER_REGISTRY: dict[str, StageHandlerDefinition] = {}
 TASK_REGISTRY: dict[str, TaskTypeDefinition] = {}
 LOADED_REGISTRY_PACKAGES: tuple[str, ...] = ()
+LOADED_PLUGIN_SEARCH_PATHS: tuple[Path, ...] = ()
+LOADED_PLUGIN_CONFIG_PATH: Path | None = None
 
 
 def register_persona(definition: PersonaDefinition) -> None:
@@ -108,6 +110,14 @@ def reset_registry() -> None:
 
 def loaded_registry_packages() -> tuple[str, ...]:
     return LOADED_REGISTRY_PACKAGES
+
+
+def loaded_plugin_search_paths() -> tuple[Path, ...]:
+    return LOADED_PLUGIN_SEARCH_PATHS
+
+
+def loaded_plugin_config_path() -> Path | None:
+    return LOADED_PLUGIN_CONFIG_PATH
 
 
 def register_task_type(definition: TaskTypeDefinition) -> None:
@@ -196,30 +206,32 @@ def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
 def load_registry(
     extra_packages: tuple[str, ...] = (),
     reset: bool = True,
+    config_file: str | Path | None = None,
 ) -> tuple[str, ...]:
-    from demos.discovery import collect_module_exports, configured_package_names
+    from demos.discovery import collect_module_exports, configured_plugin_sources
 
-    package_names = configured_package_names(
+    plugin_sources = configured_plugin_sources(
         default_packages=("demos",),
         extra_packages=extra_packages,
+        config_file=config_file,
     )
     if reset:
         reset_registry()
 
     handlers = collect_module_exports(
-        package_names,
+        plugin_sources.package_names,
         "STAGE_HANDLER_DEFINITIONS",
         exact_names=("stage_handlers",),
         prefixes=("stage_handlers_",),
     )
     personas = collect_module_exports(
-        package_names,
+        plugin_sources.package_names,
         "PERSONA_DEFINITIONS",
         exact_names=("persona_definitions",),
         prefixes=("persona_definitions_",),
     )
     task_types = collect_module_exports(
-        package_names,
+        plugin_sources.package_names,
         "TASK_TYPE_DEFINITIONS",
         exact_names=("task_types",),
         prefixes=("task_types_",),
@@ -232,8 +244,12 @@ def load_registry(
     for task_type in task_types:
         register_task_type(task_type)
     global LOADED_REGISTRY_PACKAGES
-    LOADED_REGISTRY_PACKAGES = package_names
-    return package_names
+    global LOADED_PLUGIN_SEARCH_PATHS
+    global LOADED_PLUGIN_CONFIG_PATH
+    LOADED_REGISTRY_PACKAGES = plugin_sources.package_names
+    LOADED_PLUGIN_SEARCH_PATHS = plugin_sources.package_paths
+    LOADED_PLUGIN_CONFIG_PATH = plugin_sources.config_path
+    return plugin_sources.package_names
 
 
 def load_builtin_registry() -> tuple[str, ...]:
