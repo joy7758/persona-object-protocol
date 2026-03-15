@@ -47,11 +47,20 @@ CrewAI-style runtime roles.
 The demo workflow can load registry extensions from builtin modules and
 external plugin packages. By default, the runtime looks for a local
 `plugin_config.json` file at the repository root if present. An example
-template is available at [`plugin_config.example.json`](plugin_config.example.json).
+template is available at [`plugin_config.example.json`](plugin_config.example.json),
+and the config shape is defined by
+[`plugin_config.schema.json`](plugin_config.schema.json).
 
 For temporary overrides, you can also point discovery at external plugin
 packages with `POP_PLUGIN_CONFIG_FILE`, `POP_PLUGIN_PACKAGES`, and
 `POP_PLUGIN_PACKAGE_PATHS`.
+
+If you use file-based plugin config validation outside this repository,
+install the optional schema dependency:
+
+```bash
+pip install "pop-persona[schema]"
+```
 
 ## Persona Layer Diagram
 

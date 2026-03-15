@@ -16,6 +16,7 @@ PLUGIN_PACKAGES_ENV = "POP_PLUGIN_PACKAGES"
 PLUGIN_PACKAGE_PATHS_ENV = "POP_PLUGIN_PACKAGE_PATHS"
 PLUGIN_CONFIG_FILE_ENV = "POP_PLUGIN_CONFIG_FILE"
 DEFAULT_PLUGIN_CONFIG_PATH = PROJECT_ROOT / "plugin_config.json"
+PLUGIN_CONFIG_SCHEMA_PATH = PROJECT_ROOT / "plugin_config.schema.json"
 
 
 @dataclass(frozen=True)
@@ -132,11 +133,38 @@ def load_plugin_config(
     payload = json.loads(config_path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ValueError("Plugin config must be a JSON object.")
+    validate_plugin_config_payload(payload)
 
     base_dir = config_path.parent
     package_paths = normalize_plugin_paths(payload, base_dir)
     package_names = normalize_plugin_packages(payload)
     return PluginDiscoveryConfig(config_path, package_names, package_paths)
+
+
+def load_plugin_config_schema() -> dict[str, Any]:
+    return json.loads(PLUGIN_CONFIG_SCHEMA_PATH.read_text(encoding="utf-8"))
+
+
+def validation_error_path(error: Any) -> str:
+    parts = [str(part) for part in getattr(error, "absolute_path", ())]
+    return ".".join(parts) if parts else "<root>"
+
+
+def validate_plugin_config_payload(payload: dict[str, Any]) -> None:
+    try:
+        import jsonschema
+    except ModuleNotFoundError as exc:
+        raise RuntimeError(
+            "Plugin config validation requires `jsonschema`. "
+            "Install `pop-persona[schema]` or add `jsonschema` to your environment."
+        ) from exc
+
+    schema = load_plugin_config_schema()
+    try:
+        jsonschema.validate(instance=payload, schema=schema)
+    except jsonschema.ValidationError as exc:
+        path = validation_error_path(exc)
+        raise ValueError(f"Invalid plugin config at {path}: {exc.message}") from exc
 
 
 def configure_plugin_search_paths(paths: tuple[Path, ...]) -> tuple[Path, ...]:
