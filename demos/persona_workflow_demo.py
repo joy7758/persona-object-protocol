@@ -17,6 +17,7 @@ from demos.task_registry import (
     build_deliverable,
     build_stage_output,
     persona_path_for,
+    stage_handler_id_for,
     stage_sequence_for,
     supported_task_types,
 )
@@ -44,6 +45,7 @@ load_persona = PERSONA_LOADER_MODULE.load_persona
 def snapshot_result(result: dict[str, object]) -> dict[str, object]:
     return {
         "stage_name": result.get("stage_name"),
+        "handler_id": result.get("handler_id"),
         "persona_name": result.get("persona_name"),
         "role": result.get("role"),
         "task_output": result.get("task_output"),
@@ -199,6 +201,7 @@ def run_stage(
     )
     result = {
         "stage_name": stage_definition.stage_name,
+        "handler_id": stage_handler_id_for(task_type, stage_definition.stage_name),
         "persona_id": stage_definition.persona_id,
         "persona_name": persona.name,
         "role": persona.role,
