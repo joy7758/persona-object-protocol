@@ -1,0 +1,30 @@
+{
+  "$schema": "./task_input.schema.json",
+  "task_name": "Industrial Design Sprint for Smartphone X",
+  "task_type": "product_design",
+  "inputs": {
+    "subject_name": "Smartphone X",
+    "subject_category": "Electronics",
+    "subject_attributes": [
+      "Slim chassis",
+      "Fast Charging",
+      "Edge-to-edge display"
+    ],
+    "target_audience": "Premium buyers upgrading from older flagship phones",
+    "constraints": [
+      "Preserve premium feel",
+      "Keep onboarding intuitive",
+      "Avoid adding unnecessary hardware complexity"
+    ],
+    "success_metrics": [
+      "Distinct concept direction",
+      "Feasible design constraints",
+      "Launch-ready product story"
+    ]
+  },
+  "objectives": [
+    "Shape the product concept",
+    "Review design constraints and competitive cues",
+    "Prepare launch messaging for the concept"
+  ]
+}

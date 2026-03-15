@@ -1,0 +1,28 @@
+{
+  "$schema": "./task_input.schema.json",
+  "task_name": "Market Research and Product Design",
+  "task_type": "market_research",
+  "inputs": {
+    "subject_name": "Smartphone X",
+    "subject_category": "Electronics",
+    "subject_attributes": [
+      "Touchscreen",
+      "5G",
+      "Fast Charging"
+    ],
+    "target_audience": "Mobile-first professionals",
+    "constraints": [
+      "Keep premium positioning credible",
+      "Highlight battery convenience without overclaiming"
+    ],
+    "success_metrics": [
+      "Clear market rationale",
+      "Actionable go-to-market narrative"
+    ]
+  },
+  "objectives": [
+    "Design a product concept",
+    "Research market trends",
+    "Create marketing strategy"
+  ]
+}
