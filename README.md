@@ -42,6 +42,17 @@ Start here:
 This dry-run demo shows 3 portable persona objects projected into 3
 CrewAI-style runtime roles.
 
+## Plugin Discovery
+
+The demo workflow can load registry extensions from builtin modules and
+external plugin packages. By default, the runtime looks for a local
+`plugin_config.json` file at the repository root if present. An example
+template is available at [`plugin_config.example.json`](plugin_config.example.json).
+
+For temporary overrides, you can also point discovery at external plugin
+packages with `POP_PLUGIN_CONFIG_FILE`, `POP_PLUGIN_PACKAGES`, and
+`POP_PLUGIN_PACKAGE_PATHS`.
+
 ## Persona Layer Diagram
 
 ```mermaid

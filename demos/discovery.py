@@ -1,14 +1,28 @@
 from __future__ import annotations
 
 import importlib
+import importlib.util
+import json
 import os
 import pkgutil
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
+from typing import Any
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_PACKAGES_ENV = "POP_PLUGIN_PACKAGES"
 PLUGIN_PACKAGE_PATHS_ENV = "POP_PLUGIN_PACKAGE_PATHS"
+PLUGIN_CONFIG_FILE_ENV = "POP_PLUGIN_CONFIG_FILE"
+DEFAULT_PLUGIN_CONFIG_PATH = PROJECT_ROOT / "plugin_config.json"
+
+
+@dataclass(frozen=True)
+class PluginDiscoveryConfig:
+    config_path: Path | None
+    package_names: tuple[str, ...]
+    package_paths: tuple[Path, ...]
 
 
 def split_package_names(value: str) -> tuple[str, ...]:
@@ -23,6 +37,108 @@ def split_search_paths(value: str) -> tuple[Path, ...]:
     )
 
 
+def unique_strings(values: tuple[str, ...]) -> tuple[str, ...]:
+    ordered: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        if value and value not in seen:
+            ordered.append(value)
+            seen.add(value)
+    return tuple(ordered)
+
+
+def unique_paths(values: tuple[Path, ...]) -> tuple[Path, ...]:
+    ordered: list[Path] = []
+    seen: set[Path] = set()
+    for value in values:
+        if value not in seen:
+            ordered.append(value)
+            seen.add(value)
+    return tuple(ordered)
+
+
+def resolve_plugin_config_path(config_file: str | Path | None = None) -> Path | None:
+    if config_file is not None:
+        candidate = Path(config_file).expanduser().resolve()
+        if not candidate.exists():
+            raise FileNotFoundError(f"Plugin config file does not exist: {candidate}")
+        return candidate
+
+    env_value = os.environ.get(PLUGIN_CONFIG_FILE_ENV, "").strip()
+    if env_value:
+        candidate = Path(env_value).expanduser().resolve()
+        if not candidate.exists():
+            raise FileNotFoundError(f"Plugin config file does not exist: {candidate}")
+        return candidate
+
+    if DEFAULT_PLUGIN_CONFIG_PATH.exists():
+        return DEFAULT_PLUGIN_CONFIG_PATH
+
+    return None
+
+
+def resolve_relative_path(value: str, base_dir: Path) -> Path:
+    path = Path(value).expanduser()
+    if path.is_absolute():
+        return path.resolve()
+    return (base_dir / path).resolve()
+
+
+def normalize_plugin_paths(
+    payload: dict[str, Any],
+    base_dir: Path,
+) -> tuple[Path, ...]:
+    paths: list[Path] = []
+    for raw_path in payload.get("plugin_package_paths", ()):
+        if str(raw_path).strip():
+            paths.append(resolve_relative_path(str(raw_path), base_dir))
+
+    for entry in payload.get("plugin_paths", ()):
+        if isinstance(entry, str):
+            if entry.strip():
+                paths.append(resolve_relative_path(entry, base_dir))
+            continue
+        if isinstance(entry, dict):
+            raw_path = str(entry.get("path", "")).strip()
+            if raw_path:
+                paths.append(resolve_relative_path(raw_path, base_dir))
+
+    return unique_paths(tuple(paths))
+
+
+def normalize_plugin_packages(payload: dict[str, Any]) -> tuple[str, ...]:
+    package_names: list[str] = []
+    for package_name in payload.get("plugin_packages", ()):
+        normalized = str(package_name).strip()
+        if normalized:
+            package_names.append(normalized)
+
+    for entry in payload.get("plugin_paths", ()):
+        if isinstance(entry, dict):
+            package_name = str(entry.get("package_name", "")).strip()
+            if package_name:
+                package_names.append(package_name)
+
+    return unique_strings(tuple(package_names))
+
+
+def load_plugin_config(
+    config_file: str | Path | None = None,
+) -> PluginDiscoveryConfig:
+    config_path = resolve_plugin_config_path(config_file)
+    if config_path is None:
+        return PluginDiscoveryConfig(None, (), ())
+
+    payload = json.loads(config_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("Plugin config must be a JSON object.")
+
+    base_dir = config_path.parent
+    package_paths = normalize_plugin_paths(payload, base_dir)
+    package_names = normalize_plugin_packages(payload)
+    return PluginDiscoveryConfig(config_path, package_names, package_paths)
+
+
 def configure_plugin_search_paths(paths: tuple[Path, ...]) -> tuple[Path, ...]:
     configured: list[Path] = []
     for path in paths:
@@ -35,21 +151,21 @@ def configure_plugin_search_paths(paths: tuple[Path, ...]) -> tuple[Path, ...]:
     return tuple(configured)
 
 
-def configured_package_names(
+def configured_plugin_sources(
     default_packages: tuple[str, ...] = ("demos",),
     extra_packages: tuple[str, ...] = (),
-) -> tuple[str, ...]:
-    plugin_paths = split_search_paths(os.environ.get(PLUGIN_PACKAGE_PATHS_ENV, ""))
-    configure_plugin_search_paths(plugin_paths)
+    config_file: str | Path | None = None,
+) -> PluginDiscoveryConfig:
+    file_config = load_plugin_config(config_file)
+    env_paths = split_search_paths(os.environ.get(PLUGIN_PACKAGE_PATHS_ENV, ""))
+    configured_paths = configure_plugin_search_paths(
+        unique_paths((*file_config.package_paths, *env_paths))
+    )
     env_packages = split_package_names(os.environ.get(PLUGIN_PACKAGES_ENV, ""))
-
-    ordered_packages: list[str] = []
-    seen: set[str] = set()
-    for package_name in (*default_packages, *extra_packages, *env_packages):
-        if package_name and package_name not in seen:
-            ordered_packages.append(package_name)
-            seen.add(package_name)
-    return tuple(ordered_packages)
+    package_names = unique_strings(
+        (*default_packages, *extra_packages, *file_config.package_names, *env_packages)
+    )
+    return PluginDiscoveryConfig(file_config.config_path, package_names, configured_paths)
 
 
 def import_matching_modules(

@@ -274,7 +274,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Run the persona workflow demo with dynamic task input. "
-            "External plugin packages can be added with "
+            "External plugin packages can be added with plugin_config.json or "
+            "POP_PLUGIN_CONFIG_FILE, and overridden with "
             "POP_PLUGIN_PACKAGES and POP_PLUGIN_PACKAGE_PATHS."
         )
     )
