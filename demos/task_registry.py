@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import importlib
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable
 
 StageOutputBuilder = Callable[[dict[str, Any]], dict[str, Any]]
@@ -10,6 +12,7 @@ StageOutputBuilder = Callable[[dict[str, Any]], dict[str, Any]]
 class PersonaDefinition:
     persona_id: str
     file_path: str
+    package_name: str | None = None
 
 
 @dataclass(frozen=True)
@@ -38,6 +41,7 @@ class TaskTypeDefinition:
 PERSONA_REGISTRY: dict[str, PersonaDefinition] = {}
 STAGE_HANDLER_REGISTRY: dict[str, StageHandlerDefinition] = {}
 TASK_REGISTRY: dict[str, TaskTypeDefinition] = {}
+LOADED_REGISTRY_PACKAGES: tuple[str, ...] = ()
 
 
 def register_persona(definition: PersonaDefinition) -> None:
@@ -58,6 +62,26 @@ def persona_path_for(persona_id: str) -> str:
     return get_persona_definition(persona_id).file_path
 
 
+def resolve_persona_path(persona_id: str, project_root: str | Path) -> Path:
+    definition = get_persona_definition(persona_id)
+    persona_path = Path(definition.file_path).expanduser()
+    if persona_path.is_absolute():
+        return persona_path
+    if definition.package_name:
+        package = importlib.import_module(definition.package_name)
+        package_paths = list(getattr(package, "__path__", []))
+        if package_paths:
+            return Path(package_paths[0]) / persona_path
+        package_file = getattr(package, "__file__", None)
+        if package_file is not None:
+            return Path(package_file).resolve().parent / persona_path
+    return Path(project_root) / persona_path
+
+
+def registered_persona_ids() -> frozenset[str]:
+    return frozenset(PERSONA_REGISTRY)
+
+
 def register_stage_handler(definition: StageHandlerDefinition) -> None:
     STAGE_HANDLER_REGISTRY[definition.handler_id] = definition
 
@@ -74,6 +98,16 @@ def get_stage_handler_definition(handler_id: str) -> StageHandlerDefinition:
 
 def registered_stage_handler_ids() -> frozenset[str]:
     return frozenset(STAGE_HANDLER_REGISTRY)
+
+
+def reset_registry() -> None:
+    PERSONA_REGISTRY.clear()
+    STAGE_HANDLER_REGISTRY.clear()
+    TASK_REGISTRY.clear()
+
+
+def loaded_registry_packages() -> tuple[str, ...]:
+    return LOADED_REGISTRY_PACKAGES
 
 
 def register_task_type(definition: TaskTypeDefinition) -> None:
@@ -159,88 +193,51 @@ def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
     return deliverable
 
 
-COMMON_STAGE_SEQUENCE = (
-    StageDefinition(
-        stage_name="design",
-        persona_id="design_persona",
-        progress_label="Designing",
-        deliverable_section="design_brief",
-    ),
-    StageDefinition(
-        stage_name="research",
-        persona_id="research_persona",
-        progress_label="Researching",
-        deliverable_section="research_summary",
-        depends_on=("design",),
-    ),
-    StageDefinition(
-        stage_name="marketing",
-        persona_id="marketing_persona",
-        progress_label="Marketing",
-        deliverable_section="marketing_plan",
-        depends_on=("design", "research"),
-    ),
-)
+def load_registry(
+    extra_packages: tuple[str, ...] = (),
+    reset: bool = True,
+) -> tuple[str, ...]:
+    from demos.discovery import collect_module_exports, configured_package_names
 
-
-register_persona(
-    PersonaDefinition(
-        persona_id="design_persona",
-        file_path="personas/design_persona.json",
+    package_names = configured_package_names(
+        default_packages=("demos",),
+        extra_packages=extra_packages,
     )
-)
-register_persona(
-    PersonaDefinition(
-        persona_id="research_persona",
-        file_path="personas/researcher_persona.json",
+    if reset:
+        reset_registry()
+
+    handlers = collect_module_exports(
+        package_names,
+        "STAGE_HANDLER_DEFINITIONS",
+        exact_names=("stage_handlers",),
+        prefixes=("stage_handlers_",),
     )
-)
-register_persona(
-    PersonaDefinition(
-        persona_id="marketing_persona",
-        file_path="personas/marketing_persona.json",
+    personas = collect_module_exports(
+        package_names,
+        "PERSONA_DEFINITIONS",
+        exact_names=("persona_definitions",),
+        prefixes=("persona_definitions_",),
     )
-)
-
-
-from demos import stage_handlers as _stage_handlers
-
-
-register_task_type(
-    TaskTypeDefinition(
-        task_type="market_research",
-        deliverable_type="market_strategy_report",
-        stage_sequence=COMMON_STAGE_SEQUENCE,
-        stage_handlers={
-            "design": "market_research.design",
-            "research": "market_research.research",
-            "marketing": "market_research.marketing",
-        },
+    task_types = collect_module_exports(
+        package_names,
+        "TASK_TYPE_DEFINITIONS",
+        exact_names=("task_types",),
+        prefixes=("task_types_",),
     )
-)
 
-register_task_type(
-    TaskTypeDefinition(
-        task_type="product_design",
-        deliverable_type="product_concept_brief",
-        stage_sequence=COMMON_STAGE_SEQUENCE,
-        stage_handlers={
-            "design": "product_design.design",
-            "research": "product_design.research",
-            "marketing": "product_design.marketing",
-        },
-    )
-)
+    for handler in handlers:
+        register_stage_handler(handler)
+    for persona in personas:
+        register_persona(persona)
+    for task_type in task_types:
+        register_task_type(task_type)
+    global LOADED_REGISTRY_PACKAGES
+    LOADED_REGISTRY_PACKAGES = package_names
+    return package_names
 
-register_task_type(
-    TaskTypeDefinition(
-        task_type="ux_review",
-        deliverable_type="ux_improvement_plan",
-        stage_sequence=COMMON_STAGE_SEQUENCE,
-        stage_handlers={
-            "design": "ux_review.design",
-            "research": "ux_review.research",
-            "marketing": "ux_review.marketing",
-        },
-    )
-)
+
+def load_builtin_registry() -> tuple[str, ...]:
+    return load_registry()
+
+
+load_registry()
