@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from demos.task_registry import PersonaDefinition, StageDefinition, TaskTypeDefinition
+from demos.task_registry import StageDefinition, TaskTypeDefinition
 
 
 COMMON_STAGE_SEQUENCE = (
@@ -27,23 +27,7 @@ COMMON_STAGE_SEQUENCE = (
 )
 
 
-BUILTIN_PERSONAS = (
-    PersonaDefinition(
-        persona_id="design_persona",
-        file_path="personas/design_persona.json",
-    ),
-    PersonaDefinition(
-        persona_id="research_persona",
-        file_path="personas/researcher_persona.json",
-    ),
-    PersonaDefinition(
-        persona_id="marketing_persona",
-        file_path="personas/marketing_persona.json",
-    ),
-)
-
-
-BUILTIN_TASK_TYPES = (
+TASK_TYPE_DEFINITIONS = (
     TaskTypeDefinition(
         task_type="market_research",
         deliverable_type="market_strategy_report",
@@ -75,3 +59,6 @@ BUILTIN_TASK_TYPES = (
         },
     ),
 )
+
+
+BUILTIN_TASK_TYPES = TASK_TYPE_DEFINITIONS
