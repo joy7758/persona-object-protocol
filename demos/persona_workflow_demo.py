@@ -16,7 +16,7 @@ from demos.task_context import TaskContext
 from demos.task_registry import (
     build_deliverable,
     build_stage_output,
-    persona_path_for,
+    resolve_persona_path,
     stage_handler_id_for,
     stage_sequence_for,
     supported_task_types,
@@ -155,7 +155,7 @@ def load_personas_for_task(task_type: str) -> dict[str, Persona]:
     for stage in stage_sequence_for(task_type):
         if stage.persona_id in personas:
             continue
-        persona_path = PROJECT_ROOT / persona_path_for(stage.persona_id)
+        persona_path = resolve_persona_path(stage.persona_id, PROJECT_ROOT)
         personas[stage.persona_id] = load_persona(persona_path)
     return personas
 
@@ -272,7 +272,11 @@ def workflow(task_input_path: Path, output_path: Path | None = None) -> Path:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run the persona workflow demo with dynamic task input."
+        description=(
+            "Run the persona workflow demo with dynamic task input. "
+            "External plugin packages can be added with "
+            "POP_PLUGIN_PACKAGES and POP_PLUGIN_PACKAGE_PATHS."
+        )
     )
     parser.add_argument(
         "--task-input",

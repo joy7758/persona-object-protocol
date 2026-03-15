@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable
 
 StageOutputBuilder = Callable[[dict[str, Any]], dict[str, Any]]
@@ -11,6 +12,7 @@ StageOutputBuilder = Callable[[dict[str, Any]], dict[str, Any]]
 class PersonaDefinition:
     persona_id: str
     file_path: str
+    package_name: str | None = None
 
 
 @dataclass(frozen=True)
@@ -39,6 +41,7 @@ class TaskTypeDefinition:
 PERSONA_REGISTRY: dict[str, PersonaDefinition] = {}
 STAGE_HANDLER_REGISTRY: dict[str, StageHandlerDefinition] = {}
 TASK_REGISTRY: dict[str, TaskTypeDefinition] = {}
+LOADED_REGISTRY_PACKAGES: tuple[str, ...] = ()
 
 
 def register_persona(definition: PersonaDefinition) -> None:
@@ -57,6 +60,22 @@ def get_persona_definition(persona_id: str) -> PersonaDefinition:
 
 def persona_path_for(persona_id: str) -> str:
     return get_persona_definition(persona_id).file_path
+
+
+def resolve_persona_path(persona_id: str, project_root: str | Path) -> Path:
+    definition = get_persona_definition(persona_id)
+    persona_path = Path(definition.file_path).expanduser()
+    if persona_path.is_absolute():
+        return persona_path
+    if definition.package_name:
+        package = importlib.import_module(definition.package_name)
+        package_paths = list(getattr(package, "__path__", []))
+        if package_paths:
+            return Path(package_paths[0]) / persona_path
+        package_file = getattr(package, "__file__", None)
+        if package_file is not None:
+            return Path(package_file).resolve().parent / persona_path
+    return Path(project_root) / persona_path
 
 
 def registered_persona_ids() -> frozenset[str]:
@@ -79,6 +98,16 @@ def get_stage_handler_definition(handler_id: str) -> StageHandlerDefinition:
 
 def registered_stage_handler_ids() -> frozenset[str]:
     return frozenset(STAGE_HANDLER_REGISTRY)
+
+
+def reset_registry() -> None:
+    PERSONA_REGISTRY.clear()
+    STAGE_HANDLER_REGISTRY.clear()
+    TASK_REGISTRY.clear()
+
+
+def loaded_registry_packages() -> tuple[str, ...]:
+    return LOADED_REGISTRY_PACKAGES
 
 
 def register_task_type(definition: TaskTypeDefinition) -> None:
@@ -164,15 +193,51 @@ def build_deliverable(task_type: str, context: Any) -> dict[str, Any]:
     return deliverable
 
 
-def load_builtin_registry() -> None:
-    importlib.import_module("demos.stage_handlers")
-    from demos.persona_definitions import BUILTIN_PERSONAS
-    from demos.task_types import BUILTIN_TASK_TYPES
+def load_registry(
+    extra_packages: tuple[str, ...] = (),
+    reset: bool = True,
+) -> tuple[str, ...]:
+    from demos.discovery import collect_module_exports, configured_package_names
 
-    for persona in BUILTIN_PERSONAS:
+    package_names = configured_package_names(
+        default_packages=("demos",),
+        extra_packages=extra_packages,
+    )
+    if reset:
+        reset_registry()
+
+    handlers = collect_module_exports(
+        package_names,
+        "STAGE_HANDLER_DEFINITIONS",
+        exact_names=("stage_handlers",),
+        prefixes=("stage_handlers_",),
+    )
+    personas = collect_module_exports(
+        package_names,
+        "PERSONA_DEFINITIONS",
+        exact_names=("persona_definitions",),
+        prefixes=("persona_definitions_",),
+    )
+    task_types = collect_module_exports(
+        package_names,
+        "TASK_TYPE_DEFINITIONS",
+        exact_names=("task_types",),
+        prefixes=("task_types_",),
+    )
+
+    for handler in handlers:
+        register_stage_handler(handler)
+    for persona in personas:
         register_persona(persona)
-    for task_type in BUILTIN_TASK_TYPES:
+    for task_type in task_types:
         register_task_type(task_type)
+    global LOADED_REGISTRY_PACKAGES
+    LOADED_REGISTRY_PACKAGES = package_names
+    return package_names
 
 
-load_builtin_registry()
+def load_builtin_registry() -> tuple[str, ...]:
+    return load_registry()
+
+
+load_registry()
