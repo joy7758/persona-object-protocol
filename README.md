@@ -848,4 +848,13 @@ python3 -m build
 The repository includes dedicated TestPyPI and PyPI trusted publishing
 workflows under [`.github/workflows/`](.github/workflows/), and package
 publication now follows tagged release and smoke-validation discipline.
+
+## Architecture Navigation
+
+- [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- [Persona Object Protocol](https://github.com/joy7758/persona-object-protocol)
+- [Agent Intent Protocol](https://github.com/joy7758/agent-intent-protocol)
+- [Token Governor](https://github.com/joy7758/token-governor)
+- [MVK](https://github.com/joy7758/fdo-kernel-mvk)
+- [ARO Audit](https://github.com/joy7758/aro-audit)
 <!-- render-refresh: 20260311T205242Z -->
