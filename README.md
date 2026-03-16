@@ -9,6 +9,16 @@
 
 A portable persona object layer for the Digital Biosphere Architecture.
 
+## Role in Digital Biosphere Architecture
+
+POP is the **Persona Object Standard Entry**.
+
+It defines the canonical structure of persona objects used by autonomous agents.
+
+Position in architecture:
+
+Persona Layer → POP
+
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
 POP is the Persona Layer of the [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture). It focuses on one layer of the broader architecture rather than a full agent stack. POP is a framework-agnostic persona object protocol built as a reusable interface and projection model for portable persona objects with explicit boundaries.
