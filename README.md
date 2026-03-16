@@ -849,6 +849,10 @@ The repository includes dedicated TestPyPI and PyPI trusted publishing
 workflows under [`.github/workflows/`](.github/workflows/), and package
 publication now follows tagged release and smoke-validation discipline.
 
+## FDO-facing Note
+
+For FDO-related positioning, see [docs/fdo-relation-note.md](docs/fdo-relation-note.md).
+
 ## Architecture Navigation
 
 - [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture)
