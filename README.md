@@ -9,6 +9,35 @@
 
 A portable persona object layer for the Digital Biosphere Architecture.
 
+## Role
+
+`persona-object-protocol` is the persona layer of the Digital Biosphere Architecture. It defines portable persona objects, projection rules, and persona attachment surfaces across runtimes.
+
+## Not this repo
+
+- not the governance layer
+- not the audit layer
+- not the benchmark suite
+- not the architecture hub
+
+## Start here
+
+- [TRY_POP.md](TRY_POP.md)
+- [docs/cite-pop.md](docs/cite-pop.md)
+- [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+
+## Depends on
+
+- [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- [agent-intent-protocol](https://github.com/joy7758/agent-intent-protocol)
+- optional runtime integrations such as LangChain and CrewAI
+
+## Status
+
+- active persona layer
+- protocol-first surface
+- runtime integrations remain secondary to the canonical POP model
+
 ## Role in Digital Biosphere Architecture
 
 POP is the **Persona Object Standard Entry**.
@@ -17,7 +46,7 @@ It defines the canonical structure of persona objects used by autonomous agents.
 
 Position in architecture:
 
-Persona Layer → POP
+Persona Layer -> POP
 
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
