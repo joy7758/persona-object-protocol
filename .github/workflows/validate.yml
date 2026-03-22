@@ -6,6 +6,32 @@ on:
   pull_request:
 
 jobs:
+  validate-plugin-config:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config_file:
+          - plugin_config.example.json
+          - plugin_config.packages.example.json
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.11"
+
+      - name: Install POP CLI
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[schema]"
+
+      - name: Validate plugin config example
+        run: |
+          python validation/scripts/validate_plugin_config.py "${{ matrix.config_file }}"
+
   validate:
     runs-on: ubuntu-latest
 

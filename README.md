@@ -1,3 +1,14 @@
+<!-- language-switch:start -->
+<p>
+  <a href="./README.md">
+    <img src="https://img.shields.io/badge/English-Current-1f883d?style=for-the-badge" alt="English">
+  </a>
+  <a href="./README.zh-CN.md">
+    <img src="https://img.shields.io/badge/Chinese-Switch-0f172a?style=for-the-badge" alt="Chinese">
+  </a>
+</p>
+<!-- language-switch:end -->
+
 # Persona Object Protocol (POP)
 
 [![CI](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml/badge.svg)](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml)
@@ -8,6 +19,45 @@
 [![License](https://img.shields.io/github/license/joy7758/persona-object-protocol)](./LICENSE)
 
 A portable persona object layer for the Digital Biosphere Architecture.
+
+## Role
+
+`persona-object-protocol` is the persona layer of the Digital Biosphere Architecture. It defines portable persona objects, projection rules, and persona attachment surfaces across runtimes.
+
+## Not this repo
+
+- not the governance layer
+- not the audit layer
+- not the benchmark suite
+- not the architecture hub
+
+## Start here
+
+- [TRY_POP.md](TRY_POP.md)
+- [docs/cite-pop.md](docs/cite-pop.md)
+- [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+
+## Depends on
+
+- [digital-biosphere-architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- [agent-intent-protocol](https://github.com/joy7758/agent-intent-protocol)
+- optional runtime integrations such as LangChain and CrewAI
+
+## Status
+
+- active persona layer
+- protocol-first surface
+- runtime integrations remain secondary to the canonical POP model
+
+## Role in Digital Biosphere Architecture
+
+POP is the **Persona Object Standard Entry**.
+
+It defines the canonical structure of persona objects used by autonomous agents.
+
+Position in architecture:
+
+Persona Layer -> POP
 
 ## A lightweight draft protocol for portable persona objects in multimodal AI systems
 
@@ -41,6 +91,116 @@ Start here:
 
 This dry-run demo shows 3 portable persona objects projected into 3
 CrewAI-style runtime roles.
+
+## Plugin Discovery
+
+The demo workflow can load registry extensions from builtin modules and
+external plugin packages. By default, the runtime looks for a local
+`plugin_config.json` file at the repository root if present. An example
+template is available at [`plugin_config.example.json`](plugin_config.example.json),
+and the config shape is defined by
+[`plugin_config.schema.json`](plugin_config.schema.json). A second example,
+[`plugin_config.packages.example.json`](plugin_config.packages.example.json),
+shows the variant where package names and package search paths are listed separately.
+The example config is also validated in CI so schema drift is caught during PR review.
+
+For temporary overrides, you can also point discovery at external plugin
+packages with `POP_PLUGIN_CONFIG_FILE`, `POP_PLUGIN_PACKAGES`, and
+`POP_PLUGIN_PACKAGE_PATHS`.
+
+If you use file-based plugin config validation outside this repository,
+install the optional schema dependency:
+
+```bash
+pip install "pop-persona[schema]"
+```
+
+### Plugin Extension Tutorial
+
+The demo registry loads definitions from three extension surfaces:
+
+- `STAGE_HANDLER_DEFINITIONS` for stage handlers
+- `PERSONA_DEFINITIONS` for builtin or external persona registry entries
+- `TASK_TYPE_DEFINITIONS` for task-type metadata and stage routing
+
+Discovery order is:
+
+1. builtin `demos` modules
+2. packages from `plugin_config.json` or `POP_PLUGIN_CONFIG_FILE`
+3. package names and search paths from `POP_PLUGIN_PACKAGES` and `POP_PLUGIN_PACKAGE_PATHS`
+
+Environment variables act as an override layer on top of file-based config.
+
+#### Config Shape 1: `plugin_paths`
+
+Use this when each plugin package is easiest to describe as a single
+`path` plus `package_name` pair.
+
+```json
+{
+  "$schema": "./plugin_config.schema.json",
+  "plugin_paths": [
+    {
+      "path": "/tmp/pop_demo_plugins",
+      "package_name": "pop_demo_plugins"
+    }
+  ],
+  "plugin_packages": [],
+  "plugin_package_paths": []
+}
+```
+
+This is the shape shown in
+[`plugin_config.example.json`](plugin_config.example.json).
+
+#### Config Shape 2: `plugin_packages` + `plugin_package_paths`
+
+Use this when package names and import search paths need to be managed
+separately.
+
+```json
+{
+  "$schema": "./plugin_config.schema.json",
+  "plugin_paths": [],
+  "plugin_packages": [
+    "pop_demo_plugins",
+    "pop_extra_plugins"
+  ],
+  "plugin_package_paths": [
+    "./plugins/pop_demo_plugins",
+    "./plugins/pop_extra_plugins"
+  ]
+}
+```
+
+This is the shape shown in
+[`plugin_config.packages.example.json`](plugin_config.packages.example.json).
+
+#### Field Notes
+
+- `plugin_paths`: Array of either plain path strings or objects with `path` and optional `package_name`.
+- `plugin_packages`: Import package names to scan for `*_DEFINITIONS` exports.
+- `plugin_package_paths`: Filesystem paths added to `sys.path` before plugin package imports.
+- `path`: A relative path is resolved from the config file directory; an absolute path is used as-is.
+- `package_name`: Optional for `plugin_paths` entries, but required if the path alone is not enough to identify the package to import.
+
+#### How To Add A Plugin Package
+
+1. Create a Python package that exposes one or more of:
+   `STAGE_HANDLER_DEFINITIONS`, `PERSONA_DEFINITIONS`, `TASK_TYPE_DEFINITIONS`.
+2. If a persona definition points to a JSON file, keep the JSON inside the
+   plugin package and set `package_name` on the `PersonaDefinition` so the
+   runtime can resolve the relative file path correctly.
+3. Add the package to `plugin_config.json`, or point the runtime at it with
+   `POP_PLUGIN_CONFIG_FILE`, `POP_PLUGIN_PACKAGES`, and `POP_PLUGIN_PACKAGE_PATHS`.
+4. Run the demo against a task that references the new `task_type`.
+
+Example:
+
+```bash
+POP_PLUGIN_CONFIG_FILE=/tmp/pop_demo_plugins/plugin_config.json \
+python demos/persona_workflow_demo.py --task-input /tmp/content_strategy_task.json
+```
 
 ## Persona Layer Diagram
 
@@ -728,4 +888,17 @@ python3 -m build
 The repository includes dedicated TestPyPI and PyPI trusted publishing
 workflows under [`.github/workflows/`](.github/workflows/), and package
 publication now follows tagged release and smoke-validation discipline.
+
+## FDO-facing Note
+
+For FDO-related positioning, see [docs/fdo-relation-note.md](docs/fdo-relation-note.md).
+
+## Architecture Navigation
+
+- [Digital Biosphere Architecture](https://github.com/joy7758/digital-biosphere-architecture)
+- [Persona Object Protocol](https://github.com/joy7758/persona-object-protocol)
+- [Agent Intent Protocol](https://github.com/joy7758/agent-intent-protocol)
+- [Token Governor](https://github.com/joy7758/token-governor)
+- [MVK](https://github.com/joy7758/fdo-kernel-mvk)
+- [ARO Audit](https://github.com/joy7758/aro-audit)
 <!-- render-refresh: 20260311T205242Z -->

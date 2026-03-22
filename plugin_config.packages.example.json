@@ -1,0 +1,12 @@
+{
+  "$schema": "./plugin_config.schema.json",
+  "plugin_paths": [],
+  "plugin_packages": [
+    "pop_demo_plugins",
+    "pop_extra_plugins"
+  ],
+  "plugin_package_paths": [
+    "./plugins/pop_demo_plugins",
+    "./plugins/pop_extra_plugins"
+  ]
+}

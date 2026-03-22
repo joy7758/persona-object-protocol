@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/joy7758/persona-object-protocol/main/demos/task_input.schema.json",
+  "title": "Persona Workflow Demo Task Input",
+  "description": "Generic task schema for the multi-persona workflow demo.",
+  "type": "object",
+  "required": [
+    "task_name",
+    "task_type",
+    "inputs",
+    "objectives"
+  ],
+  "properties": {
+    "task_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_type": {
+      "type": "string",
+      "enum": [
+        "market_research",
+        "product_design",
+        "ux_review"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "required": [
+        "subject_name",
+        "subject_category",
+        "subject_attributes"
+      ],
+      "properties": {
+        "subject_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_attributes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "target_audience": {
+          "type": "string"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "success_metrics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "objectives": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "additionalProperties": true
+}
