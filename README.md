@@ -1,3 +1,14 @@
+<!-- language-switch:start -->
+<p>
+  <a href="./README.md">
+    <img src="https://img.shields.io/badge/English-Current-1f883d?style=for-the-badge" alt="English">
+  </a>
+  <a href="./README.zh-CN.md">
+    <img src="https://img.shields.io/badge/Chinese-Switch-0f172a?style=for-the-badge" alt="Chinese">
+  </a>
+</p>
+<!-- language-switch:end -->
+
 # POP Persona Cockpit
 
 `POP Persona Cockpit` is a local-first CLI for building and using a personal digital persona workspace.
