@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }} | POP 数字人格驾驶舱</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}" />
+    <script defer src="{{ url_for('static', path='/app.js') }}"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="side-nav">
+        <div class="brand">
+          <p class="eyebrow">POP</p>
+          <h1>数字人格驾驶舱</h1>
+          <p class="brand-copy">你的本地思考伙伴。平时安静在旁，需要时就出现。</p>
+        </div>
+        <nav>
+          {% for item in nav_items %}
+          <a class="nav-link" href="{{ item.href }}">{{ item.label }}</a>
+          {% endfor %}
+        </nav>
+      </aside>
+      <main class="content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">本地运行</p>
+            <h2>{{ page_title }}</h2>
+          </div>
+        </header>
+
+        {% if notice %}
+        <section class="flash flash-success">{{ notice }}</section>
+        {% endif %}
+        {% if error %}
+        <section class="flash flash-error">{{ error }}</section>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

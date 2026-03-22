@@ -1,0 +1,80 @@
+:root {
+  --bg: #f7efe3;
+  --card: #fff9f0;
+  --ink: #231f1a;
+  --muted: #6f665b;
+  --accent: #b65a34;
+  --line: rgba(35, 31, 26, 0.12);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(180deg, #faf4ea, #f3ead9);
+}
+
+.popup-shell {
+  padding: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+h1 {
+  margin: 0.25rem 0 0;
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: 1.45rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.toggle-row,
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.toggle-row {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.status-card {
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0.72rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.button-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+button {
+  padding: 0.75rem 0.9rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #3d4d47;
+}

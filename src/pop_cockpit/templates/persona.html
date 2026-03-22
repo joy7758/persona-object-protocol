@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <form method="get" action="/persona" class="inline-form">
+    <label>
+      <span>画像视图</span>
+      <select name="scope">
+        {% for option in scope_options %}
+        <option value="{{ option.value }}" {% if option.value == scope %}selected{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit">查看这个视图</button>
+  </form>
+</section>
+
+<section class="grid three-up">
+  <form method="post" action="/persona/rebuild" class="card card-action">
+    <input type="hidden" name="scope" value="{{ scope }}" />
+    <h3>重建我的数字人格</h3>
+    <p>用这组视图下最新的每日快照，重新整理你的稳定人格画像。</p>
+    <button type="submit">重建我的数字人格</button>
+  </form>
+  <a class="card card-action link-card" href="/persona/export/json?scope={{ scope }}">
+    <h3>导出人格 JSON</h3>
+    <p>导出机器可读的人格数据。</p>
+  </a>
+  <a class="card card-action link-card" href="/persona/export/markdown?scope={{ scope }}">
+    <h3>导出人格说明</h3>
+    <p>导出一份便于阅读的人格摘要。</p>
+  </a>
+  <a class="card card-action link-card" href="/persona/export/package?scope={{ scope }}">
+    <h3>导出我的人格包</h3>
+    <p>把当前人格、最近快照和近期分析元数据打包带走。</p>
+  </a>
+</section>
+
+<section class="card">
+  <p class="eyebrow">我当前的数字人格</p>
+  {% if persona_result.persona_core %}
+  <div class="stack compact">
+    <p><strong>身份概述：</strong> {{ persona_result.persona_core.identity }}</p>
+    <p><strong>长期目标：</strong> {{ persona_result.persona_core.long_term_goals | join(", ") or "暂时没有明显信号" }}</p>
+    <p><strong>当前重心：</strong> {{ persona_result.persona_core.current_focus | join(", ") or "暂时没有明显信号" }}</p>
+    <p><strong>决策风格：</strong> {{ persona_result.persona_core.decision_style or "暂时还看不出清晰模式。" }}</p>
+    <p><strong>风险偏好：</strong> {{ persona_result.persona_core.risk_profile or "暂时还看不出清晰模式。" }}</p>
+    <p><strong>稳定偏好：</strong> {{ persona_result.persona_core.stable_biases | join(", ") or "暂时没有明显信号" }}</p>
+    <p><strong>最近变化：</strong> {{ persona_result.persona_core.recent_shifts | join(", ") or "暂时没有明显变化" }}</p>
+    <p><strong>置信说明：</strong> {{ persona_result.persona_core.confidence_notes | join(" | ") or "暂无" }}</p>
+  </div>
+  {% else %}
+  <p>{{ persona_result.message }}</p>
+  {% endif %}
+</section>
+
+<section class="card">
+  <p class="eyebrow">可携带的人格包</p>
+  <p>{{ import_package_message }}</p>
+</section>
+{% endblock %}

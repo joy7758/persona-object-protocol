@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="grid three-up">
+  <article class="card">
+    <p class="eyebrow">同步状态</p>
+    <h3>{{ sync_health_label }}</h3>
+    <p><strong>已启用：</strong>{{ "是" if sync_status.enabled else "否" }}</p>
+    <p><strong>提供方：</strong>{{ sync_status.provider }}</p>
+    <p><strong>本机密钥：</strong>{{ "已设置" if sync_status.sync_passphrase_set else "未设置" }}</p>
+    <p><strong>最近同步：</strong>{{ sync_status.last_sync_time or "还没有同步" }}</p>
+    <p><strong>最近错误：</strong>{{ sync_status.last_error or "无" }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">设备身份</p>
+    <p><strong>设备名：</strong>{{ sync_status.device_name or "还没有设置" }}</p>
+    <p><strong>角色：</strong>{{ sync_status.device_role }}</p>
+    <p><strong>设备 ID：</strong>{{ sync_status.device_id }}</p>
+    <p><strong>目录：</strong>{{ sync_status.sync_root_path or "还没有设置" }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">队列概况</p>
+    <p><strong>待发出：</strong>{{ sync_status.pending_outgoing_count }}</p>
+    <p><strong>待导入：</strong>{{ sync_status.pending_incoming_count }}</p>
+    <p><strong>冲突数量：</strong>{{ sync_status.conflict_count }}</p>
+    <p><strong>后台自动同步：</strong>{{ "开启" if sync_status.sync_auto_start else "关闭" }}</p>
+  </article>
+</section>
+
+<section class="card">
+  <p class="eyebrow">设备说明</p>
+  <p>Primary 设备负责创建人格包。Secondary 设备负责接收人格包，并可以回传反馈事件。</p>
+  {% if sync_status.warnings %}
+  <div class="stack compact">
+    {% for warning in sync_status.warnings %}
+    <section class="flash flash-error">{{ warning }}</section>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+<section class="grid actions">
+  <a class="card card-action link-card" href="/settings">
+    <h3>Set Up Sync</h3>
+    <p>去设置页选择 Google Drive 同步目录、设备角色和同步间隔。</p>
+  </a>
+  <form method="post" action="/sync/now" class="card card-action">
+    <h3>Sync Now</h3>
+    <p>立即导出本地包，并拉取远端最新加密包。</p>
+    <button type="submit">Sync Now</button>
+  </form>
+  <form method="post" action="/sync/pause" class="card card-action">
+    <h3>Pause Sync</h3>
+    <p>暂停这台设备的自动同步，但保留目录和密钥设置。</p>
+    <button type="submit">Pause Sync</button>
+  </form>
+  <form method="post" action="/sync/resume" class="card card-action">
+    <h3>Resume Sync</h3>
+    <p>恢复这台设备的自动同步和后台轮询。</p>
+    <button type="submit">Resume Sync</button>
+  </form>
+  <form method="post" action="/sync/export-persona" class="card card-action">
+    <h3>Export Persona Package</h3>
+    <p>主设备可把当前人格核和最近快照导出为最新加密包。</p>
+    <button type="submit">Export Persona Package</button>
+  </form>
+  <form method="post" action="/sync/import-remote" class="card card-action">
+    <h3>Import Remote Updates</h3>
+    <p>只导入尚未处理的远端包，并记录 receipt 保证幂等。</p>
+    <button type="submit">Import Remote Updates</button>
+  </form>
+</section>
+
+<section class="card">
+  <p class="eyebrow">最近同步历史</p>
+  {% if sync_status.recent_history %}
+  <div class="stack compact">
+    {% for entry in sync_status.recent_history %}
+    <div class="card subtle-card">
+      <p><strong>{{ entry.action }}</strong> · {{ entry.status }}</p>
+      <p>{{ entry.message }}</p>
+      <p class="meta-note">{{ entry.timestamp }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>还没有同步历史。</p>
+  {% endif %}
+</section>
+{% endblock %}

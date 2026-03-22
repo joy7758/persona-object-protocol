@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <form method="post" action="/execution/propose" class="stack">
+    <div>
+      <p class="eyebrow">动作草案</p>
+      <h3>把一次已保存分析，变成一个可安全预演的下一步</h3>
+    </div>
+    <div class="grid two-up">
+      <label>
+        <span>已保存分析</span>
+        <select name="source_session_id">
+          <option value="">不关联</option>
+          {% for session in available_sessions %}
+          <option value="{{ session.session_id }}">
+            {{ session.session_id }} · {{ session.question[:72] }}
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>画像视图</span>
+        <select name="snapshot_scope">
+          {% for option in scope_options %}
+          <option value="{{ option.value }}">{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <div class="grid three-up">
+      <label>
+        <span>动作类型</span>
+        <input type="text" name="action_type" placeholder="例如：write_summary" required />
+      </label>
+      <label>
+        <span>动作载体</span>
+        <select name="target_type">
+          {% for option in target_type_options %}
+          <option value="{{ option.value }}">{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>目标名称</span>
+        <input type="text" name="target_name" placeholder="例如：daily_brief" required />
+      </label>
+    </div>
+    <div class="grid two-up">
+      <label>
+        <span>安全等级</span>
+        <select name="safety_level">
+          {% for option in safety_level_options %}
+          <option value="{{ option.value }}" {% if option.value == "medium" %}selected{% endif %}>{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>执行前确认</span>
+        <select name="requires_confirmation">
+          <option value="true" selected>需要确认</option>
+          <option value="false">无需确认</option>
+        </select>
+      </label>
+    </div>
+    <label>
+      <span>参数 JSON</span>
+      <textarea name="parameters_text" rows="4" placeholder='{"summary_type": "weekly"}'></textarea>
+    </label>
+    <label>
+      <span>补充说明</span>
+      <textarea name="rationale" rows="4" placeholder="告诉 POP 为什么要有这条动作，以及你希望它做什么。"></textarea>
+    </label>
+    <div class="button-row">
+      <button type="submit">创建动作草案</button>
+    </div>
+  </form>
+</section>
+
+<section class="grid two-up">
+  <article class="card">
+    <p class="eyebrow">最近动作草案</p>
+    {% if execution_intents %}
+    <div class="stack">
+      {% for intent in execution_intents %}
+      <a class="list-item link-item" href="/execution?intent_id={{ intent.intent_id }}">
+        <div class="list-topline">
+          <strong>{{ intent.action_type }}</strong>
+          <span>{{ execution_status_labels.get(intent.status, intent.status) }}</span>
+        </div>
+        <p>{{ target_type_labels.get(intent.target_type, intent.target_type) }} → {{ intent.target_name }}</p>
+        <small>{{ safety_level_labels.get(intent.safety_level, intent.safety_level) }} · {{ "需要确认" if intent.requires_confirmation else "无需确认" }} · {{ intent.created_at }}</small>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>现在还没有动作草案。</p>
+    {% endif %}
+  </article>
+
+  <article class="card">
+    <p class="eyebrow">最近预演结果</p>
+    {% if execution_results %}
+    <ul class="plain-list">
+      {% for result in execution_results %}
+      <li>
+        <strong>{{ result.intent_id }}</strong>
+        · {{ target_type_labels.get(result.adapter_type, result.adapter_type) }}
+        · {{ execution_mode_labels.get(result.execution_mode, result.execution_mode) }}
+        · {{ "成功" if result.success else "失败" }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>现在还没有预演结果。</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="card">
+  <p class="eyebrow">草案详情</p>
+  {% if selected_detail and selected_detail.intent %}
+  <div class="grid two-up">
+    <div class="stack compact">
+      <p><strong>草案编号：</strong> {{ selected_detail.intent.intent_id }}</p>
+      <p><strong>当前状态：</strong> {{ execution_status_labels.get(selected_detail.intent.status, selected_detail.intent.status) }}</p>
+      <p><strong>动作类型：</strong> {{ selected_detail.intent.action_type }}</p>
+      <p><strong>目标：</strong> {{ target_type_labels.get(selected_detail.intent.target_type, selected_detail.intent.target_type) }} → {{ selected_detail.intent.target_name }}</p>
+      <p><strong>安全等级：</strong> {{ safety_level_labels.get(selected_detail.intent.safety_level, selected_detail.intent.safety_level) }}</p>
+      <p><strong>执行前确认：</strong> {{ "需要确认" if selected_detail.intent.requires_confirmation else "无需确认" }}</p>
+      <p><strong>画像视图：</strong> {{ scope_labels.get(selected_detail.intent.snapshot_scope, selected_detail.intent.snapshot_scope) }}</p>
+      <p><strong>人格版本：</strong> {{ selected_detail.intent.persona_core_version_id or "暂无" }}</p>
+      <p><strong>已保存分析：</strong> {{ selected_detail.intent.source_session_id or "暂无" }}</p>
+      <p><strong>审计记录：</strong> {{ selected_detail.intent.source_audit_id or "暂无" }}</p>
+      <p><strong>反馈状态：</strong> {{ review_status_labels.get(selected_detail.intent.review_status, selected_detail.intent.review_status) }}</p>
+    </div>
+    <div class="stack compact">
+      <h3>为什么会有这条草案</h3>
+      <p>{{ selected_detail.intent.rationale or "这条草案还没有补充说明。" }}</p>
+      <h3>动作细节</h3>
+      <pre class="code-block">{{ selected_detail.intent.parameters }}</pre>
+    </div>
+  </div>
+  <div class="button-row">
+    <form method="post" action="/execution/{{ selected_detail.intent.intent_id }}/simulate">
+      <button type="submit">预演动作</button>
+    </form>
+    <form method="post" action="/execution/{{ selected_detail.intent.intent_id }}/approve">
+      <button type="submit">确认并预演</button>
+    </form>
+    <form method="post" action="/execution/{{ selected_detail.intent.intent_id }}/reject">
+      <button type="submit">丢弃草案</button>
+    </form>
+  </div>
+
+  <div class="stack compact">
+    <h3>预演结果</h3>
+    {% if selected_detail.results %}
+    {% for result in selected_detail.results %}
+    <div class="list-item">
+      <div class="list-topline">
+        <strong>{{ result.result_id }}</strong>
+        <span>{{ "成功" if result.success else "失败" }}</span>
+      </div>
+      <p>{{ target_type_labels.get(result.adapter_type, result.adapter_type) }} · {{ execution_mode_labels.get(result.execution_mode, result.execution_mode) }}</p>
+      <pre class="code-block">{{ result.output_text or result.error_text }}</pre>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>这条草案还没有预演结果。</p>
+    {% endif %}
+  </div>
+  <div class="stack compact">
+    <h3>这条草案有帮助吗？</h3>
+    <form method="post" action="/execution/{{ selected_detail.intent.intent_id }}/review" class="stack">
+      <label>
+        <span>反馈</span>
+        <select name="review_status">
+          {% for option in review_status_options %}
+          <option value="{{ option.value }}" {% if option.value == selected_detail.intent.review_status %}selected{% endif %}>{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>补充说明（可选）</span>
+        <textarea name="review_note" rows="3" placeholder="告诉 POP 这条草案为什么有用，或者为什么不适合。">{{ selected_detail.intent.review_note }}</textarea>
+      </label>
+      <button type="submit">保存草案反馈</button>
+    </form>
+  </div>
+  {% else %}
+  <p>从左侧选一条草案，或者先创建一条新的动作草案。</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <form method="post" action="/ask" class="stack">
+    <label>
+      <span>你现在想让 POP 帮你梳理什么问题？</span>
+      <textarea name="question" rows="5" placeholder="把你正在思考的问题写在这里，POP 会先替你整理上下文。">{{ question }}</textarea>
+    </label>
+    <div class="grid three-up">
+      <label>
+        <span>画像视图</span>
+        <select name="scope">
+          {% for option in scope_options %}
+          <option value="{{ option.value }}" {% if option.value == scope %}selected{% endif %}>{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>最近回看天数</span>
+        <input type="number" min="1" name="days" value="{{ days }}" />
+      </label>
+      <label>
+        <span>来源筛选（可选）</span>
+        <input type="text" name="source_type" value="{{ source_type }}" placeholder="例如：chatgpt_export" />
+      </label>
+    </div>
+    <div class="grid two-up">
+      <label>
+        <span>本次分析引擎</span>
+        <select name="provider_override">
+          {% for option in provider_override_options %}
+          <option value="{{ option.value }}" {% if option.value == provider_override %}selected{% endif %}>{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <div class="card">
+        <p><strong>当前分析引擎：</strong>{{ current_engine_mode_label }}</p>
+        <p><strong>当前模型：</strong>{{ current_engine_model }}</p>
+      </div>
+    </div>
+    <div class="button-row">
+      <button type="submit" name="action" value="assemble">先整理我的上下文</button>
+      <button type="submit" name="action" value="save">保存这次分析</button>
+    </div>
+  </form>
+</section>
+
+{% if ask_result %}
+<section class="grid two-up">
+  <article class="card">
+    <p class="eyebrow">这次用到的近期信号</p>
+    {% if ask_result.persona_core and ask_result.persona_core.recent_shifts %}
+    <ul class="plain-list">
+      {% for item in ask_result.persona_core.recent_shifts %}
+      <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>最近还没有明显的新变化。</p>
+    {% endif %}
+  </article>
+  <article class="card">
+    <p class="eyebrow">这次用到的相关记忆</p>
+    {% if ask_result.retrieval_notes %}
+    <ul class="plain-list">
+      {% for note in ask_result.retrieval_notes %}
+      <li>{{ note.memory_id }} · score={{ note.score }} · {{ note.ranking_reason }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>这次没有命中明显相关的旧记录。</p>
+    {% endif %}
+  </article>
+</section>
+
+{% if ask_result.session and ask_result.session.response %}
+<section class="card">
+  <p class="eyebrow">POP 的第一轮分析</p>
+  <pre class="code-block">{{ ask_result.session.response }}</pre>
+</section>
+{% endif %}
+
+<section class="card">
+  <p class="eyebrow">准备好的上下文</p>
+  <pre class="code-block">{{ ask_result.prompt_package }}</pre>
+  {% if ask_result.session %}
+  <p class="meta-note">已保存分析：{{ ask_result.session.session_id }}</p>
+  <div class="stack compact">
+    <h3>这次分析有帮助吗？</h3>
+    <form method="post" action="/ask/{{ ask_result.session.session_id }}/feedback" class="stack">
+      <label>
+        <span>反馈</span>
+        <select name="feedback_status">
+          {% for option in feedback_status_options %}
+          <option value="{{ option.value }}" {% if option.value == ask_result.session.feedback_status %}selected{% endif %}>{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>补充说明（可选）</span>
+        <textarea name="feedback_note" rows="3" placeholder="哪里有帮助，哪里不对，或者你希望 POP 下次怎么调整。">{{ ask_result.session.feedback_note }}</textarea>
+      </label>
+      <button type="submit">保存我的反馈</button>
+    </form>
+    <p class="meta-note">当前反馈：{{ feedback_status_labels.get(ask_result.session.feedback_status, ask_result.session.feedback_status) }}</p>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}
