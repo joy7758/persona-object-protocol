@@ -44,9 +44,9 @@
 
 ## 在数字生物圈架构中的作用
 
-POP 是 **Persona 对象标准条目**。
+POP 是 Persona Layer 的角色层仓库，也是该层 persona 对象格式的规范表面。
 
-它定义了自主代理使用的角色对象的规范结构。
+它定义了自主智能体在 Persona Layer 中使用的 persona 对象结构。
 
 在建筑学中的地位：
 
