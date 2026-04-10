@@ -21,4 +21,4 @@ POP is relevant to FDO discussions where a structured, versioned, machine-valida
 
 ## Current architectural role
 
-POP is the Persona Object Standard Entry in the Digital Biosphere Architecture.
+POP is the persona-layer repository in the Digital Biosphere Architecture.
