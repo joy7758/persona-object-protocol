@@ -2,6 +2,10 @@
 [English](./README.md) | [中文](./README.zh-CN.md)
 <!-- language-switch:end -->
 
+> **SAEE 产品生态关系｜SAEE product-ecosystem relationship**<br>
+> 本仓库继续以独立协议和 DOI 身份维护，并在 [SAEE 智能体可靠性评估基础设施](https://github.com/joy7758/SAEE) 中映射为 **Agent Identity Module**。该映射不移动代码、不合并许可或引用记录。<br>
+> This repository retains its independent protocol and DOI identity and is mapped as the **Agent Identity Module** of the [SAEE Agent Reliability Evaluation Infrastructure](https://github.com/joy7758/SAEE). The mapping does not move code or merge licenses or citation records.
+
 # Persona Object Protocol (POP)
 
 [![CI](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml/badge.svg)](https://github.com/joy7758/persona-object-protocol/actions/workflows/validate.yml)
