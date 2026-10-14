@@ -1,0 +1,7 @@
+.venv/
+build/
+dist/
+src/*.egg-info/
+src/langchain_pop.egg-info/
+__pycache__/
+*.pyc
