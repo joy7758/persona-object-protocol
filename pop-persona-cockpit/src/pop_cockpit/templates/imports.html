@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="grid two-up">
+  <form method="post" action="/imports/files" enctype="multipart/form-data" class="card upload-card" data-dropzone>
+    <p class="eyebrow">导入文件</p>
+    <h3>把文件交给 POP</h3>
+    <p>支持 `.txt`、`.md`、`.json`。POP 会把它们整理成你本地可继续使用的记忆。</p>
+    <label class="dropzone">
+      <input type="file" name="files" multiple accept=".txt,.md,.json" />
+      <span>选择文件，或直接拖到这里</span>
+    </label>
+    <button type="submit">导入文件</button>
+  </form>
+
+  <form method="post" action="/imports/chatgpt-export" enctype="multipart/form-data" class="card upload-card" data-dropzone>
+    <p class="eyebrow">ChatGPT 历史</p>
+    <h3>导入 ChatGPT 导出包</h3>
+    <p>如果你想补回旧聊天历史，可以在这里上传 ChatGPT 导出的 `.zip` 文件。</p>
+    <label class="dropzone">
+      <input type="file" name="chatgpt_export" accept=".zip" />
+      <span>选择导出包，或直接拖到这里</span>
+    </label>
+    <button type="submit">导入 ChatGPT 导出包</button>
+  </form>
+</section>
+
+<section class="card">
+  <p class="eyebrow">最近导入</p>
+  {% if recent_imports %}
+  <div class="stack">
+    {% for record in recent_imports %}
+    <article class="list-item">
+      <div class="list-topline">
+        <strong>{{ record.id }}</strong>
+        <span>{{ record.source_type_label }}</span>
+      </div>
+      <p>{{ record.content_excerpt }}</p>
+      <small>{{ record.imported_at }} · {{ record.source_path }}</small>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>现在还没有导入任何内容。</p>
+  {% endif %}
+</section>
+{% endblock %}

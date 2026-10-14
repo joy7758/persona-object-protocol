@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+  <form method="get" action="/audit" class="inline-form">
+    <label>
+      <span>画像视图</span>
+      <select name="scope">
+        <option value="">全部视图</option>
+        {% for option in scope_options %}
+        <option value="{{ option.value }}" {% if option.value == scope %}selected{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <label>
+      <span>模式</span>
+      <input type="text" name="mode" value="{{ mode }}" placeholder="例如：dry_run" />
+    </label>
+    <label>
+      <span>数量</span>
+      <input type="number" min="1" name="limit" value="{{ limit }}" />
+    </label>
+    <button type="submit">筛选</button>
+  </form>
+</section>
+
+<section class="grid two-up">
+  <article class="card">
+    <p class="eyebrow">最近分析</p>
+    {% if audits %}
+    <div class="stack">
+      {% for audit in audits %}
+      <a class="list-item link-item" href="/audit/{{ audit.session_id }}?scope={{ scope }}&mode={{ mode }}&limit={{ limit }}">
+        <div class="list-topline">
+          <strong>{{ audit.session_id }}</strong>
+          <span>{{ mode_labels.get(audit.mode, audit.mode) }}</span>
+        </div>
+        <p>{{ audit.question }}</p>
+        <small>{{ audit.created_at }} · {{ scope_labels.get(audit.snapshot_scope, audit.snapshot_scope) }} · 回答={{ "有" if audit.response_present else "无" }}</small>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>还没有可查看的分析记录。</p>
+    {% endif %}
+  </article>
+
+  <article class="card">
+    <p class="eyebrow">为什么 POP 会这样分析</p>
+    {% if selected_audit %}
+    <div class="stack compact">
+      <p><strong>分析会话：</strong> {{ selected_audit.session_id }}</p>
+      <p><strong>人格版本：</strong> {{ selected_audit.persona_core_version_id or "暂无" }}</p>
+      <p><strong>用到的快照：</strong> {{ selected_audit.used_snapshot_ids | join(", ") or "暂无" }}</p>
+      <p><strong>用到的记忆：</strong> {{ selected_audit.used_memory_ids | join(", ") or "暂无" }}</p>
+      <p><strong>上下文哈希：</strong> {{ selected_audit.prompt_context_hash }}</p>
+      <p><strong>回答哈希：</strong> {{ selected_audit.response_hash or "暂无" }}</p>
+      <p><strong>上下文文件：</strong> {{ selected_audit.prompt_context_path }}</p>
+    </div>
+    <div class="stack compact">
+      <h3>检索说明</h3>
+      {% if selected_audit.retrieval_notes %}
+      <ul class="plain-list">
+        {% for note in selected_audit.retrieval_notes %}
+        <li>{{ note.memory_id }} · score={{ note.score }} · {{ note.ranking_reason }}</li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>这次没有记录到检索说明。</p>
+      {% endif %}
+    </div>
+    <div class="stack compact">
+      <h3>上下文片段</h3>
+      <pre class="code-block">{{ selected_audit.prompt_context_excerpt }}</pre>
+    </div>
+    {% if selected_session %}
+    <div class="stack compact">
+      <h3>这次分析有帮助吗？</h3>
+      <form method="post" action="/audit/{{ selected_audit.session_id }}/feedback" class="stack">
+        <input type="hidden" name="scope" value="{{ scope }}" />
+        <input type="hidden" name="mode" value="{{ mode }}" />
+        <input type="hidden" name="limit" value="{{ limit }}" />
+        <label>
+          <span>反馈</span>
+          <select name="feedback_status">
+            {% for option in feedback_status_options %}
+            <option value="{{ option.value }}" {% if option.value == selected_session.feedback_status %}selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>
+          <span>补充说明（可选）</span>
+          <textarea name="feedback_note" rows="3" placeholder="告诉 POP 这次哪里有帮助，或者你希望它下次怎么调整。">{{ selected_session.feedback_note }}</textarea>
+        </label>
+        <button type="submit">保存我的反馈</button>
+      </form>
+      <p class="meta-note">当前反馈：{{ feedback_status_labels.get(selected_session.feedback_status, selected_session.feedback_status) }}</p>
+    </div>
+    {% endif %}
+    {% else %}
+    <p>从左侧选一条分析记录，就能查看 POP 当时的判断依据。</p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

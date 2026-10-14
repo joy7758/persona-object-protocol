@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>POP Capture</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header>
+        <p class="eyebrow">POP Capture</p>
+        <h1>浏览器自动记录</h1>
+      </header>
+
+      <label class="toggle-row">
+        <span>自动记录已开启</span>
+        <input type="checkbox" id="capture-enabled" />
+      </label>
+
+      <label class="toggle-row">
+        <span>显示调试浮层</span>
+        <input type="checkbox" id="show-debug-overlay" />
+      </label>
+
+      <label class="field">
+        <span>本地后端地址</span>
+        <input type="text" id="backend-url" value="http://127.0.0.1:8765" />
+      </label>
+
+      <section class="status-card">
+        <p><strong>后端状态：</strong> <span id="backend-status">检查中…</span></p>
+        <p><strong>最近同步：</strong> <span id="last-sync-status">等待连接</span></p>
+        <p><strong>最近消息：</strong> <span id="last-message-id">—</span></p>
+        <p><strong>本次已发送：</strong> <span id="sent-count">0</span></p>
+      </section>
+
+      <div class="button-row">
+        <button id="save-settings" type="button">保存</button>
+        <button id="refresh-status" type="button" class="secondary">刷新状态</button>
+      </div>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="grid two-up">
+  <article class="card">
+    <p class="eyebrow">自动更新状态</p>
+    <div class="stack compact">
+      <p><strong>已安装：</strong>{{ "是" if scheduler.installed else "否" }}</p>
+      <p><strong>已启用：</strong>{{ "是" if scheduler.enabled else "否" }}</p>
+      <p><strong>任务标签：</strong>{{ scheduler.label }}</p>
+      <p><strong>计划时间：</strong>{{ scheduler.scheduled_time or "还没有设置" }}</p>
+      <p><strong>收件箱：</strong>{{ inbox_path or "还没有设置" }}</p>
+      <p><strong>归档目录：</strong>{{ archive_path or "还没有设置" }}</p>
+      <p><strong>失败目录：</strong>{{ failed_path or "还没有设置" }}</p>
+      <p><strong>导入后自动归档：</strong>{{ "开启" if archive_after_import else "关闭" }}</p>
+      <p><strong>Plist 路径：</strong>{{ scheduler.plist_path or "还没有安装" }}</p>
+    </div>
+  </article>
+
+  <form method="post" action="/settings/preferences" class="card">
+    <p class="eyebrow">每日目录设置</p>
+    <label>
+      <span>收件箱目录</span>
+      <input type="text" name="inbox_path" value="{{ inbox_path }}" placeholder="~/pop-persona-cockpit-inbox" />
+    </label>
+    <label>
+      <span>归档目录</span>
+      <input type="text" name="archive_path" value="{{ archive_path }}" placeholder="~/pop-persona-cockpit-archive" />
+    </label>
+    <label>
+      <span>失败目录</span>
+      <input type="text" name="failed_path" value="{{ failed_path }}" placeholder="~/pop-persona-cockpit-failed" />
+    </label>
+    <label>
+      <span>
+        <input type="checkbox" name="archive_after_import" value="true" {% if archive_after_import %}checked{% endif %} />
+        导入成功后自动把文件移出收件箱
+      </span>
+    </label>
+    <button type="submit">保存目录设置</button>
+  </form>
+</section>
+
+<section class="grid two-up" id="sync-settings">
+  <article class="card">
+    <p class="eyebrow">同步设置</p>
+    <p>Primary 创造人格包。Secondary 接收人格包，也可以把反馈事件送回主设备。</p>
+    <div class="stack compact">
+      <p><strong>状态：</strong>{{ sync_health_label }}</p>
+      <p><strong>提供方：</strong>{{ settings.sync_provider }}</p>
+      <p><strong>同步目录：</strong>{{ settings.sync_root_path or "还没有设置" }}</p>
+      <p><strong>设备名：</strong>{{ settings.device_name or "还没有设置" }}</p>
+      <p><strong>设备角色：</strong>{{ settings.device_role }}</p>
+      <p><strong>设备 ID：</strong>{{ settings.device_id or "初始化后生成" }}</p>
+      <p><strong>自动启动：</strong>{{ "开启" if settings.sync_auto_start else "关闭" }}</p>
+      <p><strong>同步间隔：</strong>{{ settings.sync_interval_seconds }} 秒</p>
+      <p><strong>本机密钥：</strong>{{ "已设置" if settings.sync_passphrase_set else "未设置" }}</p>
+    </div>
+    {% if sync_status.warnings %}
+    <div class="stack compact">
+      {% for warning in sync_status.warnings %}
+      <section class="flash flash-error">{{ warning }}</section>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </article>
+
+  <form method="post" action="/settings/sync/save" class="card">
+    <p class="eyebrow">Google Drive 同步目录</p>
+    <label>
+      <span>同步根目录</span>
+      <input type="text" name="sync_root_path" value="{{ settings.sync_root_path }}" placeholder="~/Library/CloudStorage/GoogleDrive-.../My Drive/POP Sync" />
+    </label>
+    <div class="grid two-up">
+      <label>
+        <span>设备角色</span>
+        <select name="device_role">
+          <option value="primary" {% if settings.device_role == "primary" %}selected{% endif %}>primary</option>
+          <option value="secondary" {% if settings.device_role == "secondary" %}selected{% endif %}>secondary</option>
+        </select>
+      </label>
+      <label>
+        <span>设备名</span>
+        <input type="text" name="device_name" value="{{ settings.device_name }}" placeholder="mac-mini" />
+      </label>
+    </div>
+    <div class="grid two-up">
+      <label>
+        <span>同步间隔（秒）</span>
+        <input type="number" min="15" name="sync_interval_seconds" value="{{ settings.sync_interval_seconds }}" />
+      </label>
+      <label>
+        <span>
+          <input type="checkbox" name="sync_auto_start" value="true" {% if settings.sync_auto_start %}checked{% endif %} />
+          启动 POP 时自动开始后台同步
+        </span>
+      </label>
+    </div>
+    <button type="submit">保存同步设置</button>
+  </form>
+</section>
+
+<section class="card">
+  <form method="post" action="/settings/sync/passphrase" class="stack">
+    <p class="eyebrow">同步密钥</p>
+    <p>输入本机用于加密同步包的 passphrase。同步目录里不会写入明文包。</p>
+    <label>
+      <span>Sync Passphrase</span>
+      <input type="password" name="sync_passphrase" value="" placeholder="输入新的同步口令" />
+    </label>
+    <button type="submit">设置或更新同步密钥</button>
+  </form>
+</section>
+
+<section class="card">
+  <form method="post" action="/settings/provider/save" class="stack">
+    <p class="eyebrow">AI 接口设置</p>
+    <div class="grid two-up">
+      <label>
+        <span>模式</span>
+        <select name="provider_mode">
+          {% for option in provider_mode_options %}
+          <option value="{{ option.value }}" {% if option.value == provider_mode %}selected{% endif %}>{{ option.label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>API 地址</span>
+        <input type="text" name="api_base_url" value="{{ api_base_url }}" placeholder="https://api.openai.com/v1" />
+      </label>
+    </div>
+    <div class="grid two-up">
+      <label>
+        <span>API 密钥</span>
+        <input type="password" name="api_key" value="" placeholder="{{ masked_api_key or '输入新的 API 密钥' }}" />
+      </label>
+      <label>
+        <span>默认模型</span>
+        <input type="text" name="default_model" value="{{ default_model }}" placeholder="例如：gpt-4.1" />
+      </label>
+    </div>
+    <div class="grid three-up">
+      <label>
+        <span>每日蒸馏模型</span>
+        <input type="text" name="extract_model" value="{{ extract_model }}" placeholder="留空则跟随默认模型" />
+      </label>
+      <label>
+        <span>人格重建模型</span>
+        <input type="text" name="persona_model" value="{{ persona_model }}" placeholder="留空则跟随默认模型" />
+      </label>
+      <label>
+        <span>提问分析模型</span>
+        <input type="text" name="ask_model" value="{{ ask_model }}" placeholder="留空则跟随默认模型" />
+      </label>
+    </div>
+    <label>
+      <span>
+        <input type="checkbox" name="fallback_to_local_on_error" value="true" {% if fallback_to_local_on_error %}checked{% endif %} />
+        接口失败时自动回退到本地模式
+      </span>
+    </label>
+    <div class="stack compact">
+      <p><strong>最近一次测试：</strong>{{ last_provider_test_at or "还没有测试" }}</p>
+      <p><strong>当前状态：</strong>{{ last_provider_test_status_label }}</p>
+      <p><strong>测试说明：</strong>{{ last_provider_test_message or "还没有测试连接。" }}</p>
+    </div>
+    <div class="button-row">
+      <button type="submit">保存设置</button>
+      <button type="submit" formaction="/settings/provider/test">测试连接</button>
+    </div>
+  </form>
+</section>
+
+<section class="grid two-up">
+  <form method="post" action="/settings/scheduler/install" class="card">
+    <p class="eyebrow">自动更新时间</p>
+    <p>安装或刷新本地自动更新任务。</p>
+    <input type="hidden" name="inbox_path" value="{{ inbox_path }}" />
+    <div class="grid two-up narrow-gap">
+      <label>
+        <span>小时</span>
+        <input type="number" min="0" max="23" name="hour" value="{{ scheduler_hour }}" />
+      </label>
+      <label>
+        <span>分钟</span>
+        <input type="number" min="0" max="59" name="minute" value="{{ scheduler_minute }}" />
+      </label>
+    </div>
+    <button type="submit">安装自动更新</button>
+  </form>
+  <form method="post" action="/settings/scheduler/enable" class="card card-action">
+    <h3>开启自动更新</h3>
+    <p>让 POP 按设定时间自动刷新，不会影响你已经保存的数据。</p>
+    <button type="submit">开启自动更新</button>
+  </form>
+  <form method="post" action="/settings/scheduler/disable" class="card card-action">
+    <h3>关闭自动更新</h3>
+    <p>暂停自动刷新，同时保留你的记录、画像和日志。</p>
+    <button type="submit">关闭自动更新</button>
+  </form>
+</section>
+{% endblock %}

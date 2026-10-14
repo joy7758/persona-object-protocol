@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="grid three-up">
+  <article class="card">
+    <p class="eyebrow">自动更新状态</p>
+    <h3>{{ "已开启" if scheduler.enabled else "未开启" }}</h3>
+    <p>计划时间：{{ scheduler.scheduled_time or "还没有设置" }}</p>
+    <p>收件箱：{{ settings.inbox_path or "还没有设置" }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">今日更新</p>
+    <h3>{{ "已完成" if today_updated else "未完成" }}</h3>
+    <p>最近画像更新时间：{{ latest_persona_updated or "还没有更新" }}</p>
+    <p>最近每日快照：{{ latest_snapshot.date_range.date_to if latest_snapshot else "还没有生成" }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">浏览器自动记录</p>
+    <h3>{{ capture_summary.status_label }}</h3>
+    <p>插件状态：{{ capture_summary.extension_connected_label }}</p>
+    <p>最近 10 分钟消息：{{ capture_summary.recent_count }}</p>
+    <p>最近一次记录：{{ capture_summary.last_capture_at }}</p>
+    <p>上次插件心跳：{{ capture_summary.last_extension_heartbeat_at }}</p>
+    <p>最近错误：{{ capture_summary.last_error }}</p>
+    <p>{{ capture_summary.hint }}</p>
+    <form method="post" action="/dashboard/test-capture">
+      <button type="submit">测试采集</button>
+    </form>
+  </article>
+</section>
+
+<section class="grid three-up">
+  <article class="card">
+    <p class="eyebrow">AI 引擎状态</p>
+    <p><strong>当前模式：</strong>{{ provider_summary.mode_label }}</p>
+    <p><strong>当前模型：</strong>{{ provider_summary.default_model }}</p>
+    <p><strong>连接状态：</strong>{{ provider_summary.status_label }}</p>
+    <p><strong>上次测试：</strong>{{ provider_summary.last_test_at }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">最近活动</p>
+    <p><strong>新导入：</strong>{{ recent_import_count }}</p>
+    <p><strong>最近分析：</strong>{{ recent_analysis_count }}</p>
+    <p><strong>最近动作草案：</strong>{{ recent_action_draft_count }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">反馈概况</p>
+    <p><strong>采纳：</strong>{{ feedback_summary.accepted }}</p>
+    <p><strong>部分采纳：</strong>{{ feedback_summary.partial }}</p>
+    <p><strong>不采纳：</strong>{{ feedback_summary.rejected }}</p>
+    <p><strong>待处理草案：</strong>{{ feedback_summary.pending_actions }}</p>
+  </article>
+</section>
+
+<section class="grid two-up">
+  <article class="card">
+    <p class="eyebrow">同步状态</p>
+    <p><strong>当前状态：</strong>{{ sync_summary.status_label }}</p>
+    <p><strong>设备角色：</strong>{{ sync_summary.role }}</p>
+    <p><strong>最近同步：</strong>{{ sync_summary.last_sync_time }}</p>
+    <p><strong>自动同步：</strong>{{ sync_summary.enabled_label }}</p>
+    {% if sync_status.warnings %}
+    <p><strong>提醒：</strong>{{ sync_status.warnings[0] }}</p>
+    {% endif %}
+    <form method="post" action="/dashboard/sync-now">
+      <button type="submit">Sync Now</button>
+    </form>
+  </article>
+  <article class="card">
+    <p class="eyebrow">收件目录</p>
+    <p><strong>收件箱：</strong>{{ settings.inbox_path or "还没有设置" }}</p>
+    <p><strong>归档目录：</strong>{{ settings.archive_path or "还没有设置" }}</p>
+    <p><strong>导入后自动归档：</strong>{{ "开启" if settings.archive_after_import else "关闭" }}</p>
+  </article>
+  <article class="card">
+    <p class="eyebrow">最近一次更新</p>
+    {% if latest_workflow %}
+    <div class="stack compact">
+      <p><strong>运行编号：</strong>{{ latest_workflow.run_id }}</p>
+      <p><strong>运行时间：</strong>{{ latest_workflow.created_at }}</p>
+      <p><strong>导入数量：</strong>{{ latest_workflow.imported_count }}</p>
+      <p><strong>已归档：</strong>{{ latest_workflow.archived_count }}</p>
+      <p><strong>每日快照：</strong>{{ latest_workflow.daily_snapshot_status }}</p>
+      <p><strong>人格重建：</strong>{{ latest_workflow.persona_rebuild_status }}</p>
+    </div>
+    {% else %}
+    <p>还没有运行过画像更新。</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="grid actions">
+  <form method="post" action="/dashboard/run-daily" class="card card-action">
+    <h3>立即更新我的画像</h3>
+    <p>导入新材料，生成今天的快照，并刷新你当前的人格画像。</p>
+    <button type="submit">立即更新我的画像</button>
+  </form>
+  <a class="card card-action link-card" href="/persona">
+    <h3>打开我的数字人格</h3>
+    <p>查看当前人格画像，并导出可携带的人格包。</p>
+  </a>
+  <a class="card card-action link-card" href="/ask">
+    <h3>问 POP</h3>
+    <p>在你开始思考前，先让 POP 帮你整理好上下文。</p>
+  </a>
+  <a class="card card-action link-card" href="/execution">
+    <h3>查看动作草案</h3>
+    <p>把一次已保存分析变成安全的下一步，再先在本地预演。</p>
+  </a>
+  <a class="card card-action link-card" href="/audit">
+    <h3>查看最近分析</h3>
+    <p>回看 POP 当时用了什么、怎么判断，以及这次是否真正帮到你。</p>
+  </a>
+</section>
+{% endblock %}
